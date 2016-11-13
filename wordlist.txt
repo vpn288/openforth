@@ -49,6 +49,11 @@ rdblock    rdfile     rdfile
 ---------------------------------
      lowlevel definitions
 ---------------------------------
+       lowlevel1
+---------------------------------
+ALLOT bpoint DUP C! 0! SWAP! >R R> R@ C@ SP@ b(swap_ab) SWAP clear
+---------------------------------
+
 CELL-      CELL-      CELL- ( use B,)
  ( use D, ) = <> < 
 1+         1+         1+
