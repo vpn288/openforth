@@ -1,0 +1,135 @@
+bare       kolibry      win64
+---------------------------
+kernel
+---------------------------
+FORTH32    FORTH32    FORTH32
+BADWORD    BADWORD    BADWORD
+EXIT       EXIT       EXIT
+Push       Push       Push
+Pop        Pop        Pop
+ABORT      ABORT      ABORT
+HERE       HERE       HERE
+INTERPRET  INTERPRET  INTERPRET
+interpret# interpret# interpret#
+PARSE      PARSE      PARSE
+ENCLOSE    ENCLOSE    ENCLOSE
+CONTEXT    CONTEXT    CONTEXT
+CURRENT    CURRENT    CURRENT
+@          @          @
+!          !          !
+CELL+      CELL+      CELL+
+,          ,          ,
+ALIGN      ALIGN      ALIGN
+'          '          '
+SFIND      SFIND      SFIND
+EXECUTE    EXECUTE    EXECUTE
+>IN        >IN        >IN
+N>LINK     N>LINK     N>LINK
+LATEST     LATEST     LATEST
+(WORD)     (WORD)     (WORD)
+(HEADER)   (HEADER)   (HEADER)           
+HEADER     HEADER     HEADER
+
+0xd        0xd        0xd
+0x         0x         0x 
+number     number     number
+LINK       LINK       LINK
+UNLINK     UNLINK     UNLINK
+BADWORD-xt BADWORD-xt BADWORD-xt
+BYE        BYE        BYE 
+BUFFER     BUFFER     BUFFER
+ASSEMBLER  ASSEMBLER  ASSEMBLER
+opcode     opcode     opcode
+
+BLOCK     
+TYPEZ
+LOAD       INCLUDE:   INCLUDE:
+rdblock    rdfile     rdfile
+
+---------------------------------
+     lowlevel definitions
+---------------------------------
+CELL-      CELL-      CELL- ( use B,)
+ ( use D, ) = <> < 
+1+         1+         1+
+2+         2+         2+
+1-         1-         1-
++          +          +
+-          -          - 
+( use B, ) lit# SLIT break dodoes COMPILE BRANCH ?OF ?BRANCH strcopy 2@ 
+---------------------------------
+      compiling
+---------------------------------
+LIT,
+;Word
+Word:
+CONSTANT
+...some constants....
+',
+CREATE
+VARIABLE
+0x,
+WORD
+,"
+make_badword
+make_exit
+VOCABULARY
+--------------------------------
+    init immediates
+--------------------------------
+IMMEDIATES 
+;WORD
+...set badword in context immediates...
+--------------------------------
+     controls
+--------------------------------
+BEGIN 
+AGAIN 
+UNTIL 
+IF 
+THEN 
+ELSE 
+ENDOF	
+OF	
+-------------------------------
+   immediates
+------------------------------
+(jsr)
+(does>)
+immediator 
+WORD:
+
+Begin	
+Until	
+Again	
+If	
+Then	
+Else	
+Case	
+Of	
+EndOf	
+EndCase	
+Do	
+Loop	
+does>
+DOES>
+hex, 
+[
+]
+-------------------------------
+       compile
+-------------------------------
+(
+NAME>
+NONAME:
+XT:
+ 
+ forward>
+ >forward
+ backward<
+ <backward
+-----------------------------
+
+ 
+ 
+
