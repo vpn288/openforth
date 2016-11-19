@@ -1,0 +1,19 @@
+FORTH32 CONTEXT !	   FORTH32 CURRENT !
+
+VOCABULARY IMMEDIATES	 IMMEDIATES CURRENT !  
+ 
+ Word: ;WORD    ', COMPILE  ', EXIT    ', break    ;Word
+ Word: ;XT	    ', COMPILE  ', EXIT    ', break    ;Word
+ Word: ;NONAME  ', COMPILE  ', EXIT    ', break    ;Word
+ 
+ FORTH32 CURRENT !  
+ IMMEDIATES FORTH32 LINK     
+ IMMEDIATES CONTEXT !  
+
+   ' compiler  ' BADWORD CELL+ !
+
+ FORTH32 CONTEXT !   IMMEDIATES UNLINK 
+   
+   
+
+EXIT
