@@ -7,7 +7,7 @@ BADWORD    BADWORD    BADWORD
 EXIT       EXIT       EXIT
 Push       Push       Push
 Pop        Pop        Pop
-ABORT      ABORT      ABORT
+ABORT      ABORT      ABORT -?
 HERE       HERE       HERE
 INTERPRET  INTERPRET  INTERPRET
 interpret# interpret# interpret#
