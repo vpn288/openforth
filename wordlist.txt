@@ -1,0 +1,3 @@
+kernel
+------------
+FORTH32 BADWORD EXIT Push Pop HERE INTERPRET interpret# PARSE
