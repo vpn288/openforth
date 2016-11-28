@@ -1,0 +1,47 @@
+---------------------
+  безусловный переход
+---------------------
+HEADER BRANCH 	 HERE	CELL+ ,
+  mov_rax,[rsp+b#] 0x 8 B,  извлекаем адрес возврата. так как код косвенный,
+  то непосредственно rsp - низкоуровневый возврат, а выше - высокоуровневый
+  
+  mov_rax,[rax+b#] 0x 8 B,   берем значение следующей ячейки в шитом коде
+  mov_[rsp+b#],rax 0x 8 B,   кладем его в адрес возврата. Таким образом переход осуществляется по новому адресу.
+  ret
+  ALIGN
+
+  HEADER ?OF	      HERE   CELL+ ,
+  mov_rcx,[rsp+b#] 0x 8 B,
+  mov_rbp,[rcx+b#] 0x 8 B,  то же что и выше, 
+                              
+  add_rcx,b# 0x 8 B,  только теперь в rcx адрес в шитом коде следом за скомпилированной адресом перехода,
+                      а в rbp - тот скомплированный адрес перехода.
+  mov_rdx,#  ' Pop @ ,            call_rdx
+  test_rax,rax
+  cmove_rcx,rbp       в зависимости от условий подставляем нужный адрес
+  mov_rax,rcx
+  mov_[rsp+b#],rcx 0x 8 B,
+  ret
+  ALIGN
+
+  HEADER ?BRANCH	 HERE	CELL+ ,
+  mov_rcx,[rsp+b#] 0x 8 B, 
+  mov_rbp,[rcx+b#] 0x 8 B,
+  add_rcx,b# 0x 8 B,
+  mov_rdx,#  ' Pop @ ,   call_rdx
+  test_rax,rax
+  cmovne_rcx,rbp
+  mov_rax,rcx
+  mov_[rsp+b#],rcx
+  ret
+  ALIGN
+  
+  HEADER ?break HERE CELL+ ,
+  mov_rdx,#  ' Pop @ ,   call_rdx
+  test_rax,rax
+  cmovne_rcx,rbp
+  mov_rax,[rsp+b#] 0x 20 B,
+  add_rax,b# 0x 10 B, 
+  mov_[rsp+b#],rax 0x 20 B,
+  ret
+  ALIGN
