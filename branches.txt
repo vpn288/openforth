@@ -3,7 +3,7 @@
 ---------------------
 HEADER BRANCH 	 HERE	CELL+ ,
   mov_rax,[rsp+b#] 0x 8 B,  извлекаем адрес возврата. так как код косвенный,
-  то непосредственно rsp - низкоуровневый возврат, а выше - высокоуровневый
+                            то непосредственно rsp - низкоуровневый возврат, а выше - высокоуровневый
   
   mov_rax,[rax+b#] 0x 8 B,   берем значение следующей ячейки в шитом коде
   mov_[rsp+b#],rax 0x 8 B,   кладем его в адрес возврата. Таким образом переход осуществляется по новому адресу.
@@ -36,12 +36,13 @@ HEADER BRANCH 	 HERE	CELL+ ,
   ret
   ALIGN
   
-  HEADER ?break HERE CELL+ ,
-  mov_rdx,#  ' Pop @ ,   call_rdx
-  test_rax,rax
-  cmovne_rcx,rbp
-  mov_rax,[rsp+b#] 0x 20 B,
-  add_rax,b# 0x 10 B, 
+  HEADER break HERE CELL+ ,  мутно, но работает.
+  mov_rax,[rsp+b#] 0x 20 B,  адрес возврата на уровень выше. +8 - один +10 лолевел, + 18 - хайлевел, +20 лолевел.
+  add_rax,b# 0x 10 B,         
   mov_[rsp+b#],rax 0x 20 B,
   ret
   ALIGN
+
+mov_rdx,#  ' Pop @ ,   call_rdx
+  test_rax,rax
+  cmovne_rcx,rbp
