@@ -52,9 +52,10 @@ _addr_interp:
   add rax,cell_size        push rax      mov rax,[rax]      call near qword [rax]       pop rax       jmp _addr_interp
                             
 -----------------
-EXECUTE вызывает адресный интерпретатор
+EXECUTE вызывает адресный интерпретатор. соответсвенно выход из исполнения определения должен поднять нас на 4 уровня 
 
+  HEADER ?break HERE CELL+ ,
 
-mov_rdx,#  ' Pop @ ,   call_rdx
+  mov_rdx,#  ' Pop @ ,   call_rdx
   test_rax,rax
   cmovne_rcx,rbp
