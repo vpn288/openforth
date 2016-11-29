@@ -43,6 +43,15 @@ HEADER BRANCH 	 HERE	CELL+ ,
   ret
   ALIGN
 
+EXECUTE
+  call _pop  _execute:        call qword [rax]        ret       
+ 
+ 
+_addr_interp:
+  add rax,cell_size        push rax      mov rax,[rax]      call near qword [rax]       pop rax       jmp _addr_interp
+                            
+
+
 mov_rdx,#  ' Pop @ ,   call_rdx
   test_rax,rax
   cmovne_rcx,rbp
