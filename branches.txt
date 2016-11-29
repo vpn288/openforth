@@ -53,9 +53,17 @@ _addr_interp:
                             
 -----------------
 EXECUTE вызывает адресный интерпретатор. соответсвенно выход из исполнения определения должен поднять нас на 4 уровня 
+-----------------
 
+условие либо выход на 4 уровня либо просто возврат 
   HEADER ?break HERE CELL+ ,
-
+  mov_rax,[rsp+b#] 0x 20 B, взяли адрес брейка
+  mov_rbp,rax  схоронили
+  mov_rcx,rax
+  add_rcx,b# 0x 10 B,  прибавили выход
   mov_rdx,#  ' Pop @ ,   call_rdx
   test_rax,rax
   cmovne_rcx,rbp
+  mov_[rsp+b#],rcx 0x 20 B,
+  ret
+  ALIGN
