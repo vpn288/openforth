@@ -10,10 +10,12 @@ defines FORTH32 LINK    defines CONTEXT !
 
 WORD: ;Defines       quit ;WORD
 
+FORTH32 CONTEXT ! 
+
 WORD: #define   CREATE  ;WORD 
 WORD: 0x 0x ,  ;WORD 
 
-FORTH32 CONTEXT ! FORTH32 CURRENT ! defines UNLINK 
+FORTH32 CURRENT ! defines UNLINK 
 
 WORD: Defines:   Begin
 
