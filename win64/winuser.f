@@ -1,36 +1,3 @@
-VOCABULARY defines
-
-defines CURRENT !   defines FORTH32 LINK   
-
-WORD: decimal  (2d) decimalv @   DUP h. , ;WORD 
-
-defines FORTH32 LINK    defines CONTEXT !
-
-' decimal  ' BADWORD CELL+ ! 
-
-WORD: ;Defines       quit ;WORD
-
-FORTH32 CONTEXT ! 
-
-WORD: #define   CREATE  ;WORD 
-WORD: 0x 0x ,  ;WORD 
-
-FORTH32 CURRENT ! defines UNLINK 
-
-WORD: Defines:   Begin
-
-
-
-VOCABULARY defines
-
-defines CURRENT !   defines FORTH32 LINK   
-
-WORD: decimal  (2d) decimalv @   DUP h. , ;WORD 
-
-defines FORTH32 LINK    defines CONTEXT !
-
-
-
 
 VOCABULARY defines
 
