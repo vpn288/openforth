@@ -2,6 +2,7 @@
 
 
  
+ WORD: set_constant_xt [ ' HERE @ LIT, ] LATEST NAME> ! ;WORD 
  
 VOCABULARY defines
 
@@ -15,21 +16,20 @@ defines FORTH32 LINK    defines CONTEXT !
 
 FORTH32 CONTEXT ! 
 
-WORD: ;Defines        quit ;WORD 
+WORD: ;Defines   , set_constant_xt    quit ;WORD 
 
-WORD: #define      , DOES> @  CREATE  ;WORD 
+WORD: #define      , set_constant_xt  CREATE  ;WORD 
  WORD: 0x 0x   ;WORD  
 
 FORTH32 CONTEXT ! FORTH32 CURRENT !  defines UNLINK  
 
-WORD: Defines:     CREATE  Begin PARSE  HERE TYPE defines SFIND EXECUTE Again ;WORD 
+WORD: Defines:     CREATE  Begin PARSE  defines SFIND EXECUTE Again ;WORD 
 
  
 
 Defines:  	0x3  0x 3  
   
- #define WH_CBT	5 
-
+#define WH_CBT	5 
 #define WH_SYSMSGFILTER	6 
 #define WH_MOUSE	7 
 #define WH_HARDWARE	8 
@@ -37,11 +37,10 @@ Defines:  	0x3  0x 3
 #define WH_SHELL    	10 
 #define   WH_FOREGROUNDIDLE    	11   
 
- ;Defines   .( on defines )     EXIT     
+ ;Defines   WH_FOREGROUNDIDLE  h.  .( on defines )     EXIT     
    
    
-   , DOES> @  0x 3 CREATE 0x3 , 
-
+   
 #define WH_CALLWNDPROCRET	12 
 #define WH_KEYBOARD_LL	13 
 #define WH_MOUSE_LL	14 
