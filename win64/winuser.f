@@ -1,8 +1,6 @@
 
-
-
  
- WORD: set_constant_xt [ ' HERE @ LIT, ] LATEST NAME> ! ;WORD 
+ WORD: set_constant_xt     [ ' HERE @ LIT, ]  LATEST NAME> !  ;WORD 
  
 VOCABULARY defines
 
