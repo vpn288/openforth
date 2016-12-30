@@ -1,6 +1,8 @@
 
+
+
  
- WORD: set_constant_xt     [ ' HERE @ LIT, ]  LATEST NAME> !  ;WORD 
+ WORD: set_constant_xt [ ' HERE @ LIT, ] LATEST NAME> ! ;WORD 
  
 VOCABULARY defines
 
@@ -23,8 +25,8 @@ FORTH32 CONTEXT ! FORTH32 CURRENT !  defines UNLINK
 
 WORD: Defines:     CREATE  Begin PARSE  defines SFIND EXECUTE Again ;WORD 
 
+ defines CURRENT ! 
  
-
 Defines:  	0x3  0x 3  
   
 #define WH_CBT	5 
@@ -35,20 +37,22 @@ Defines:  	0x3  0x 3
 #define WH_SHELL    	10 
 #define   WH_FOREGROUNDIDLE    	11   
 
- ;Defines   WH_FOREGROUNDIDLE  h.  .( on defines )     EXIT     
+ 
    
    
    
 #define WH_CALLWNDPROCRET	12 
 #define WH_KEYBOARD_LL	13 
 #define WH_MOUSE_LL	14 
+#define WH_MIN	-1
 #define WH_MAX		14 
 
 
 #define WH_MINHOOK	WH_MIN
 #define WH_MAXHOOK	WH_MAX 
 #define HC_ACTION	0  
-   WH_MAXHOOK h. 
+ ;Defines   
+ defines FORTH32 LINK  defines CONTEXT !  WH_MINHOOK  h.  .( on defines )     EXIT     
 
 
 
