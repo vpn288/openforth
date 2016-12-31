@@ -37,10 +37,6 @@ Defines:  	0x3  0x 3
 #define WH_SHELL    	10 
 #define   WH_FOREGROUNDIDLE    	11   
 
- 
-   
-   
-   
 #define WH_CALLWNDPROCRET	12 
 #define WH_KEYBOARD_LL	13 
 #define WH_MOUSE_LL	14 
