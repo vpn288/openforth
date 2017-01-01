@@ -37,6 +37,7 @@ Defines:  	0x3  0x 3
 #define WH_SHELL    	10 
 #define   WH_FOREGROUNDIDLE    	11   
 
+ 
 #define WH_CALLWNDPROCRET	12 
 #define WH_KEYBOARD_LL	13 
 #define WH_MOUSE_LL	14 
@@ -48,7 +49,11 @@ Defines:  	0x3  0x 3
 #define WH_MAXHOOK	WH_MAX 
 #define HC_ACTION	0  
  ;Defines   
- defines FORTH32 LINK  defines CONTEXT !  WH_MINHOOK  h.  .( on defines )     EXIT     
+ FORTH32 CURRENT !
+ 
+ EXIT 
+ 
+ defines FORTH32 LINK  defines CONTEXT !  WH_MINHOOK    h.  .( on defines )      EXIT     FORTH32 CONTEXT !
 
 
 
