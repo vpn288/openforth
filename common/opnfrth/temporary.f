@@ -16,3 +16,14 @@ WORD: }TEMPORARY
 
 EXIT
 
+How to use:
+
+TEMPORARY{
+.... some code ...
+}TEMPORARY
+
+What happend?
+
+By opening TEMPORARY{ tag you fix the state of context current vocabularies and here value. By closing }TEMPORARY tag you 
+restore that values. I.e. your ... some code ... exection and rather compiling had no trace in system. You load program execute it
+and clear all word defined in it. 
