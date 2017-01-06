@@ -14,7 +14,7 @@
  FORTH32 CONTEXT !
  
  WORD: setmodule     
-              HERE  (HEADER) HERE 0 ,  SWAP   1+ (SetModule) DUP h. ,  HERE SWAP!  EXECUTE  LATEST NAME> CELL+  invoke ;WORD 
+              HERE  (HEADER) HERE 0 ,  SWAP   1+ (SetModule) Pop ,  HERE SWAP!  EXECUTE  LATEST NAME> CELL+  invoke ;WORD 
   
  
 
