@@ -13,7 +13,7 @@
 	
 	 INCLUDE: ../common/opnfrth/compile2.f  
 	 INCLUDE: ../common/opnfrth/immediates/init_immediates.f  
-     INCLUDE: ../common/opnfrth/controls.f  
+         INCLUDE: ../common/opnfrth/controls.f  
 	 
 	 INCLUDE: ../common/opnfrth/immediates/immediates.f   
 	 INCLUDE: ../common/opnfrth/compile3.f   
