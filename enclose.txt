@@ -21,6 +21,8 @@ _word3:
 	jnbe _word3
 _word4:
 ; string to validate
+;здесь слово рубится краем буфера. Сюда надо втыкать подкачку.
+
 	 mov [rbx],dl
 	 ret
 _word2:
