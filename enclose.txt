@@ -36,3 +36,57 @@ _word2:
 	 mov qword [rbx],rax
 	 ;mov dword [ebx+4],054h ;"T",0
 	 ret
+	 
+	 
+;---------------------------	 
+db 8,"INCLUDE:",0
+	alignhe
+	dq nfa_39
+	dq _load
+_load:
+	call _parse
+	push qword [block]
+	push qword [file_pos]
+	push qword [fileptr] ;block number
+	push qword [bytes_to_read] ; size of buffer
+	push qword [buffer] ;address of buffer
+	mov  rax,[buffer_base]
+	mov  [buffer],rax
+	inc  qword [block]
+
+	push qword [_in_value]
+	mov   rax,[here_value]
+	call  _push_ascii
+	mov   rax,[here_value]
+	call  _push
+	call  _openfile
+	call  _push
+	call _rdfile    ;здесь 
+	call _closefile ; переделать в впорось закрытие. если файл скачался весь, то закрываем его.
+
+	xor rbx,rbx
+	mov [_in_value],rbx
+	mov qword [bytes_to_read],8192
+	call _interpret
+
+
+	pop qword [_in_value]
+	pop qword [buffer]
+	pop qword [bytes_to_read]
+	pop qword [fileptr]
+	pop qword [file_pos]
+	pop qword [block]
+	call _pop_ascii
+	mov  rax,[block]
+	test rax,rax
+	je   _block0
+	mov   rax,[here_value]
+	call  _push
+	call  _openfile
+	call  _push
+	call _rdfile
+	call _closefile
+	ret
+
+_block0:
+ret
