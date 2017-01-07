@@ -26,6 +26,7 @@ _word4:
 _word2:
 ;end of buffer
 ;load next portion
+;а нет. тут засада. файл-то закрыт. по-хорошему его надо закрывать когда он скачается весь.
 	mov rax,[handle]
 	call _Push
         call _rdfile
