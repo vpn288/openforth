@@ -35,6 +35,7 @@ idaqa:
     GetLastError	dq RVA _GetLastError
     LoadLibrary 	dq RVA _LoadLibrary
     GetProcAddress	dq RVA _GetProcAddress
+    SetFilePointer	dq RVA _SetFilePointer
     dq 0
 
   kernel_name db 'KERNEL32.DLL',0
@@ -68,6 +69,8 @@ idaqa:
     db 'LoadLibraryA',0
     _GetProcAddress dw 0
     db 'GetProcAddress',0
+    _SetFilePointer dw	0
+    db 'SetFilePointer',0
 
 ;---------------------------
 ; vocabulary start
@@ -247,6 +250,7 @@ _enclose:
 	call _pop ; to address
 	mov rdi,rax
 	call _pop ; from address
+_enc2:
 	mov rsi,rax
 	xor rdx,rdx
 	add rsi,[_in_value]
@@ -277,11 +281,37 @@ _word3:
 	inc qword [_in_value]
 	cmp al,20h
 	jnbe _word3
-_word4:
-; string to validate
 	 mov [rbx],dl
 	 ret
+
+_word4:
+; string to validate
+;����� ����� �� �������
+       int3
+	sub    rsp,30h
+	mov	rcx,[handle]
+	mov	r9,1; rdx ;distance to move
+	xor	r8,r8
+	neg	rdx
+;	 mov	 r8,  8192
+;	 mov	 rdx, [buffer]
+
+	xor	rax,rax
+	mov	qword [rsp+20h],0
+	call	[SetFilePointer]
+	add	rsp,30h
+	 mov	 rax,[handle]
+	call	_push
+	call	_rdfile
+	jmp	 _enc2
+
 _word2:
+;end of buffer
+	int3
+	mov	rax,[handle]
+	call	_push
+	call	_rdfile
+	jmp    _skip_delimeters
 ; empty string
 	 mov	rax,5449584504h ;4,"EXIT"
 	 mov qword [rbx],rax
@@ -990,7 +1020,7 @@ _load:
 	call  _openfile
 	call  _push
 	call _rdfile
-	call _closefile
+   ;	 call _closefile
 
 	xor rbx,rbx
 	mov [_in_value],rbx
@@ -1013,7 +1043,7 @@ _load:
 	call  _openfile
 	call  _push
 	call _rdfile
-	call _closefile
+   ;	 call _closefile
 	ret
 
 _block0:
@@ -1095,9 +1125,19 @@ _rdfile:
 	add	rsp,30h
 
        ; call	 [GetLastError]
-       ; call	 _push
-       ; call	 _hex_dot
+	mov	 rax,[bytes_to_read]
+	sub	 rax,8192
+	jb	_rd2
+
+	call	_push
+	call	_hex_dot
 	ret
+_rd2:
+	mov	rax,[handle]
+	call	_push
+	call	_closefile
+	ret
+
 
  msg_err db 10,13, " Filesystem error!  ",0
  msg_load db 10,13, "  Loading file:",0
@@ -1114,6 +1154,9 @@ _closefile:
 	call		_pop
 	mov		rcx,rax
 	call		[CloseFile]
+	mov		rax,0xaabbccdd
+	call		_push
+	call		_hex_dot
 	ret
 
 ;----------------------------
@@ -1333,7 +1376,31 @@ entry start
 	mov	     rdi,[buffer]
 	mov	     rsi,filename2
 	rep	     movsq
- 
+ ;	 xor	      rcx,rcx
+ ;	 mov	      rdi,[push_ascii_stack]
+ ;	 mov	      rsi,filename
+ ;	 mov	      cl,[rdi]
+;	 cld
+ ;	 rep	      movsb
+   ;	 mov	      [push_ascii_stack],rdi
+
+   ;	 mov	      rax,filename
+   ;	 call	      _push
+   ;	 call	      _openfile2
+   ;	  mov	       rax,filename
+   ;	 call	      _push
+   ;	 call	      _openfile2
+   ;	 call	      _pop
+   ;	 mov	      rcx,rax
+   ;	 xor	      rax,rax
+   ;	 push	      rax
+   ;	 mov	      rdx,[buffer]
+   ;	 mov	      r8,8192
+   ;	 mov	      r9,bytes_to_read
+   ;	 call	      [ReadFile]
+
+
+      ;  jmp $
 	;--------jmp to interpret-------------
 	push   qword _quit_forth
 	jmp	  _interpret
