@@ -1,5 +1,3 @@
-
-
     format PE64 GUI    at 010000h
     stack   65536
     heap    2097152
