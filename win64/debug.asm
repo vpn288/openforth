@@ -1,3 +1,5 @@
+
+
     format PE64 GUI    at 010000h
     stack   65536
     heap    2097152
@@ -247,11 +249,15 @@ nfa_10:
 _enclose:
 	call _pop ; to address
 	mov rdi,rax
+	mov r13,rax
 	call _pop ; from address
-_enc2:
+
 	mov rsi,rax
+	mov r12,rax
+
 	xor rdx,rdx
 	add rsi,[_in_value]
+_enc2:
 	mov rbx,rdi
 ; clear 32 bytes
 	xor rax,rax
@@ -284,8 +290,8 @@ _word3:
 
 _word4:
 ; string to validate
-;����� ����� �� �������
-       int3
+;����� ����� �� �������     ������� ���� ������� �� ������ �����.
+   ;	int3
 	sub    rsp,30h
 	mov	rcx,[handle]
 	mov	r9,1; rdx ;distance to move
@@ -300,12 +306,17 @@ _word4:
 	add	rsp,30h
 	 mov	 rax,[handle]
 	call	_push
-	call	_rdfile
+	call	_rdfile   ;	 � ������ ���� ����������� �������
+	;���������� IN> ����� �� 0, rdi �����, rsi �� ������ ������.
+	mov	    rdi,r13
+	mov	    rsi,r12
+	xor	    rdx,rdx
+	mov	    [_in_value],rdx
 	jmp	 _enc2
 
 _word2:
 ;end of buffer
-	int3
+    ;	 int3
 	mov	rax,[handle]
 	call	_push
 	call	_rdfile
@@ -1113,6 +1124,8 @@ _rdfile:
 	call	_pop
 	sub	rsp,30h
 	mov	rcx,rax
+	xor	rax,rax
+	mov	[bytes_to_read],rax
 	mov	r9,bytes_to_read
 	mov	r8,  8192
 	mov	rdx, [buffer]
