@@ -317,10 +317,15 @@ _word4:
 _word2:
 ;end of buffer
     ;	 int3
+	mov  rax,[block]
+	test rax,rax
+	je   _word5
 	mov	rax,[handle]
 	call	_push
 	call	_rdfile
 	jmp    _skip_delimeters
+
+_word5:
 ; empty string
 	 mov	rax,5449584504h ;4,"EXIT"
 	 mov qword [rbx],rax
