@@ -299,7 +299,7 @@ Defines:  	0x3  0x 3
 #define LBS_USETABSTOPS 128
 #define LBS_WANTKEYBOARDINPUT 0x 400
 #define SBS_BOTTOMALIGN 4
-  #define SBS_HORZ 0 
+#define SBS_HORZ 0 
 #define SBS_LEFTALIGN 2
 #define SBS_RIGHTALIGN 4   
 #define SBS_SIZEBOX 8
@@ -307,17 +307,17 @@ Defines:  	0x3  0x 3
 #define SBS_SIZEBOXTOPLEFTALIGN 2
 #define SBS_SIZEGRIP 16
 #define SBS_TOPALIGN 2
-  #define SBS_VERT 1 
+#define SBS_VERT 1 
 #define SS_BITMAP 14
 #define SS_BLACKFRAME 7
 #define SS_BLACKRECT 4
 #define SS_CENTER 1
-  #define SS_CENTERIMAGE 512 
+#define SS_CENTERIMAGE 512 
 #define SS_ENHMETAFILE 15
 #define SS_ETCHEDFRAME 18
 #define SS_ETCHEDHORZ 16
-#define SS_ETCHEDVERT 17
-  #define SS_GRAYFRAME 8  ;Defines   EXIT
+#define SS_ETCHEDVERT 17 
+  #define SS_GRAYFRAME 8  
  #define SS_GRAYRECT 5 
 #define SS_ICON 3
 #define SS_LEFT 0
@@ -347,7 +347,7 @@ Defines:  	0x3  0x 3
 #define DS_FIXEDSYS 8
 #define DS_LOCALEDIT 32
 #define DS_MODALFRAME 128
-#define DS_NOFAILCREATE 16
+#define DS_NOFAILCREATE 16   
 #define DS_NOIDLEMSG	256
 #define DS_SETFONT 64 
 #define DS_SETFOREGROUND 512
