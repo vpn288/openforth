@@ -116,7 +116,16 @@ ALIGN
  and_rax,rbp          
  mov_rdx,#  ' Push @ ,   call_rdx            
  ret                                     
- ALIGN      
+ ALIGN   
+
+ HEADER OR        HERE CELL+ ,               
+ mov_rdx,# ' Pop @ ,   call_rdx              
+ mov_rbp,rax           
+ call_rdx                    
+ or_rax,rbp          
+ mov_rdx,#  ' Push @ ,   call_rdx            
+ ret                                     
+ ALIGN 
 
  HEADER MAX        HERE CELL+ ,               
  mov_rdx,# ' Pop @ ,   call_rdx              
