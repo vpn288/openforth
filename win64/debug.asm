@@ -1170,9 +1170,6 @@ _closefile:
 	call		_pop
 	mov		rcx,rax
 	call		[CloseFile]
-	mov		rax,0xaabbccdd
-	call		_push
-	call		_hex_dot
 	ret
 
 ;----------------------------
