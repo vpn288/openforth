@@ -1008,19 +1008,22 @@ Defines:  	0x3  0x 3
 #define PM_NOYIELD 2  ;Defines  EXIT 
 
 
-#if (WINVER >= 0x0500)
-# define PM_QS_INPUT (QS_INPUT << 16)
-# define PM_QS_POSTMESSAGE ((QS_POSTMESSAGE|QS_HOTKEY|QS_TIMER) << 16)
-# define PM_QS_PAINT (QS_PAINT << 16)
-# define PM_QS_SENDMESSAGE (QS_SENDMESSAGE << 16)
-#endif
-#define HWND_BROADCAST  ((HWND)0xffff)
-#define HWND_BOTTOM ((HWND)1)
-#define HWND_NOTOPMOST ((HWND)(-2))
-#define HWND_TOP ((HWND)0)
-#define HWND_TOPMOST ((HWND)(-1))
-#define HWND_DESKTOP (HWND)0
-#define HWND_MESSAGE ((HWND)(-3)) /* w2k */
+
+# define PM_J QS_INPUT  16 Lshift 
+# define PM_QS_POSTMESSAGE QS_POSTMESSAGE QS_HOTKEY QS_TIMER OR OR  16 Lshift 
+# define PM_QS_PAINT QS_PAINT  16 Lshift 
+# define PM_QS_SENDMESSAGE QS_SENDMESSAGE  16 Lshift 
+
+
+#define HWND_BROADCAST  0x ffff
+#define HWND_BOTTOM 1
+#define HWND_NOTOPMOST -2
+#define HWND_TOP 0
+#define HWND_TOPMOST -1
+#define HWND_DESKTOP 0
+#define HWND_MESSAGE -3
+
+
 #define RDW_ERASE 4
 #define RDW_FRAME 1024
 #define RDW_INTERNALPAINT 2
