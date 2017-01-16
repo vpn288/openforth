@@ -1032,7 +1032,7 @@ _load:
 	mov   rax,[here_value]
 	call  _push
 	call  _openfile
-	call  _push
+    ;	 call  _push
 	call _rdfile
    ;	 call _closefile
 
@@ -1055,7 +1055,7 @@ _load:
 	mov   rax,[here_value]
 	call  _push
 	call  _openfile
-	call  _push
+     ;	 call  _push
 	call _rdfile
    ;	 call _closefile
 	ret
@@ -1145,8 +1145,8 @@ _rdfile:
 	sub	 rax,8192
 	jb	_rd2
 
-	call	_push
-	call	_hex_dot
+   ;	 call	 _push
+    ;	 call	 _hex_dot
 	ret
 _rd2:
 	mov	rax,[handle]
