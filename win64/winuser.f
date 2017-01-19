@@ -1593,13 +1593,13 @@ Defines:  	0x3  0x 3
 #define STN_DBLCLK 1
 #define STN_DISABLE 3
 #define STN_ENABLE 2
- ;Defines  EXIT  
+  
 
 #define DM_GETDEFID WM_USER
-#define DM_SETDEFID (WM_USER+1)
-#define DM_REPOSITION (WM_USER+2)
-#define PSM_PAGEINFO (WM_USER+100)
-#define PSM_SHEETINFO (WM_USER+101)
+#define DM_SETDEFID WM_USER 1+
+#define DM_REPOSITION WM_USER 2 +
+#define PSM_PAGEINFO WM_USER 100 +
+#define PSM_SHEETINFO WM_USER 101 +
 #define PSI_SETACTIVE 1
 #define PSI_KILLACTIVE 2
 #define PSI_APPLY 3
@@ -1616,11 +1616,11 @@ Defines:  	0x3  0x 3
 #define DCX_CLIPSIBLINGS 16
 #define DCX_CLIPCHILDREN 8
 #define DCX_NORESETATTRS 4
-#define DCX_INTERSECTUPDATE 0x200
-#define DCX_LOCKWINDOWUPDATE 0x400
+#define DCX_INTERSECTUPDATE 0x 200
+#define DCX_LOCKWINDOWUPDATE 0x 400
 #define DCX_EXCLUDERGN 64
 #define DCX_INTERSECTRGN 128
-#define DCX_VALIDATE 0x200000
+#define DCX_VALIDATE 0x 200000
 #define GMDI_GOINTOPOPUPS 2
 #define GMDI_USEDISABLED 1
 #define FKF_AVAILABLE 2
@@ -1645,7 +1645,7 @@ Defines:  	0x3  0x 3
 #define MKF_MOUSEKEYSON 1
 #define MKF_MODIFIERS 64
 #define MKF_REPLACENUMBERS 128
-#define SERKF_ACTIVE 8 /* May be obsolete. Not in recent MS docs. */
+#define SERKF_ACTIVE 8 ( May be obsolete. Not in recent MS docs. )
 #define SERKF_AVAILABLE 2
 #define SERKF_INDICATOR 4
 #define SERKF_SERIALKEYSON 1
@@ -1683,10 +1683,10 @@ Defines:  	0x3  0x 3
 #define VK_RBUTTON	2
 #define VK_CANCEL	3
 #define VK_MBUTTON	4
-#if (_WIN32_WINNT >= 0x0500)
+
 #define VK_XBUTTON1	5
 #define VK_XBUTTON2	6
-#endif
+
 #define VK_BACK	8
 #define VK_TAB	9
 #define VK_CLEAR	12
@@ -1696,18 +1696,18 @@ Defines:  	0x3  0x 3
 #define VK_MENU	18
 #define VK_PAUSE	19
 #define VK_CAPITAL	20
-#define VK_KANA	0x15
-#define VK_HANGEUL	0x15
-#define VK_HANGUL	0x15
-#define VK_JUNJA	0x17
-#define VK_FINAL	0x18
-#define VK_HANJA	0x19
-#define VK_KANJI	0x19
-#define VK_ESCAPE	0x1B
-#define VK_CONVERT	0x1C
-#define VK_NONCONVERT	0x1D
-#define VK_ACCEPT	0x1E
-#define VK_MODECHANGE	0x1F
+#define VK_KANA	0x 15
+#define VK_HANGEUL	0x 15
+#define VK_HANGUL	0x 15
+#define VK_JUNJA	0x 17
+#define VK_FINAL	0x 18
+#define VK_HANJA	0x 19
+#define VK_KANJI	0x 19
+#define VK_ESCAPE	0x 1B
+#define VK_CONVERT	0x 1C
+#define VK_NONCONVERT	0x 1D
+#define VK_ACCEPT	0x 1E
+#define VK_MODECHANGE	0x 1F
 #define VK_SPACE	32
 #define VK_PRIOR	33
 #define VK_NEXT	34
@@ -1724,119 +1724,121 @@ Defines:  	0x3  0x 3
 #define VK_INSERT	45
 #define VK_DELETE	46
 #define VK_HELP	47
-#define VK_LWIN	0x5B
-#define VK_RWIN	0x5C
-#define VK_APPS	0x5D
-#define VK_SLEEP	0x5F
-#define VK_NUMPAD0	0x60
-#define VK_NUMPAD1	0x61
-#define VK_NUMPAD2	0x62
-#define VK_NUMPAD3	0x63
-#define VK_NUMPAD4	0x64
-#define VK_NUMPAD5	0x65
-#define VK_NUMPAD6	0x66
-#define VK_NUMPAD7	0x67
-#define VK_NUMPAD8	0x68
-#define VK_NUMPAD9	0x69
-#define VK_MULTIPLY	0x6A
-#define VK_ADD	0x6B
-#define VK_SEPARATOR	0x6C
-#define VK_SUBTRACT	0x6D
-#define VK_DECIMAL	0x6E
-#define VK_DIVIDE	0x6F
-#define VK_F1	0x70
-#define VK_F2	0x71
-#define VK_F3	0x72
-#define VK_F4	0x73
-#define VK_F5	0x74
-#define VK_F6	0x75
-#define VK_F7	0x76
-#define VK_F8	0x77
-#define VK_F9	0x78
-#define VK_F10	0x79
-#define VK_F11	0x7A
-#define VK_F12	0x7B
-#define VK_F13	0x7C
-#define VK_F14	0x7D
-#define VK_F15	0x7E
-#define VK_F16	0x7F
-#define VK_F17	0x80
-#define VK_F18	0x81
-#define VK_F19	0x82
-#define VK_F20	0x83
-#define VK_F21	0x84
-#define VK_F22	0x85
-#define VK_F23	0x86
-#define VK_F24	0x87
-#define VK_NUMLOCK	0x90
-#define VK_SCROLL	0x91
-#define VK_LSHIFT	0xA0
-#define VK_RSHIFT	0xA1
-#define VK_LCONTROL	0xA2
-#define VK_RCONTROL	0xA3
-#define VK_LMENU	0xA4
-#define VK_RMENU	0xA5
-#if (_WIN32_WINNT >= 0x0500)
-#define VK_BROWSER_BACK	0xA6
-#define VK_BROWSER_FORWARD	0xA7
-#define VK_BROWSER_REFRESH	0xA8
-#define VK_BROWSER_STOP	0xA9
-#define VK_BROWSER_SEARCH	0xAA
-#define VK_BROWSER_FAVORITES	0xAB
-#define VK_BROWSER_HOME	0xAC
-#define VK_VOLUME_MUTE	0xAD
-#define VK_VOLUME_DOWN	0xAE
-#define VK_VOLUME_UP	0xAF
-#define VK_MEDIA_NEXT_TRACK	0xB0
-#define VK_MEDIA_PREV_TRACK	0xB1
-#define VK_MEDIA_STOP	0xB2
-#define VK_MEDIA_PLAY_PAUSE	0xB3
-#define VK_LAUNCH_MAIL	0xB4
-#define VK_LAUNCH_MEDIA_SELECT	0xB5
-#define VK_LAUNCH_APP1	0xB6
-#define VK_LAUNCH_APP2	0xB7
-#endif
-#define VK_OEM_1	0xBA
-#if (_WIN32_WINNT >= 0x0500)
-#define VK_OEM_PLUS	0xBB
-#define VK_OEM_COMMA	0xBC
-#define VK_OEM_MINUS	0xBD
-#define VK_OEM_PERIOD	0xBE
-#endif
-#define VK_OEM_2	0xBF
-#define VK_OEM_3	0xC0
-#define VK_OEM_4	0xDB
-#define VK_OEM_5	0xDC
-#define VK_OEM_6	0xDD
-#define VK_OEM_7	0xDE
-#define VK_OEM_8	0xDF
-#if (_WIN32_WINNT >= 0x0500)
-#define VK_OEM_102	0xE2
-#endif
-#define VK_PROCESSKEY	0xE5
-#if (_WIN32_WINNT >= 0x0500)
-#define VK_PACKET	0xE7
-#endif
-#define VK_ATTN	0xF6
-#define VK_CRSEL	0xF7
-#define VK_EXSEL	0xF8
-#define VK_EREOF	0xF9
-#define VK_PLAY	0xFA
-#define VK_ZOOM	0xFB
-#define VK_NONAME	0xFC
-#define VK_PA1	0xFD
-#define VK_OEM_CLEAR	0xFE
+#define VK_LWIN	0x 5B
+#define VK_RWIN	0x 5C
+#define VK_APPS	0x 5D
+#define VK_SLEEP	0x 5F
+#define VK_NUMPAD0	0x 60
+#define VK_NUMPAD1	0x 61
+#define VK_NUMPAD2	0x 62
+#define VK_NUMPAD3	0x 63
+#define VK_NUMPAD4	0x 64
+#define VK_NUMPAD5	0x 65
+#define VK_NUMPAD6	0x 66
+#define VK_NUMPAD7	0x 67
+#define VK_NUMPAD8	0x 68
+#define VK_NUMPAD9	0x 69
+#define VK_MULTIPLY	0x 6A
+#define VK_ADD	0x 6B
+#define VK_SEPARATOR	0x 6C
+#define VK_SUBTRACT	0x 6D
+#define VK_DECIMAL	0x 6E
+#define VK_DIVIDE	0x 6F
+#define VK_F1	0x 70
+#define VK_F2	0x 71
+#define VK_F3	0x 72
+#define VK_F4	0x 73
+#define VK_F5	0x 74
+#define VK_F6	0x 75
+#define VK_F7	0x 76
+#define VK_F8	0x 77
+#define VK_F9	0x 78
+#define VK_F10	0x 79
+#define VK_F11	0x 7A
+#define VK_F12	0x 7B
+#define VK_F13	0x 7C
+#define VK_F14	0x 7D
+#define VK_F15	0x 7E
+#define VK_F16	0x 7F
+#define VK_F17	0x 80
+#define VK_F18	0x 81
+#define VK_F19	0x 82
+#define VK_F20	0x 83
+#define VK_F21	0x 84
+#define VK_F22	0x 85
+#define VK_F23	0x 86
+#define VK_F24	0x 87
+#define VK_NUMLOCK	0x 90
+#define VK_SCROLL	0x 91
+#define VK_LSHIFT	0x A0
+#define VK_RSHIFT	0x A1
+#define VK_LCONTROL	0x A2
+#define VK_RCONTROL	0x A3
+#define VK_LMENU	0x A4
+#define VK_RMENU	0x A5
+
+#define VK_BROWSER_BACK	0x A6
+#define VK_BROWSER_FORWARD	0x A7
+#define VK_BROWSER_REFRESH	0x A8
+#define VK_BROWSER_STOP	0x A9
+#define VK_BROWSER_SEARCH	0x AA
+#define VK_BROWSER_FAVORITES	0x AB
+#define VK_BROWSER_HOME	0x AC
+#define VK_VOLUME_MUTE	0x AD
+#define VK_VOLUME_DOWN	0x AE
+#define VK_VOLUME_UP	0x AF
+#define VK_MEDIA_NEXT_TRACK	0x B0
+#define VK_MEDIA_PREV_TRACK	0x B1
+#define VK_MEDIA_STOP	0x B2
+#define VK_MEDIA_PLAY_PAUSE	0x B3
+#define VK_LAUNCH_MAIL	0x B4
+#define VK_LAUNCH_MEDIA_SELECT	0x B5
+#define VK_LAUNCH_APP1	0x B6
+#define VK_LAUNCH_APP2	0x B7
+
+#define VK_OEM_1	0x BA
+
+#define VK_OEM_PLUS	0x BB
+#define VK_OEM_COMMA	0x BC
+#define VK_OEM_MINUS	0x BD
+#define VK_OEM_PERIOD	0x BE
+
+#define VK_OEM_2	0x BF
+#define VK_OEM_3	0x C0
+#define VK_OEM_4	0x DB
+#define VK_OEM_5	0x DC
+#define VK_OEM_6	0x DD
+#define VK_OEM_7	0x DE
+#define VK_OEM_8	0x DF
+
+#define VK_OEM_102	0x E2
+
+#define VK_PROCESSKEY	0x E5
+
+#define VK_PACKET	0x E7
+
+#define VK_ATTN	0x F6
+#define VK_CRSEL	0x F7
+#define VK_EXSEL	0x F8
+#define VK_EREOF	0x F9
+#define VK_PLAY	0x FA
+#define VK_ZOOM	0x FB
+#define VK_NONAME	0x FC
+#define VK_PA1	0x FD
+#define VK_OEM_CLEAR	0x FE
 #define TME_HOVER	1
 #define TME_LEAVE	2
-#define TME_QUERY	0x40000000
-#define TME_CANCEL	0x80000000
-#define HOVER_DEFAULT	0xFFFFFFFF
+#define TME_QUERY	0x 40000000
+#define TME_CANCEL	0x 80000000
+#define HOVER_DEFAULT	0x FFFFFFFF
 #define MK_LBUTTON	1
 #define MK_RBUTTON	2
 #define MK_SHIFT	4
 #define MK_CONTROL	8
 #define MK_MBUTTON	16
-#if(_WIN32_WINNT >= 0x0500)
+
+;Defines  EXIT 
+
 #define MK_XBUTTON1	32
 #define MK_XBUTTON2	64
 #endif
