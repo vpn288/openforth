@@ -13,10 +13,13 @@ FORTH32 CONTEXT ! FORTH32 CURRENT !
  
 INCLUDE: winuser.f  
 
- FORTH32 CONTEXT ! FORTH32 CURRENT !
+ 
 
 .(   back to graph )
-
+  defines FORTH32 LINK  defines CONTEXT ! 
+  WS_VISIBLE WS_DLGFRAME WS_SYSMENU + + h. CRLF
+  
+ FORTH32 CONTEXT ! FORTH32 CURRENT !
 CREATE color_a   0x 889023 , 
 
 z-str" _class opf_class" 
@@ -72,7 +75,7 @@ WORD: innerloop   0 Begin Pop msg hwnd @ 0 0  GetMessageA DUP  Until  ;WORD
 
 WORD: MessageLoop  Begin innerloop 1+  ?break  msg TranslateMessage Pop   msg  DispatchMessageA Pop Again   ;WORD
 
-0 GetModuleHandleA  CONSTANT hIstance .( winclass ) FORTH32 CONTEXT ! 
+0 GetModuleHandleA  CONSTANT hIstance .( winclass ) 
 
 CREATE wc   0x 50 D, 0 D, ' winproc @ , 0 D, 0 D, hIstance , 
  0 0d 32512 LoadIconA  0 ,
@@ -86,8 +89,9 @@ CREATE wc   0x 50 D, 0 D, ' winproc @ , 0 D, 0 D, hIstance ,
 _class TYPEZ 
 title TYPEZ
 CRLF .( creating window )
- defines CONTEXT ! 
-WORD: opwn    0 _class title WS_VISIBLE WS_DLGFRAME WS_SYSMENU + +  0 0 hex, 150 hex, 100  0 0 hIstance 0   CreateWindowExA ."  Hwnd:" DUP hwnd !  h. 
+
+ 
+WORD: opwn    0 _class title hex, c10480000  0 0 hex, 150 hex, 100  0 0 hIstance 0   CreateWindowExA ."  Hwnd:" DUP hwnd !  h. 
 GetLastError h. CRLF  ." win closed" ;WORD 
 
 
