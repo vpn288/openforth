@@ -66,7 +66,7 @@ pop_r9 pop_r8 pop_rdx pop_rcx pop_r11
 ret
 ALIGN
 
-
+FORTH32 CONTEXT !
  
 VARIABLE hwnd 
 CREATE msg  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
@@ -75,9 +75,9 @@ WORD: innerloop   0 Begin Pop msg hwnd @ 0 0  GetMessageA DUP  Until  ;WORD
 
 WORD: MessageLoop  Begin innerloop 1+  ?break  msg TranslateMessage Pop   msg  DispatchMessageA Pop Again   ;WORD
 
-0 GetModuleHandleA  CONSTANT hIstance .( winclass ) 
+0 GetModuleHandleA  CONSTANT hInstance .( winclass ) 
 
-CREATE wc   0x 50 D, 0 D, ' winproc @ , 0 D, 0 D, hIstance , 
+CREATE wc   0x 50 D, 0 D, ' winproc @ , 0 D, 0 D, hInstance , 
  0 0d 32512 LoadIconA  0 ,
  0 0d 32512 LoadCursorA  , 0 , 0 , _class , 0 ,
 
@@ -91,7 +91,7 @@ title TYPEZ
 CRLF .( creating window )
 
  
-WORD: opwn    0 _class title hex, c10480000  0 0 hex, 150 hex, 100  0 0 hIstance 0   CreateWindowExA ."  Hwnd:" DUP hwnd !  h. 
+WORD: opwn    0 _class title hex, c10480000  0 0 hex, 150 hex, 100  0 0 hInstance 0   CreateWindowExA ."  Hwnd:" DUP hwnd !  h. 
 GetLastError h. CRLF  ." win closed" ;WORD 
 
 
