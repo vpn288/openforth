@@ -79,7 +79,7 @@ WORD: MessageLoop  Begin innerloop 1+  ?break  msg TranslateMessage Pop   msg  D
 
 CREATE wc   0x 50 D, 0 D, ' winproc @ , 0 D, 0 D, hInstance , 
  0 0d 32512 LoadIconA  0 ,
- 0 0d 32512 LoadCursorA  , 0 , 0 , _class , 0 ,
+ 0 0d 32512 LoadCursorA  , 0x 10 , 0 , _class , 0 ,
 
 .( Registering class:) 
   wc   RegisterClassExA  h.  GetLastError h. CRLF
@@ -90,15 +90,15 @@ _class TYPEZ
 title TYPEZ
 CRLF .( creating window )
 
- 
-WORD: opwn    0 _class title hex, c10480000  0 0 hex, 150 hex, 100  0 0 hInstance 0   CreateWindowExA ."  Hwnd:" DUP hwnd !  h. 
+  defines FORTH32 LINK  defines CONTEXT !  
+WORD: opwn    0 _class title   WS_VISIBLE WS_DLGFRAME WS_SYSMENU + +  (( hex, c10480000 )  0 0 hex, 150 hex, 100  0 0 hInstance 0   CreateWindowExA ."  Hwnd:" DUP hwnd !  h. 
 GetLastError h. CRLF  ." win closed" ;WORD 
 
-
+FORTH32 CONTEXT ! 
  
 WORD: anb  opwn MessageLoop ;WORD 
 
-FORTH32 CONTEXT ! 
+ 
 HERE h. 
 anb 
 
