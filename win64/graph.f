@@ -11,11 +11,13 @@ FORTH32 CONTEXT ! FORTH32 CURRENT !
  
  WORD: set_constant_xt [ ' HERE @ LIT, ] LATEST NAME> ! ;WORD 
  
+.( on to winuser )  SP@ h. 
 INCLUDE: winuser.f  
 
  
 
-.(   back to graph )
+.(   back to graph ) SP@ h.
+
   defines FORTH32 LINK  defines CONTEXT ! 
   WS_VISIBLE WS_DLGFRAME WS_SYSMENU + + h. CRLF
   
@@ -79,7 +81,9 @@ WORD: MessageLoop  Begin innerloop 1+  ?break  msg TranslateMessage Pop   msg  D
 
 CREATE wc   0x 50 D, 0 D, ' winproc @ , 0 D, 0 D, hInstance , 
  0 0d 32512 LoadIconA  0 ,
- 0 0d 32512 LoadCursorA  , 0x 10 , 0 , _class , 0 ,
+ 0 0d 32512 LoadCursorA  , 
+ defines FORTH32 LINK  defines CONTEXT !  
+ COLOR_BTNFACE , 0 , _class , 0 ,
 
 .( Registering class:) 
   wc   RegisterClassExA  h.  GetLastError h. CRLF
