@@ -9,7 +9,11 @@ FORTH32 CONTEXT ! FORTH32 CURRENT !
 
  TEMPORARY{   HERE h.
  
- WORD: set_constant_xt [ ' HERE @ LIT, ] LATEST NAME> ! ;WORD 
+ WORD: set_constant_xt    [ ' HERE @ LIT, ] LATEST NAME> ! ;WORD 
+ 
+ SP@ h. 
+ 
+ 
  
 .( on to winuser )  SP@ h. 
 INCLUDE: winuser.f  
