@@ -4,9 +4,6 @@ FORTH32 CONTEXT ! FORTH32 CURRENT !
 
 .( asdkja )  
 
-
-( WORD: z-str"  CREATE  ,"  Pop DOES>  CELL+ 1+ ;WORD )
-
  TEMPORARY{   HERE h.
  
  WORD: set_constant_xt    [ ' HERE @ LIT, ] LATEST NAME> ! ;WORD 
