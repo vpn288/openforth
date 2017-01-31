@@ -15,11 +15,11 @@ WORD: ;Defines   , set_constant_xt    quit ;WORD
 
 WORD: #define      , set_constant_xt  CREATE  ;WORD 
 
- WORD: Or   OR  ;WORD  
- WORD: +   + ;WORD
- WORD: LShift   Lshift ;WORD 
+ WORD: Or       OR      ;WORD  
+ WORD: +              + ;WORD
+ WORD: LShift   Lshift  ;WORD 
  WORD: RShift   Rshift  ;WORD 
- WORD: 0x 0x   ;WORD  
+ WORD: 0x          0x   ;WORD  
   
  
 
