@@ -37,6 +37,7 @@ z-str" jjj kkkkk"
 
 WINAPIS:
      LIB: Gdi32.dll 
+	     2_ints SelectObject 
 	     3_ints CreatePen
 		 3_ints Polyline 
 		 
@@ -49,6 +50,7 @@ WINAPIS:
 		 2_ints UnregisterClassA
 		 2_ints LoadIconA
 		 2_ints LoadCursorA
+		 3_ints InvalidateRect 
 		 4_ints DefWindowProcA
 		 4_ints MessageBoxA 
 		 4_ints GetMessageA
@@ -61,7 +63,7 @@ WINAPIS:
 ;WINAPIS
 
  .( Create pen:) 
- 0  0x 3 color_a CreatePen h. 
+ 0  0x 3 color_a CreatePen CONSTANT mypen  
  
 ASSEMBLER FORTH32 LINK   ASSEMBLER CONTEXT !
 
@@ -86,7 +88,8 @@ WORD: innerloop   0 Begin Pop msg hwnd @ 0 0  GetMessageA DUP  Until  ;WORD
 WORD: MessageLoop  
           Begin innerloop 1+  ?break  
                 msg TranslateMessage Pop  
-				hdc myline hex, 2 Polyline h.  GetLastError h. 
+				hdc @ myline hex, 2 Polyline Pop myline CELL+ @ 1+ myline CELL+ ! 
+				hwnd @ 0 -1 InvalidateRect Pop  
 				msg  DispatchMessageA Pop
  
           Again   ;WORD
@@ -109,7 +112,7 @@ title TYPEZ
 CRLF .( creating window )
 
   defines FORTH32 LINK  defines CONTEXT !  
-WORD: opwn    0 _class title   WS_VISIBLE WS_DLGFRAME WS_SYSMENU + +  (( hex, c10480000 )  0 0 hex, 150 hex, 100  0 0 hInstance 0   CreateWindowExA ."  Hwnd:" DUP hwnd !  h. hwnd @ GetDC hex, ffffffff AND DUP hdc !  h.  
+WORD: opwn    0 _class title   WS_VISIBLE WS_DLGFRAME WS_SYSMENU + +  (( hex, c10480000 )  0 0 hex, 150 hex, 100  0 0 hInstance 0   CreateWindowExA ."  Hwnd:" DUP hwnd !  h. hwnd @ GetDC hex, ffffffff AND DUP hdc !  h.  hdc @ mypen SelectObject h. 
 GetLastError h. CRLF  ." win closed" ;WORD 
 
 FORTH32 CONTEXT ! 
