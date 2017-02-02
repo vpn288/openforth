@@ -40,6 +40,7 @@ WINAPIS:
 	     2_ints SelectObject 
 	     3_ints CreatePen
 		 3_ints Polyline 
+		 3_ints PolyBezier
 		 
      LIB: User32.dll
 		 c_ints CreateWindowExA
@@ -63,7 +64,7 @@ WINAPIS:
 ;WINAPIS
 
  .( Create pen:) 
- 0  0x 3 color_a CreatePen CONSTANT mypen  
+ 0  0x 1 color_a CreatePen CONSTANT mypen  
  
 ASSEMBLER FORTH32 LINK   ASSEMBLER CONTEXT !
 
@@ -81,6 +82,7 @@ FORTH32 CONTEXT !
  
 VARIABLE hwnd   VARIABLE hdc 
 CREATE myline  0x 11 D, 0x 13 D, 0x 44 D, 0x 32 D, 
+CREATE mycurve 0d 10 D, 0d 20 D,   0d 40 D, 0d 30 D,  0d 60 D, 0d 50 D,   0d 80 D, 0d 90 D, 
 CREATE msg  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
 
 WORD: innerloop   0 Begin Pop msg hwnd @ 0 0  GetMessageA DUP  Until  ;WORD 
@@ -88,7 +90,8 @@ WORD: innerloop   0 Begin Pop msg hwnd @ 0 0  GetMessageA DUP  Until  ;WORD
 WORD: MessageLoop  
           Begin innerloop 1+  ?break  
                 msg TranslateMessage Pop  
-				hdc @ myline hex, 2 Polyline Pop myline CELL+ @ 1+ myline CELL+ ! 
+				hdc @ myline hex, 2 Polyline Pop 
+				hdc @ mycurve hex, 4 PolyBezier Pop 
 				hwnd @ 0 -1 InvalidateRect Pop  
 				msg  DispatchMessageA Pop
  
