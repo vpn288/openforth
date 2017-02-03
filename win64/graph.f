@@ -1,29 +1,11 @@
 
 FORTH32 CONTEXT ! FORTH32 CURRENT ! 
 
-
-.( asdkja )  
-
-
-( WORD: z-str"  CREATE  ,"  Pop DOES>  CELL+ 1+ ;WORD )
-
- TEMPORARY{   HERE h.
+ TEMPORARY{  
  
  WORD: set_constant_xt    [ ' HERE @ LIT, ] LATEST NAME> ! ;WORD 
  
- SP@ h. 
- 
- 
- 
-.( on to winuser )  SP@ h. 
 INCLUDE: winuser.f  
-
- 
-
-.(   back to graph ) SP@ h.
-
-  defines FORTH32 LINK  defines CONTEXT ! 
-  DS_SHELLFONT  h.  DS_SETFONT h.  DS_FIXEDSYS h.  CRLF
   
  FORTH32 CONTEXT ! FORTH32 CURRENT !
 CREATE color_a   0x 889023 , 
@@ -87,15 +69,21 @@ CREATE msg  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
 
 WORD: innerloop   0 Begin Pop msg hwnd @ 0 0  GetMessageA DUP  Until  ;WORD 
 
+defines FORTH32 LINK  
 WORD: MessageLoop  
           Begin innerloop 1+  ?break  
+		  
+		        msg   CELL+ @ hex, ffffffff AND hex, f = [ IF ] hex, abcde    h. [ THEN ]
                 msg TranslateMessage Pop  
+				 
 				hdc @ myline hex, 2 Polyline Pop 
 				hdc @ mycurve hex, 4 PolyBezier Pop 
-				hwnd @ 0 -1 InvalidateRect Pop  
+			((	hwnd @ 0 -1 InvalidateRect Pop   )
 				msg  DispatchMessageA Pop
  
           Again   ;WORD
+
+FORTH32 CONTEXT !
 
 0 GetModuleHandleA  CONSTANT hInstance .( winclass ) 
 
@@ -114,8 +102,8 @@ _class TYPEZ
 title TYPEZ
 CRLF .( creating window )
 
-  defines FORTH32 LINK  defines CONTEXT !  
-WORD: opwn    0 _class title   WS_VISIBLE WS_DLGFRAME WS_SYSMENU + +  (( hex, c10480000 )  0 0 hex, 150 hex, 100  0 0 hInstance 0   CreateWindowExA ."  Hwnd:" DUP hwnd !  h. hwnd @ GetDC hex, ffffffff AND DUP hdc !  h.  hdc @ mypen SelectObject h. 
+ ( defines FORTH32 LINK  defines CONTEXT !  )
+WORD: opwn    0 _class title [ CONTEXT @ defines CONTEXT ! ]  WS_VISIBLE WS_DLGFRAME WS_SYSMENU [ CONTEXT ! ] + +  (( hex, c10480000 )  0 0 hex, 150 hex, 100  0 0 hInstance 0   CreateWindowExA ."  Hwnd:" DUP hwnd !  h. hwnd @ GetDC hex, ffffffff AND DUP hdc !  h.  hdc @ mypen SelectObject h. 
 GetLastError h. CRLF  ." win closed" ;WORD 
 
 FORTH32 CONTEXT ! 
