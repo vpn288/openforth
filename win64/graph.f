@@ -48,6 +48,8 @@ WINAPIS:
  .( Create pen:) 
  0  0x 1 color_a CreatePen CONSTANT mypen  
  
+ WORD: WinProc   DefWindowProcA  ;WORD 
+ 
 ASSEMBLER FORTH32 LINK   ASSEMBLER CONTEXT !
 
 HEADER winproc HERE CELL+ ,
@@ -73,11 +75,11 @@ defines FORTH32 LINK
 WORD: MessageLoop  
           Begin innerloop 1+  ?break  
 		  
-		        msg   CELL+ @ hex, ffffffff AND hex, f = [ IF ] hex, abcde    h. [ THEN ]
+		        msg   CELL+ @ h.
                 msg TranslateMessage Pop  
 				 
-				hdc @ myline hex, 2 Polyline Pop 
-				hdc @ mycurve hex, 4 PolyBezier Pop 
+			((	hdc @ myline hex, 2 Polyline Pop 
+				hdc @ mycurve hex, 4 PolyBezier Pop )
 			((	hwnd @ 0 -1 InvalidateRect Pop   )
 				msg  DispatchMessageA Pop
  
@@ -87,7 +89,7 @@ FORTH32 CONTEXT !
 
 0 GetModuleHandleA  CONSTANT hInstance .( winclass ) 
 
-CREATE wc   0x 50 D, 0 D, ' winproc @ , 0 D, 0 D, hInstance , 
+CREATE wc   0x 50 D, 0 D, ' WinProc @ , 0 D, 0 D, hInstance , 
  0 0d 32512 LoadIconA  0 ,
  0 0d 32512 LoadCursorA  , 
  defines FORTH32 LINK  defines CONTEXT !  
