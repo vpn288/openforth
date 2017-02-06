@@ -5,7 +5,7 @@ FORTH32 CONTEXT ! FORTH32 CURRENT !
  
  WORD: set_constant_xt    [ ' HERE @ LIT, ] LATEST NAME> ! ;WORD 
  
- WORD: NOOP hex, 44444 h.   ;WORD 
+ WORD: NOOP    ;WORD 
  
  WORD: VECT   HEADER  [ ' BADWORD @ LIT, ] , [ ' NOOP  LIT, ] ,   ;WORD   
  
@@ -62,19 +62,22 @@ VECT  inWinProc
 ASSEMBLER FORTH32 LINK   ASSEMBLER CONTEXT !
 
 HEADER winproc HERE CELL+ ,
- push_r11 push_rcx push_rdx push_r8 push_r9 
- ( mov_r11,# ' inWinProc )
+ push_r11 push_rcx push_rdx push_r8 push_r9 push_rbx push_rsi push_rdi 
+  mov_rax,# ' inWinProc  , 
+  mov_r11,# ' Push @ ,  call_r11 
+ mov_r11,# ' EXECUTE @ , call_r11 
+ pop_rdi pop_rsi pop_rbx pop_r9 pop_r8 pop_rdx pop_rcx pop_r11 
+  push_r11 push_rcx push_rdx push_r8 push_r9 push_rbx push_rsi push_rdi 
  mov_r11,# ' DefWindowProcA CELL+ @ ,
 sub_rsp,b# 0x 20 B,
 call_r11
 add_rsp,b# 0x 20 B, 
- pop_r9 pop_r8 pop_rdx pop_rcx pop_r11 
+ pop_rdi pop_rsi pop_rbx pop_r9 pop_r8 pop_rdx pop_rcx pop_r11 
 ret
 ALIGN
 
 FORTH32 CONTEXT !
 
-' winproc  ' inWinProc CELL+ ! 
  
 VARIABLE hwnd   VARIABLE hdc 
 CREATE myline  0x 11 D, 0x 13 D, 0x 44 D, 0x 32 D, 
@@ -89,13 +92,17 @@ CREATE msg  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
  WORD: WinProc   hwnd@ umsg wParam lParam  DefWindowProcA  ;WORD 
  
 
+WORD: gbd   hex, 1234 h.     ;WORD 
+
+' gbd   ' inWinProc CELL+ ! 
+
 WORD: innerloop   0 Begin Pop msg hwnd @ 0 0  GetMessageA DUP  Until  ;WORD 
 
 defines FORTH32 LINK  
 WORD: MessageLoop  
           Begin innerloop 1+  ?break  
 		  
-		        msg   CELL+ @ h.
+		   ((     msg   CELL+ @ h. )
                 msg TranslateMessage Pop  
 				 
 			((	hdc @ myline hex, 2 Polyline Pop 
@@ -109,7 +116,7 @@ FORTH32 CONTEXT !
 
 0 GetModuleHandleA  CONSTANT hInstance .( winclass ) 
 
-CREATE wc   0x 50 D, 0 D, ' inWinProc @ , 0 D, 0 D, hInstance , 
+CREATE wc   0x 50 D, 0 D, ' winproc @ , 0 D, 0 D, hInstance , 
  0 0d 32512 LoadIconA  0 ,
  0 0d 32512 LoadCursorA  , 
  defines FORTH32 LINK  defines CONTEXT !  
