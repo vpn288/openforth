@@ -58,19 +58,39 @@ WINAPIS:
  0  0x 1 color_a CreatePen CONSTANT mypen  
  
 VECT  inWinProc   
- 
+VARIABLE hwnd VARIABLE wmsg VARIABLE wparam VARIABLE lparam  
+
 ASSEMBLER FORTH32 LINK   ASSEMBLER CONTEXT !
 
 HEADER winproc HERE CELL+ ,
  push_r11 push_rcx push_rdx push_r8 push_r9 push_rbx push_rsi push_rdi 
+ ( test_rcx,rcx
+ je	forward> )
+ mov_rax,# hwnd ,
+ mov_[rax],rcx   
+  mov_rax,# wmsg ,
+ mov_[rax],rdx   
+  mov_rax,# wparam ,
+ mov_[rax],r8	 
+  mov_rax,# lparam ,
+ mov_[rax],r9	 
+ cmp_rdx,d# 0x f D, 
+ jne	forward>
   mov_rax,# ' inWinProc  , 
   mov_r11,# ' Push @ ,  call_r11 
  mov_r11,# ' EXECUTE @ , call_r11 
+ mov_r11,# ' Pop @ ,  call_r11 
+ test_rax,rax
+ jne	forward> 
  pop_rdi pop_rsi pop_rbx pop_r9 pop_r8 pop_rdx pop_rcx pop_r11 
-  push_r11 push_rcx push_rdx push_r8 push_r9 push_rbx push_rsi push_rdi 
+ ret 
+ 
+  >forward  >forward 
+ pop_rdi pop_rsi pop_rbx pop_r9 pop_r8 pop_rdx pop_rcx pop_r11 
+   push_r11 push_rcx push_rdx push_r8 push_r9 push_rbx push_rsi push_rdi 
  mov_r11,# ' DefWindowProcA CELL+ @ ,
 sub_rsp,b# 0x 20 B,
-call_r11
+ call_r11 
 add_rsp,b# 0x 20 B, 
  pop_rdi pop_rsi pop_rbx pop_r9 pop_r8 pop_rdx pop_rcx pop_r11 
 ret
@@ -79,7 +99,7 @@ ALIGN
 FORTH32 CONTEXT !
 
  
-VARIABLE hwnd   VARIABLE hdc 
+   VARIABLE hdc 
 CREATE myline  0x 11 D, 0x 13 D, 0x 44 D, 0x 32 D, 
 CREATE mycurve 0d 10 D, 0d 20 D,   0d 40 D, 0d 30 D,  0d 60 D, 0d 50 D,   0d 80 D, 0d 90 D, 
 CREATE msg  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
@@ -92,7 +112,7 @@ CREATE msg  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
  WORD: WinProc   hwnd@ umsg wParam lParam  DefWindowProcA  ;WORD 
  
 
-WORD: gbd   hex, 1234 h.     ;WORD 
+WORD: gbd     ." inmsg:" wmsg @ h. 0 hdc @ myline hex, 2 Polyline Pop ((  hex, f  = If ." null " 0 Else ." one " 1 Then )   ;WORD 
 
 ' gbd   ' inWinProc CELL+ ! 
 
@@ -105,8 +125,8 @@ WORD: MessageLoop
 		   ((     msg   CELL+ @ h. )
                 msg TranslateMessage Pop  
 				 
-			((	hdc @ myline hex, 2 Polyline Pop 
-				hdc @ mycurve hex, 4 PolyBezier Pop )
+			((	hdc @ myline hex, 2 Polyline Pop )
+			((	hdc @ mycurve hex, 4 PolyBezier Pop )
 			((	hwnd @ 0 -1 InvalidateRect Pop   )
 				msg  DispatchMessageA Pop
  
