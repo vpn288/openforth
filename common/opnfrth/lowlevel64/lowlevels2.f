@@ -27,13 +27,20 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
   ALIGN
 
  
-  HEADER break HERE CELL+ ,
+  HEADER quit HERE CELL+ ,
   mov_rax,[rsp+b#] 0x 20 B,
   add_rax,b# 0x 10 B, 
   mov_[rsp+b#],rax 0x 20 B,
   ret
   ALIGN
+  
+  HEADER break	    HERE CELL+ ,
+  pop_rbx
+  pop_rcx
+  pop_rax
 
+  ret
+  ALIGN
     
   HEADER dodoes  HERE CELL+ ,
   add_rax,b# 0x 8 B, 
@@ -88,8 +95,19 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
   test_rax,rax
   cmovne_rcx,rbp
   mov_rax,rcx
-  mov_[rsp+b#],rcx
+  mov_[rsp+b#],rcx 0x 8 B, 
   ret
+  ALIGN
+  
+  HEADER ?break HERE CELL+ ,
+  mov_rcx,d# 0x 10 D,
+  xor_rbp,rbp
+  mov_rdx,#  ' Pop @ ,   call_rdx
+  test_rax,rax
+  cmovne_rcx,rbp
+  add_rsp,rcx
+  ret
+  
   ALIGN
 
   HEADER strcopy	    HERE CELL+ ,
