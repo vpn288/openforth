@@ -75,7 +75,7 @@ HEADER winproc HERE CELL+ ,
   mov_rax,# lparam ,
  mov_[rax],r9	 
  cmp_rdx,d# 0x f D, 
- jne	forward>
+ jne	forward> 
   mov_rax,# ' inWinProc  , 
   mov_r11,# ' Push @ ,  call_r11 
  mov_r11,# ' EXECUTE @ , call_r11 
@@ -112,7 +112,7 @@ CREATE msg  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
  WORD: WinProc   hwnd@ umsg wParam lParam  DefWindowProcA  ;WORD 
  
 
-WORD: gbd     ." inmsg:" wmsg @ h. 0 hdc @ myline hex, 2 Polyline Pop ((  hex, f  = If ." null " 0 Else ." one " 1 Then )   ;WORD 
+WORD: gbd     wmsg @ hex, f  = bpoint  If  ." inmsg:"  0 hdc @ myline hex, 2 Polyline Pop  0 Else   1 Then     ;WORD 
 
 ' gbd   ' inWinProc CELL+ ! 
 
