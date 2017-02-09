@@ -32,6 +32,7 @@ WINAPIS:
 	     3_ints CreatePen
 		 3_ints Polyline 
 		 3_ints PolyBezier
+		 9_ints Arc
 		 
      LIB: User32.dll
 		 c_ints CreateWindowExA
@@ -74,8 +75,7 @@ HEADER winproc HERE CELL+ ,
  mov_[rax],r8	 
   mov_rax,# lparam ,
  mov_[rax],r9	 
- cmp_rdx,d# 0x f D, 
- jne	forward> 
+ 
   mov_rax,# ' inWinProc  , 
   mov_r11,# ' Push @ ,  call_r11 
  mov_r11,# ' EXECUTE @ , call_r11 
@@ -85,7 +85,7 @@ HEADER winproc HERE CELL+ ,
  pop_rdi pop_rsi pop_rbx pop_r9 pop_r8 pop_rdx pop_rcx pop_r11 
  ret 
  
-  >forward  >forward 
+  >forward  
  pop_rdi pop_rsi pop_rbx pop_r9 pop_r8 pop_rdx pop_rcx pop_r11 
    push_r11 push_rcx push_rdx push_r8 push_r9 push_rbx push_rsi push_rdi 
  mov_r11,# ' DefWindowProcA CELL+ @ ,
@@ -102,17 +102,20 @@ FORTH32 CONTEXT !
    VARIABLE hdc 
 CREATE myline  0x 11 D, 0x 13 D, 0x 44 D, 0x 32 D, 
 CREATE mycurve 0d 10 D, 0d 20 D,   0d 40 D, 0d 30 D,  0d 60 D, 0d 50 D,   0d 80 D, 0d 90 D, 
+CREATE myarc   0d 10 , 0d 15 ,  0d 80 , 0d 90 ,  0d 20 , 0d 25 ,   0d 20 , 0d 25 , 
 CREATE msg  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
  
- WORD: hwnd@    msg @ ;WORD
- WORD: umsg     msg CELL+ @ ;WORD 
- WORD: wParam   msg CELL+ CELL+ @ ;WORD 
- WORD: lParam   msg CELL+ CELL+ CELL+ @ ;WORD 
- 
- WORD: WinProc   hwnd@ umsg wParam lParam  DefWindowProcA  ;WORD 
- 
+  
 
-WORD: gbd     wmsg @ hex, f  = bpoint  If  ." inmsg:"  0 hdc @ myline hex, 2 Polyline Pop  0 Else   1 Then     ;WORD 
+WORD: gbd     wmsg @ hex, f  =   If   1 Else   
+
+ hdc @ myline hex, 2 Polyline Pop   
+ hdc @ 
+ myarc @ myarc CELL+ @   myarc  CELL+ CELL+ @  myarc  CELL+ CELL+ CELL+ @
+ myarc  CELL+ CELL+ CELL+ CELL+ @   myarc  CELL+ CELL+ CELL+ CELL+ CELL+ @
+ myarc  CELL+ CELL+ CELL+ CELL+ CELL+ CELL+ @   myarc  CELL+ CELL+ CELL+ CELL+ CELL+ CELL+ CELL+ @  Arc Pop (( myarc  CELL+ CELL+ CELL+     @ 1+  myarc  CELL+ CELL+ CELL+    ! )
+ 0
+ Then     ;WORD 
 
 ' gbd   ' inWinProc CELL+ ! 
 
@@ -122,12 +125,8 @@ defines FORTH32 LINK
 WORD: MessageLoop  
           Begin innerloop 1+  ?break  
 		  
-		   ((     msg   CELL+ @ h. )
-                msg TranslateMessage Pop  
+		        msg TranslateMessage Pop  
 				 
-			((	hdc @ myline hex, 2 Polyline Pop )
-			((	hdc @ mycurve hex, 4 PolyBezier Pop )
-			((	hwnd @ 0 -1 InvalidateRect Pop   )
 				msg  DispatchMessageA Pop
  
           Again   ;WORD
