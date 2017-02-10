@@ -32,6 +32,7 @@ WINAPIS:
 	     3_ints CreatePen
 		 3_ints Polyline 
 		 3_ints PolyBezier
+		 5_ints Ellipse 
 		 9_ints Arc
 		 
      LIB: User32.dll
@@ -103,6 +104,7 @@ FORTH32 CONTEXT !
 CREATE myline  0x 11 D, 0x 13 D, 0x 44 D, 0x 32 D, 
 CREATE mycurve 0d 10 D, 0d 20 D,   0d 40 D, 0d 30 D,  0d 60 D, 0d 50 D,   0d 80 D, 0d 90 D, 
 CREATE myarc   0d 10 , 0d 15 ,  0d 80 , 0d 90 ,  0d 20 , 0d 25 ,   0d 20 , 0d 25 , 
+CREATE myellipse  0d 20 , 0d 30 , 0d 150 , 0d 220 , 
 CREATE msg  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
  
   
@@ -113,7 +115,9 @@ WORD: gbd     wmsg @ hex, f  =   If   1 Else
  hdc @ 
  myarc @ myarc CELL+ @   myarc  CELL+ CELL+ @  myarc  CELL+ CELL+ CELL+ @
  myarc  CELL+ CELL+ CELL+ CELL+ @   myarc  CELL+ CELL+ CELL+ CELL+ CELL+ @
- myarc  CELL+ CELL+ CELL+ CELL+ CELL+ CELL+ @   myarc  CELL+ CELL+ CELL+ CELL+ CELL+ CELL+ CELL+ @  Arc Pop (( myarc  CELL+ CELL+ CELL+     @ 1+  myarc  CELL+ CELL+ CELL+    ! )
+ myarc  CELL+ CELL+ CELL+ CELL+ CELL+ CELL+ @   myarc  CELL+ CELL+ CELL+ CELL+ CELL+ CELL+ CELL+ @  Arc Pop 
+ hdc @ myellipse @  myellipse CELL+ @ myellipse CELL+ CELL+ @ myellipse CELL+ CELL+ CELL+ @ Ellipse Pop 
+ (( myarc  CELL+ CELL+ CELL+     @ 1+  myarc  CELL+ CELL+ CELL+    ! )
  0
  Then     ;WORD 
 
