@@ -1,7 +1,7 @@
 
   FORTH32 CONTEXT ! FORTH32 CURRENT !
   
-   
+  WORD: NOOP    ;WORD 
   WORD: (   )   WORD         ;WORD
   WORD: NAME>   N>LINK CELL+ ;WORD
  
@@ -9,7 +9,7 @@
  
   WORD: XT:  HEADER COMPILE [ ' 0 @ , ]  HERE CELL+ ,  NONAME:  ;WORD 
   
-  
+  WORD: VECT   HEADER  [ ' BADWORD @ LIT, ] , [ ' NOOP  LIT, ] ,   ;WORD 
   
   WORD: nopsing    hex, ffffffff  AND  hex, 9090909000000000 + ;WORD 
   
