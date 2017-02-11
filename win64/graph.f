@@ -5,9 +5,9 @@ FORTH32 CONTEXT ! FORTH32 CURRENT !
  
  WORD: set_constant_xt    [ ' HERE @ LIT, ] LATEST NAME> ! ;WORD 
  
- WORD: NOOP    ;WORD 
+
  
- WORD: VECT   HEADER  [ ' BADWORD @ LIT, ] , [ ' NOOP  LIT, ] ,   ;WORD   
+  
  
  WORD: mmn   ." vector tested " ;WORD 
  .( vector test )
