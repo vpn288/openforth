@@ -5,19 +5,14 @@ FORTH32 CONTEXT ! FORTH32 CURRENT !
  
  WORD: set_constant_xt    [ ' HERE @ LIT, ] LATEST NAME> ! ;WORD 
  
-
- 
-  
- 
- WORD: mmn   ." vector tested " ;WORD 
- .( vector test )
- VECT nbh    nbh     ' mmn  ' nbh CELL+ !   nbh  .(  end vect test ) CRLF 
- 
  
 INCLUDE: winuser.f  
   
  FORTH32 CONTEXT ! FORTH32 CURRENT !
-CREATE color_a   0x 889023 , 
+ 
+ WORD: Color:  CONSTANT ;WORD
+ 
+  0x ff Color: color_a 
 
 z-str" _class opf_class" 
 z-str" winc Edit" 
@@ -57,7 +52,11 @@ WINAPIS:
 ;WINAPIS
 
  .( Create pen:) 
- 0  0x 1 color_a CreatePen CONSTANT mypen  
+ 
+  ( penStyle penWidth penColor Pen: mypen ) 
+ WORD: Pen:   CreatePen   CONSTANT  ;WORD
+ 
+   0 1  color_a Pen: mypen  mypen h. 
  
 VECT  inWinProc   
 VARIABLE hwnd VARIABLE wmsg VARIABLE wparam VARIABLE lparam  
@@ -66,9 +65,7 @@ ASSEMBLER FORTH32 LINK   ASSEMBLER CONTEXT !
 
 HEADER winproc HERE CELL+ ,
  push_r11 push_rcx push_rdx push_r8 push_r9 push_rbx push_rsi push_rdi 
- ( test_rcx,rcx
- je	forward> )
- mov_rax,# hwnd ,
+  mov_rax,# hwnd ,
  mov_[rax],rcx   
   mov_rax,# wmsg ,
  mov_[rax],rdx   
