@@ -56,15 +56,16 @@ WINAPIS:
   ( penStyle penWidth penColor Pen: mypen ) 
  WORD: Pen:   CreatePen   CONSTANT  ;WORD
  
-   0 1  color_a Pen: mypen  mypen h. 
- 
+   0 1  color_a Pen: mypen  
+   
 VECT  inWinProc   
+
 VARIABLE hwnd VARIABLE wmsg VARIABLE wparam VARIABLE lparam  
 
 ASSEMBLER FORTH32 LINK   ASSEMBLER CONTEXT !
 
 HEADER winproc HERE CELL+ ,
- push_r11 push_rcx push_rdx push_r8 push_r9 push_rbx push_rsi push_rdi 
+   push_rcx push_rdx push_r8 push_r9 push_rbx push_rsi push_rdi 
   mov_rax,# hwnd ,
  mov_[rax],rcx   
   mov_rax,# wmsg ,
@@ -80,40 +81,68 @@ HEADER winproc HERE CELL+ ,
  mov_r11,# ' Pop @ ,  call_r11 
  test_rax,rax
  jne	forward> 
- pop_rdi pop_rsi pop_rbx pop_r9 pop_r8 pop_rdx pop_rcx pop_r11 
+ pop_rdi pop_rsi pop_rbx pop_r9 pop_r8 pop_rdx pop_rcx
  ret 
  
   >forward  
- pop_rdi pop_rsi pop_rbx pop_r9 pop_r8 pop_rdx pop_rcx pop_r11 
-   push_r11 push_rcx push_rdx push_r8 push_r9 push_rbx push_rsi push_rdi 
+ pop_rdi pop_rsi pop_rbx pop_r9 pop_r8 pop_rdx pop_rcx
+push_rcx     push_rdx push_r8 push_r9 push_rbx push_rsi push_rdi 
+	 
  mov_r11,# ' DefWindowProcA CELL+ @ ,
 sub_rsp,b# 0x 20 B,
  call_r11 
 add_rsp,b# 0x 20 B, 
- pop_rdi pop_rsi pop_rbx pop_r9 pop_r8 pop_rdx pop_rcx pop_r11 
+ pop_rdi pop_rsi pop_rbx pop_r9 pop_r8 pop_rdx pop_rcx
 ret
 ALIGN
 
 FORTH32 CONTEXT !
 
  
-   VARIABLE hdc 
-CREATE myline  0x 11 D, 0x 13 D, 0x 44 D, 0x 32 D, 
+  VARIABLE hdc 
+  (  Points cPoints PolyLine: mypolyline ) 
+  ( mypolyline берет hdc и рисует полилайн )
+  
+  WORD: PolyLine:  
+                CREATE  DUP ,  1 SWAP Do D, D, Loop  
+				DOES>  >R hdc @   R@ CELL+   R> @   Polyline Pop 
+ ;WORD 
+   (  nLeftRect nTopRect nRightRect nBottomRect nXStartArc nYStartArc nXEndArc nYEndrc Arc: myArc ) 
+   
+  WORD: Arc:  CREATE , , , , , , , , DOES>  Arc Pop ;WORD 
+  
+  ( nLeftRect nTopRect nRightRect nBottomRect ) 
+  WORD: Ellipse:  
+           CREATE , , , ,  
+		   DOES>  >R  hdc @  
+		          R@ @   
+				  R@ CELL+ @  
+				  R@ CELL+ CELL+ @ 
+				  R> CELL+ CELL+ CELL+ @ 
+			Ellipse Pop  ;WORD 
+			
+  
+  (  *{ x1 y1  x2 y2 }*  ) 
+  
+ 0x 40 0x 20  0x 87 0x 34 0x 45 0x 145    0x 40 0x 20   0x 4 PolyLine: Myline
+ 0d 57 0d 220  0d 100 0d 18 Ellipse: myellipse 
+  
+
 CREATE mycurve 0d 10 D, 0d 20 D,   0d 40 D, 0d 30 D,  0d 60 D, 0d 50 D,   0d 80 D, 0d 90 D, 
 CREATE myarc   0d 10 , 0d 15 ,  0d 80 , 0d 90 ,  0d 20 , 0d 25 ,   0d 20 , 0d 25 , 
-CREATE myellipse  0d 20 , 0d 30 , 0d 150 , 0d 220 , 
+( CREATE myellipse  0d 20 , 0d 30 , 0d 150 , 0d 220 , ) 
 CREATE msg  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
  
   
 
 WORD: gbd     wmsg @ hex, f  =   If   1 Else   
 
- hdc @ myline hex, 2 Polyline Pop   
+   Myline 
  hdc @ 
  myarc @ myarc CELL+ @   myarc  CELL+ CELL+ @  myarc  CELL+ CELL+ CELL+ @
  myarc  CELL+ CELL+ CELL+ CELL+ @   myarc  CELL+ CELL+ CELL+ CELL+ CELL+ @
- myarc  CELL+ CELL+ CELL+ CELL+ CELL+ CELL+ @   myarc  CELL+ CELL+ CELL+ CELL+ CELL+ CELL+ CELL+ @  Arc Pop 
- hdc @ myellipse @  myellipse CELL+ @ myellipse CELL+ CELL+ @ myellipse CELL+ CELL+ CELL+ @ Ellipse Pop 
+ myarc  CELL+ CELL+ CELL+ CELL+ CELL+ CELL+ @   myarc  CELL+ CELL+ CELL+ CELL+ CELL+ CELL+ CELL+ @  Arc Pop   myellipse 
+ (( hdc @ myellipse @  myellipse CELL+ @ myellipse CELL+ CELL+ @ myellipse CELL+ CELL+ CELL+ @ Ellipse Pop )
  (( myarc  CELL+ CELL+ CELL+     @ 1+  myarc  CELL+ CELL+ CELL+    ! )
  0
  Then     ;WORD 
