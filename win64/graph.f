@@ -56,11 +56,12 @@ INCLUDE: graphics.f
 
   0x ff        Color: color_a 
   0x ff00      Color: color_green
-  0x 01ff0000  Color: color_blue
+  0x 00ff0000  Color: color_blue
   
  .( Create pens:) 
    0 1     color_a      Pen: mypen  
    1 0d 2  color_green  Pen: green_pen 
+0x 2 0d 3  color_blue   Pen: blue_pen
            color_blue   SolidBrush: mybrush   mybrush h. 
    
 VECT  inWinProc   
@@ -108,7 +109,8 @@ FORTH32 CONTEXT !
   
   (  *{ x1 y1  x2 y2 }*  ) 
   
- 0x 40 0x 20  0x 87 0x 34 0x 45 0x 145    0x 40 0x 20   0x 4 PolyLine: Myline
+ 0x 40 0x 20  0x 87 0x 34 0x 45 0x 145    0x 40 0x 20   0x 4 PolyLine:   Myline
+ 0x 40 0x 20  0x 87 0x 34 0x 45 0x 145    0x 40 0x 20   0x 4 PolyBezier: Mycurve
  0d 57 0d 220  0d 100 0d 18 Ellipse: myellipse 
   
  CREATE msg  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
@@ -120,8 +122,13 @@ WORD: gbd
    hdc @ green_pen SelectObject Pop 
     Myline 
 	
-	 hdc @ mypen SelectObject Pop 
-    myellipse 
+	(( hdc @ mypen SelectObject Pop 
+    myellipse )
+	
+	hdc @ blue_pen SelectObject Pop 
+	
+	Mycurve 
+	lparam @ h. 
 	
     0
  Then     
