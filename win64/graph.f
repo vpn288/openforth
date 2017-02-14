@@ -9,10 +9,10 @@ FORTH32 CONTEXT ! FORTH32 CURRENT !
 INCLUDE: winuser.f  
   
  FORTH32 CONTEXT ! FORTH32 CURRENT !
+
+
  
- WORD: Color:  CONSTANT ;WORD
  
-  0x ff Color: color_a 
 
 z-str" _class opf_class" 
 z-str" winc Edit" 
@@ -23,6 +23,7 @@ z-str" jjj kkkkk"
 
 WINAPIS:
      LIB: Gdi32.dll 
+	     1_int  CreateSolidBrush 
 	     2_ints SelectObject 
 	     3_ints CreatePen
 		 3_ints Polyline 
@@ -51,12 +52,16 @@ WINAPIS:
 		 
 ;WINAPIS
 
- .( Create pen:) 
- 
-  ( penStyle penWidth penColor Pen: mypen ) 
- WORD: Pen:   CreatePen   CONSTANT  ;WORD
- 
-   0 1  color_a Pen: mypen  
+INCLUDE: graphics.f 
+
+  0x ff        Color: color_a 
+  0x ff00      Color: color_green
+  0x 01ff0000  Color: color_blue
+  
+ .( Create pens:) 
+   0 1     color_a      Pen: mypen  
+   1 0d 2  color_green  Pen: green_pen 
+           color_blue   SolidBrush: mybrush   mybrush h. 
    
 VECT  inWinProc   
 
@@ -99,53 +104,28 @@ ALIGN
 FORTH32 CONTEXT !
 
  
-  VARIABLE hdc 
-  (  Points cPoints PolyLine: mypolyline ) 
-  ( mypolyline берет hdc и рисует полилайн )
-  
-  WORD: PolyLine:  
-                CREATE  DUP ,  1 SWAP Do D, D, Loop  
-				DOES>  >R hdc @   R@ CELL+   R> @   Polyline Pop 
- ;WORD 
-   (  nLeftRect nTopRect nRightRect nBottomRect nXStartArc nYStartArc nXEndArc nYEndrc Arc: myArc ) 
-   
-  WORD: Arc:  CREATE , , , , , , , , DOES>  Arc Pop ;WORD 
-  
-  ( nLeftRect nTopRect nRightRect nBottomRect ) 
-  WORD: Ellipse:  
-           CREATE , , , ,  
-		   DOES>  >R  hdc @  
-		          R@ @   
-				  R@ CELL+ @  
-				  R@ CELL+ CELL+ @ 
-				  R> CELL+ CELL+ CELL+ @ 
-			Ellipse Pop  ;WORD 
-			
+ 
   
   (  *{ x1 y1  x2 y2 }*  ) 
   
  0x 40 0x 20  0x 87 0x 34 0x 45 0x 145    0x 40 0x 20   0x 4 PolyLine: Myline
  0d 57 0d 220  0d 100 0d 18 Ellipse: myellipse 
   
-
-CREATE mycurve 0d 10 D, 0d 20 D,   0d 40 D, 0d 30 D,  0d 60 D, 0d 50 D,   0d 80 D, 0d 90 D, 
-CREATE myarc   0d 10 , 0d 15 ,  0d 80 , 0d 90 ,  0d 20 , 0d 25 ,   0d 20 , 0d 25 , 
-( CREATE myellipse  0d 20 , 0d 30 , 0d 150 , 0d 220 , ) 
-CREATE msg  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
+ CREATE msg  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
  
-  
-
-WORD: gbd     wmsg @ hex, f  =   If   1 Else   
-
-   Myline 
- hdc @ 
- myarc @ myarc CELL+ @   myarc  CELL+ CELL+ @  myarc  CELL+ CELL+ CELL+ @
- myarc  CELL+ CELL+ CELL+ CELL+ @   myarc  CELL+ CELL+ CELL+ CELL+ CELL+ @
- myarc  CELL+ CELL+ CELL+ CELL+ CELL+ CELL+ @   myarc  CELL+ CELL+ CELL+ CELL+ CELL+ CELL+ CELL+ @  Arc Pop   myellipse 
- (( hdc @ myellipse @  myellipse CELL+ @ myellipse CELL+ CELL+ @ myellipse CELL+ CELL+ CELL+ @ Ellipse Pop )
- (( myarc  CELL+ CELL+ CELL+     @ 1+  myarc  CELL+ CELL+ CELL+    ! )
- 0
- Then     ;WORD 
+  defines  FORTH32 LINK (  defines CONTEXT ! )
+WORD: gbd    
+           wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_LBUTTONDOWN [ CONTEXT ! ] =   If   1 Else  
+		   
+   hdc @ green_pen SelectObject Pop 
+    Myline 
+	
+	 hdc @ mypen SelectObject Pop 
+    myellipse 
+	
+    0
+ Then     
+ ;WORD 
 
 ' gbd   ' inWinProc CELL+ ! 
 
@@ -181,8 +161,8 @@ title TYPEZ
 CRLF .( creating window )
 
  ( defines FORTH32 LINK  defines CONTEXT !  )
-WORD: opwn    0 _class title [ CONTEXT @ defines CONTEXT ! ]  WS_VISIBLE WS_DLGFRAME WS_SYSMENU [ CONTEXT ! ] + +  (( hex, c10480000 )  0 0 hex, 150 hex, 100  0 0 hInstance 0   CreateWindowExA ."  Hwnd:" DUP hwnd !  h. hwnd @ GetDC hex, ffffffff AND DUP hdc !  h.  hdc @ mypen SelectObject h. 
-GetLastError h. CRLF  ." win closed" ;WORD 
+WORD: opwn    0 _class title [ CONTEXT @ defines CONTEXT ! ]  WS_VISIBLE WS_DLGFRAME WS_SYSMENU [ CONTEXT ! ] + +  (( hex, c10480000 )  0 0 hex, 150 hex, 100  0 0 hInstance 0   CreateWindowExA ."  Hwnd:" DUP hwnd !  h. hwnd @ GetDC hex, ffffffff AND DUP hdc !  h.   hdc @ mybrush SelectObject Pop   
+ ." win closed" ;WORD 
 
 FORTH32 CONTEXT ! 
  
