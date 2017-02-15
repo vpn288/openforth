@@ -112,26 +112,35 @@ FORTH32 CONTEXT !
  0x 40 0x 20  0x 87 0x 34 0x 45 0x 145    0x 40 0x 20   0x 4 PolyLine:   Myline
  0x 40 0x 20  0x 87 0x 34 0x 45 0x 145    0x 40 0x 20   0x 4 PolyBezier: Mycurve
  0d 57 0d 220  0d 100 0d 18 Ellipse: myellipse 
+ CREATE dragpoint 0x 145 D, 0x 45 D,  
   
  CREATE msg  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
  
   defines  FORTH32 LINK (  defines CONTEXT ! )
 WORD: gbd    
-           wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_LBUTTONDOWN [ CONTEXT ! ] =   If   1 Else  
+
+				Case 
+           wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_MOUSEMOVE [ CONTEXT ! ] =   Of  
 		   
    hdc @ green_pen SelectObject Pop 
     Myline 
 	
+		
 	(( hdc @ mypen SelectObject Pop 
-    myellipse )
+    myellipse )  
 	
 	hdc @ blue_pen SelectObject Pop 
 	
 	Mycurve 
-	lparam @ h. 
+	." button down:" lparam @ h. 
 	
-    0
- Then     
+    0 EndOf
+	
+	wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_LBUTTONUP [ CONTEXT ! ] = Of  ." button up:" lparam @ h. 
+    0 EndOf
+
+    1 EndCase 	
+    
  ;WORD 
 
 ' gbd   ' inWinProc CELL+ ! 
