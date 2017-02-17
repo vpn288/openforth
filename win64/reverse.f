@@ -24,14 +24,17 @@ FORTH32 CONTEXT !
 
 WORD: *{    SP@ CELL+  sp_temp !  ;WORD 
 
-WORD: }*    sp_temp @ SP@ CELL- (reverse)  ;WORD 
+WORD: (reversed)    sp_temp @ SP@    ;WORD  
+
+WORD: reversed     (reversed) SWAP- hex, 3 Rshift ;WORD 
+
+WORD: }*    (reversed) CELL- (reverse)  ;WORD 
 
 
-*{ 0x 1 0x 2 0x 3 0x 4 0x 5 0x 6  0x 7  }* 
-
-
-
+*{ 0x 1 0x 2 0x 3 0x 4 0x 5 0x 6  0x 7  }*  reversed h. 
 
 EXIT 
 
 Reverse переставляет в обратном порядке элементы стека между тегами *{  }*
+
+*{ 0x 1 0x 2 0x 3 0x 4 0x 5 0x 6  0x 7  }* 
