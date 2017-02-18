@@ -7,6 +7,7 @@ FORTH32 CONTEXT ! FORTH32 CURRENT !
  
  
 INCLUDE: winuser.f  
+INCLUDE: reverse.f 
   
  FORTH32 CONTEXT ! FORTH32 CURRENT !
 
@@ -63,6 +64,10 @@ INCLUDE: graphics.f
    1 0d 2  color_green  Pen: green_pen 
 0x 2 0d 3  color_blue   Pen: blue_pen
            color_blue   SolidBrush: mybrush   mybrush h. 
+		   
+  *{ 0x 3 0x 3  0x 5 0x 18  0x 34 0x 88 }*  reversed 2/  Points: mypoints 
+*{  0d 10 0d 20  0d 140 0d 40   0d 45 0d 95   0d 10 0d 20  }* reversed 2/ Points: mypts   
+
    
 VECT  inWinProc   
 
@@ -109,8 +114,9 @@ FORTH32 CONTEXT !
   
   (  *{ x1 y1  x2 y2 }*  ) 
   
- 0x 40 0x 20  0x 87 0x 34 0x 45 0x 145    0x 40 0x 20   0x 4 PolyLine:   Myline
- 0x 40 0x 20  0x 87 0x 34 0x 45 0x 145    0x 40 0x 20   0x 4 PolyBezier: Mycurve
+   ( 0x 40 0x 20  0x 87 0x 34 0x 45 0x 145    0x 40 0x 20   0x 4 ) mypts   PolyLine:   Myline
+  
+  ( 0x 40 0x 20  0x 87 0x 34 0x 45 0x 145    0x 40 0x 20   0x 4 ) mypts  PolyBezier: Mycurve
  0d 57 0d 220  0d 100 0d 18 Ellipse: myellipse 
  CREATE dragpoint 0x 145 D, 0x 45 D,  
   
@@ -123,7 +129,7 @@ WORD: gbd
            wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_MOUSEMOVE [ CONTEXT ! ] =   Of  
 		   
    hdc @ green_pen SelectObject Pop 
-    Myline 
+     Myline 
 	
 		
 	(( hdc @ mypen SelectObject Pop 
@@ -131,7 +137,7 @@ WORD: gbd
 	
 	hdc @ blue_pen SelectObject Pop 
 	
-	Mycurve 
+Mycurve 
 	." button down:" lparam @ h. 
 	
     0 EndOf
