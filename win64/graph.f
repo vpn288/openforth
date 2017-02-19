@@ -38,6 +38,7 @@ WINAPIS:
 		 1_int  TranslateMessage
 		 1_int  DispatchMessageA
 		 1_int  GetDC 
+		 1_int  UpdateWindow
 		 2_ints UnregisterClassA
 		 2_ints LoadIconA
 		 2_ints LoadCursorA
@@ -122,28 +123,50 @@ FORTH32 CONTEXT !
   
  CREATE msg  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
  
+ VARIABLE dragon  1 dragon !
+ 
+ WORD: find_dot    lparam @  lparam2points  mypts CELL+ @   = If ."  dot:" lparam @  h. 0 dragon !  Then    ;WORD
+ 
   defines  FORTH32 LINK (  defines CONTEXT ! )
 WORD: gbd    
 
 				Case 
-           wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_MOUSEMOVE [ CONTEXT ! ] =   Of  
+           wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_LBUTTONDOWN [ CONTEXT ! ] =   Of  
+		   
+		   find_dot   ." buton down" 
 		   
    hdc @ green_pen SelectObject Pop 
-     Myline 
-	
+Myline 
 		
-	(( hdc @ mypen SelectObject Pop 
-    myellipse )  
-	
 	hdc @ blue_pen SelectObject Pop 
-	
 Mycurve 
-	." button down:" lparam @ h. 
-	
     0 EndOf
 	
-	wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_LBUTTONUP [ CONTEXT ! ] = Of  ." button up:" lparam @ h. 
+	wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_LBUTTONUP [ CONTEXT ! ] = Of  1 dragon ! 
     0 EndOf
+	
+wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_MOUSEMOVE [ CONTEXT ! ] =   Of  
+ 
+    dragon @ If  lparam @ lparam2points DUP mypts CELL+ !    mypts hex, 4 CELLs + ! 
+
+		   
+   hdc @ green_pen SelectObject Pop 
+Myline 
+		
+	hdc @ blue_pen SelectObject Pop 
+Mycurve 
+  hwnd @  0  1 InvalidateRect Pop    hwnd @ UpdateWindow Pop 
+    
+	Then 
+0 EndOf
+
+msg @ [ CONTEXT @  defines CONTEXT ! ] WM_PAINT [ CONTEXT ! ] =   Of  
+ hdc @ green_pen SelectObject Pop 
+Myline 
+		
+	hdc @ blue_pen SelectObject Pop 
+Mycurve 
+0 EndOf
 
     1 EndCase 	
     
