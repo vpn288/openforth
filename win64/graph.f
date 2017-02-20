@@ -29,6 +29,8 @@ WINAPIS:
 	     3_ints CreatePen
 		 3_ints Polyline 
 		 3_ints PolyBezier
+		 3_ints  LineTo 
+		 4_ints MoveToEx 
 		 5_ints Ellipse 
 		 9_ints Arc
 		 
@@ -43,9 +45,11 @@ WINAPIS:
 		 2_ints LoadIconA
 		 2_ints LoadCursorA
 		 3_ints InvalidateRect 
+		
 		 4_ints DefWindowProcA
 		 4_ints MessageBoxA 
 		 4_ints GetMessageA
+		
 		 
 		 
 	 LIB: Kernel32.dll
@@ -61,13 +65,13 @@ INCLUDE: graphics.f
   0x 00ff0000  Color: color_blue
   
  .( Create pens:) 
-   0 1     color_a      Pen: mypen  
+   0 0x 6     color_a      Pen: mypen  
    1 0d 2  color_green  Pen: green_pen 
 0x 2 0d 3  color_blue   Pen: blue_pen
            color_blue   SolidBrush: mybrush   mybrush h. 
 		   
   *{ 0x 3 0x 3  0x 5 0x 18  0x 34 0x 88 }*  reversed 2/  Points: mypoints 
-*{  0d 10 0d 20  0d 140 0d 40   0d 45 0d 95   0d 10 0d 20  }* reversed 2/ Points: mypts   
+*{  0d 10 0d 20  0d 140 0d 40   0d 45 0d 95   0d 100 0d 120   0d 110 0d 130   0d 140 0d 160  0d 160 0d 165  }* reversed 2/ Points: mypts   
 
    
 VECT  inWinProc   
@@ -123,9 +127,28 @@ FORTH32 CONTEXT !
   
  CREATE msg  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
  
- VARIABLE dragon  1 dragon !
+ VARIABLE dragon  1 dragon !    VARIABLE ndot
  
- WORD: find_dot    lparam @  lparam2points  mypts CELL+ @   = If ."  dot:" lparam @  h. 0 dragon !  Then    ;WORD
+ WORD: delta_xy      a_arg !  b_arg !  SADD a_arg @  hex, ffffffff AND    hex, 3 < NOT  ;WORD 
+ ( hex, 4 isdot? ) 
+ 
+ WORD: isdot?    DUP  CELLs mypts + @   lparam @   lparam2points  delta_xy  ;WORD 
+ WORD: thedot    ndot !  0 dragon !  ;WORD 
+ 
+ WORD: find_dot    
+    Case
+  hex, 1 isdot?  Of   thedot  EndOf
+  hex, 2 isdot?  Of   thedot  EndOf
+  hex, 3 isdot?  Of   thedot  EndOf
+  hex, 4 isdot?  Of   thedot  EndOf
+  hex, 5 isdot?  Of   thedot EndOf 
+  hex, 6 isdot?  Of   thedot EndOf 
+  hex, 7 isdot?  Of   thedot EndOf 
+     EndCase
+
+
+
+ ;WORD
  
   defines  FORTH32 LINK (  defines CONTEXT ! )
 WORD: gbd    
@@ -133,7 +156,7 @@ WORD: gbd
 				Case 
            wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_LBUTTONDOWN [ CONTEXT ! ] =   Of  
 		   
-		   find_dot   ." buton down" 
+		   find_dot  
 		   
    hdc @ green_pen SelectObject Pop 
 Myline 
@@ -146,18 +169,32 @@ Mycurve
     0 EndOf
 	
 wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_MOUSEMOVE [ CONTEXT ! ] =   Of  
+ lparam @  lparam2points  mypts ndot @ CELLs + @   <> If 
  
-    dragon @ If  lparam @ lparam2points DUP mypts CELL+ !    mypts hex, 4 CELLs + ! 
+ ."  dot " 
+ hdc @ mypen SelectObject Pop     
+ hdc @  lparam @  lparam2points splitqd 0 MoveToEx Pop 
+ hdc @  lparam @  lparam2points splitqd LineTo Pop 
+ 
+ Then 
+ 
+ 
+    dragon @ If  lparam @ lparam2points  mypts ndot @ CELLs +  !    
 
-		   
+  hwnd @  0  1 InvalidateRect Pop    hwnd @ UpdateWindow Pop 
+    		   
    hdc @ green_pen SelectObject Pop 
 Myline 
 		
 	hdc @ blue_pen SelectObject Pop 
 Mycurve 
-  hwnd @  0  1 InvalidateRect Pop    hwnd @ UpdateWindow Pop 
     
+ (( hdc @  hex, 33 hex, 33 0 MoveToEx Pop )
+ (( hdc @  hex, 37 hex, 37 LineTo Pop )
 	Then 
+	(( hdc @ mypen SelectObject Pop 
+	hdc @  hex, 33 hex, 33 0 MoveToEx Pop )
+	 
 0 EndOf
 
 msg @ [ CONTEXT @  defines CONTEXT ! ] WM_PAINT [ CONTEXT ! ] =   Of  
