@@ -141,9 +141,9 @@ FORTH32 CONTEXT !
   hex, 2 isdot?  Of   thedot  EndOf
   hex, 3 isdot?  Of   thedot  EndOf
   hex, 4 isdot?  Of   thedot  EndOf
-  hex, 5 isdot?  Of   thedot EndOf 
-  hex, 6 isdot?  Of   thedot EndOf 
-  hex, 7 isdot?  Of   thedot EndOf 
+  hex, 5 isdot?  Of   thedot  EndOf 
+  hex, 6 isdot?  Of   thedot  EndOf 
+  hex, 7 isdot?  Of   thedot  EndOf 
      EndCase
 
 
@@ -189,11 +189,8 @@ Myline
 	hdc @ blue_pen SelectObject Pop 
 Mycurve 
     
- (( hdc @  hex, 33 hex, 33 0 MoveToEx Pop )
- (( hdc @  hex, 37 hex, 37 LineTo Pop )
 	Then 
-	(( hdc @ mypen SelectObject Pop 
-	hdc @  hex, 33 hex, 33 0 MoveToEx Pop )
+	
 	 
 0 EndOf
 
