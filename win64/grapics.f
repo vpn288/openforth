@@ -1,4 +1,29 @@
 
+ASSEMBLER FORTH32 LINK   ASSEMBLER CONTEXT !
+HEADER lparam2points  HERE CELL+ ,
+mov_rdx,# ' Pop @ , call_rdx  
+mov_rcx,rax
+and_rax,d# 0x ffff0000 D,
+shl_rax,# 0x 10 B, 
+
+and_rcx,d# 0x ffff D, 
+or_rax,rcx
+mov_rdx,# ' Push @ , call_rdx   
+ret
+ALIGN
+
+HEADER splitqd  HERE CELL+ ,
+mov_rdx,# ' Pop @ , call_rdx  
+mov_rcx,rax
+shr_rcx,# 0x 20 B, 
+and_rax,d# 0x ffffffff D, 
+mov_rdx,# ' Push @ , call_rdx   
+mov_rax,rcx
+call_rdx 
+ret
+ALIGN
+
+FORTH32 CONTEXT !
 
   VARIABLE hdc 
   
