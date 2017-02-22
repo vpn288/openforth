@@ -32,9 +32,8 @@ FORTH32 CONTEXT !
   
   WORD: Points:  CREATE DUP ,   1 SWAP  Do  D,  D,  Loop  ;WORD 
   
-  
-  
-WORD: Color:  CONSTANT ;WORD
+  ( rgb Color: mycolor ) 
+  WORD: Color:  CONSTANT ;WORD
 
  ( penStyle penWidth penColor Pen: mypen ) 
    WORD: Pen:   
@@ -61,7 +60,7 @@ WORD: Color:  CONSTANT ;WORD
    ;WORD 
  (  nLeftRect nTopRect nRightRect nBottomRect nXStartArc nYStartArc nXEndArc nYEndrc Arc: myArc ) 
    WORD: Arc:  
-                CREATE , , , , , , , , DOES>  >R hdc @ 
+                CREATE 0 hex, 7 Do , Loop DOES>  >R hdc @ 
                                               R@ @ 
 											  R@ CELL+ @  
 											  R@ CELL+ CELL+ @ 
