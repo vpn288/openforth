@@ -65,9 +65,10 @@ INCLUDE: graphics.f
   0x 00ff0000  Color: color_blue
   
  .( Create pens:) 
-   0 0x 6     color_a      Pen: mypen  
+   0 0x 6  color_a      Pen: mypen  
    1 0d 2  color_green  Pen: green_pen 
 0x 2 0d 3  color_blue   Pen: blue_pen
+
            color_blue   SolidBrush: mybrush   mybrush h. 
 		   
   *{ 0x 3 0x 3  0x 5 0x 18  0x 34 0x 88 }*  reversed 2/  Points: mypoints 
@@ -119,10 +120,12 @@ FORTH32 CONTEXT !
   
   (  *{ x1 y1  x2 y2 }*  ) 
   
-   ( 0x 40 0x 20  0x 87 0x 34 0x 45 0x 145    0x 40 0x 20   0x 4 ) mypts   PolyLine:   Myline
+   mypts   PolyLine:   Myline
   
-  ( 0x 40 0x 20  0x 87 0x 34 0x 45 0x 145    0x 40 0x 20   0x 4 ) mypts  PolyBezier: Mycurve
+   mypts  PolyBezier: Mycurve
+   
  0d 57 0d 220  0d 100 0d 18 Ellipse: myellipse 
+ 
  CREATE dragpoint 0x 145 D, 0x 45 D,  
   
  CREATE msg  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
@@ -130,6 +133,7 @@ FORTH32 CONTEXT !
  VARIABLE dragon  1 dragon !    VARIABLE ndot
  
  WORD: delta_xy      a_arg !  b_arg !  SADD a_arg @  hex, ffffffff AND    hex, 3 < NOT  ;WORD 
+ 
  ( hex, 4 isdot? ) 
  
  WORD: isdot?    DUP  CELLs mypts + @   lparam @   lparam2points  delta_xy  ;WORD 
@@ -145,64 +149,72 @@ FORTH32 CONTEXT !
   hex, 6 isdot?  Of   thedot  EndOf 
   hex, 7 isdot?  Of   thedot  EndOf 
      EndCase
-
-
-
  ;WORD
  
-  defines  FORTH32 LINK (  defines CONTEXT ! )
+  defines  FORTH32 LINK
+  
 WORD: gbd    
-
 				Case 
-           wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_LBUTTONDOWN [ CONTEXT ! ] =   Of  
-		   
+				
+  wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_LBUTTONDOWN [ CONTEXT ! ] =  Of  
+	 
 		   find_dot  
-		   
-   hdc @ green_pen SelectObject Pop 
-Myline 
+	   hdc @ green_pen SelectObject Pop 
+     Myline 
 		
-	hdc @ blue_pen SelectObject Pop 
-Mycurve 
+	   hdc @ blue_pen SelectObject Pop 
+     Mycurve 
+	 
     0 EndOf
 	
-	wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_LBUTTONUP [ CONTEXT ! ] = Of  1 dragon ! 
+  wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_LBUTTONUP [ CONTEXT ! ] = Of  
+  
+          1 dragon ! 
+		  
     0 EndOf
 	
-wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_MOUSEMOVE [ CONTEXT ! ] =   Of  
+  wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_MOUSEMOVE [ CONTEXT ! ] = Of  
+  
  lparam @  lparam2points  mypts ndot @ CELLs + @   <> If 
  
- ."  dot " 
+         ."  dot " 
  hdc @ mypen SelectObject Pop     
  hdc @  lparam @  lparam2points splitqd 0 MoveToEx Pop 
  hdc @  lparam @  lparam2points splitqd LineTo Pop 
  
- Then 
+                                                     Then 
  
  
-    dragon @ If  lparam @ lparam2points  mypts ndot @ CELLs +  !    
+    dragon @ If  
+	
+  lparam @ lparam2points  mypts ndot @ CELLs +  !    
 
   hwnd @  0  1 InvalidateRect Pop    hwnd @ UpdateWindow Pop 
     		   
-   hdc @ green_pen SelectObject Pop 
-Myline 
+  hdc @ green_pen SelectObject Pop 
+  
+  Myline 
 		
-	hdc @ blue_pen SelectObject Pop 
-Mycurve 
+  hdc @ blue_pen SelectObject Pop 
+
+  Mycurve 
     
 	Then 
-	
-	 
+		 
 0 EndOf
 
-msg @ [ CONTEXT @  defines CONTEXT ! ] WM_PAINT [ CONTEXT ! ] =   Of  
- hdc @ green_pen SelectObject Pop 
-Myline 
+ ((  msg @ [ CONTEXT @  defines CONTEXT ! ] WM_PAINT [ CONTEXT ! ] =   Of  
+ 
+  (( hdc @ green_pen SelectObject Pop 
+   
+   Myline 
 		
-	hdc @ blue_pen SelectObject Pop 
-Mycurve 
-0 EndOf
+   hdc @ blue_pen SelectObject Pop 
+   
 
-    1 EndCase 	
+   0 EndOf )
+
+   1 EndCase 	
     
  ;WORD 
 
@@ -214,9 +226,7 @@ defines FORTH32 LINK
 WORD: MessageLoop  
           Begin innerloop 1+  ?break  
 		  
-		        msg TranslateMessage Pop  
-				 
-				msg  DispatchMessageA Pop
+		        msg TranslateMessage Pop  	msg DispatchMessageA Pop
  
           Again   ;WORD
 
@@ -239,22 +249,19 @@ _class TYPEZ
 title TYPEZ
 CRLF .( creating window )
 
- ( defines FORTH32 LINK  defines CONTEXT !  )
-WORD: opwn    0 _class title [ CONTEXT @ defines CONTEXT ! ]  WS_VISIBLE WS_DLGFRAME WS_SYSMENU [ CONTEXT ! ] + +  (( hex, c10480000 )  0 0 hex, 150 hex, 100  0 0 hInstance 0   CreateWindowExA ."  Hwnd:" DUP hwnd !  h. hwnd @ GetDC hex, ffffffff AND DUP hdc !  h.   hdc @ mybrush SelectObject Pop   
- ." win closed" ;WORD 
+
+WORD: opwn 
+   0 _class title [ CONTEXT @ defines CONTEXT ! ]  WS_VISIBLE WS_DLGFRAME WS_SYSMENU [ CONTEXT ! ] + +    0 0 hex, 150 hex, 100  0 0 hInstance 0   CreateWindowExA ."  Hwnd:" DUP hwnd !   hwnd @ GetDC hex, ffffffff AND DUP hdc !    hdc @ mybrush SelectObject Pop   
+   
+;WORD 
 
 FORTH32 CONTEXT ! 
  
 WORD: anb  opwn MessageLoop ;WORD 
 
- 
-HERE h. 
 anb 
-
-.( slkdfj  )
 
 }TEMPORARY
   
-.( skjfsdkjh )
 
 EXIT   
