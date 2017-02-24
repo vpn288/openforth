@@ -1,4 +1,19 @@
 
+WINAPIS:
+     LIB: Gdi32.dll 
+	     1_int  CreateSolidBrush 
+	     2_ints SelectObject 
+	     3_ints CreatePen
+		 3_ints Polyline 
+		 3_ints PolyBezier
+		 3_ints  LineTo 
+		 4_ints MoveToEx 
+		 5_ints Ellipse 
+		 9_ints Arc
+		 
+;WINAPIS
+
+
 ASSEMBLER FORTH32 LINK   ASSEMBLER CONTEXT !
 HEADER lparam2points  HERE CELL+ ,
 mov_rdx,# ' Pop @ , call_rdx  
