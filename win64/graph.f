@@ -32,12 +32,6 @@ z-str" title wintitle"
   *{ 0x 3 0x 3  0x 5 0x 18  0x 34 0x 88 }*  reversed 2/  Points: mypoints 
 *{  0d 10 0d 20  0d 140 0d 40   0d 45 0d 95   0d 100 0d 120   0d 110 0d 130   0d 140 0d 160  0d 160 0d 165  }* reversed 2/ Points: mypts   
 
-
-
-
- 
-  
-  (  *{ x1 y1  x2 y2 }*  ) 
   
    mypts   PolyLine:   Myline
   
@@ -45,9 +39,7 @@ z-str" title wintitle"
    
  0d 57 0d 220  0d 100 0d 18 Ellipse: myellipse 
  
- CREATE dragpoint 0x 145 D, 0x 45 D,  
   
- 
  
  VARIABLE dragon  1 dragon !    VARIABLE ndot
  
@@ -60,14 +52,16 @@ z-str" title wintitle"
  
  WORD: find_dot    
     Case
-  hex, 1 isdot?  Of   thedot  EndOf
-  hex, 2 isdot?  Of   thedot  EndOf
-  hex, 3 isdot?  Of   thedot  EndOf
-  hex, 4 isdot?  Of   thedot  EndOf
-  hex, 5 isdot?  Of   thedot  EndOf 
-  hex, 6 isdot?  Of   thedot  EndOf 
-  hex, 7 isdot?  Of   thedot  EndOf 
+  hex, 1 isdot?  Of   thedot  EndOf Pop 
+  hex, 2 isdot?  Of   thedot  EndOf Pop 
+  hex, 3 isdot?  Of   thedot  EndOf Pop 
+  hex, 4 isdot?  Of   thedot  EndOf Pop 
+  hex, 5 isdot?  Of   thedot  EndOf Pop 
+  hex, 6 isdot?  Of   thedot  EndOf Pop
+  hex, 7 isdot?  Of   thedot  EndOf Pop
+   
      EndCase
+	 
  ;WORD
  
   defines  FORTH32 LINK
@@ -77,7 +71,7 @@ WORD: gbd
 				
   wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_LBUTTONDOWN [ CONTEXT ! ] =  Of  
 	 
-		   find_dot  
+		  SP@ h. find_dot  SP@ h. 
 	   hdc @ green_pen SelectObject Pop 
      Myline 
 		
@@ -122,7 +116,7 @@ WORD: gbd
 		 
 0 EndOf
 
- ((  msg @ [ CONTEXT @  defines CONTEXT ! ] WM_PAINT [ CONTEXT ! ] =   Of  
+ ((  msg @ [ CONTEXT @  defines CONTEXT ! ] WM_PAINT [ CONTEXT ! ] =   Of  )
  
   (( hdc @ green_pen SelectObject Pop 
    
