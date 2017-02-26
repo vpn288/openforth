@@ -5,41 +5,40 @@ FORTH32 CONTEXT ! FORTH32 CURRENT !
  
  WORD: set_constant_xt    [ ' HERE @ LIT, ] LATEST NAME> ! ;WORD 
  
- 
-INCLUDE: winuser.f  
-INCLUDE: reverse.f 
-INCLUDE: graphics.f 
   
- FORTH32 CONTEXT ! FORTH32 CURRENT !
-
 z-str" _class opf_class" 
 z-str" title wintitle" 
 
+INCLUDE: reverse.f 
+INCLUDE: graphics.f 
+INCLUDE: winwindow.f    
 
- INCLUDE: winwindow.f  
- 
+( creating colors ) 
   0x ff        Color: color_a 
   0x ff00      Color: color_green
   0x 00ff0000  Color: color_blue
   
- .( Create pens:) 
+ ( Creating pens) 
    0 0x 6  color_a      Pen: mypen  
    1 0d 2  color_green  Pen: green_pen 
 0x 2 0d 3  color_blue   Pen: blue_pen
 
-           color_blue   SolidBrush: mybrush   mybrush h. 
+ ( making brush )
+           color_blue   SolidBrush: mybrush  
 		   
   *{ 0x 3 0x 3  0x 5 0x 18  0x 34 0x 88 }*  reversed 2/  Points: mypoints 
-*{  0d 10 0d 20  0d 140 0d 40   0d 45 0d 95   0d 100 0d 120   0d 110 0d 130   0d 140 0d 160  0d 160 0d 165  }* reversed 2/ Points: mypts   
-
   
+  *{  0d 10  0d 20    0d 140 0d 40    0d 45  0d 95
+      0d 100 0d 120   0d 110 0d 130   0d 140 0d 160  
+	  0d 160 0d 165  }* reversed 2/ Points: mypts   
+
    mypts   PolyLine:   Myline
   
    mypts  PolyBezier: Mycurve
-   
+  
+  
  0d 57 0d 220  0d 100 0d 18 Ellipse: myellipse 
  
-  
  
  VARIABLE dragon  1 dragon !    VARIABLE ndot
  
@@ -64,33 +63,31 @@ z-str" title wintitle"
 	 
  ;WORD
  
-  defines  FORTH32 LINK
+  
   
 WORD: gbd    
 				Case 
 				
-  wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_LBUTTONDOWN [ CONTEXT ! ] =  Of  
-	 
-		  SP@ h. find_dot  SP@ h. 
-	   hdc @ green_pen SelectObject Pop 
-     Myline 
+     wmsg @  WM_LBUTTONDOWN =  Of  
+
+	 find_dot  
+
+	 hdc @ green_pen SelectObject Pop      Myline 
 		
-	   hdc @ blue_pen SelectObject Pop 
-     Mycurve 
+	 hdc @ blue_pen  SelectObject Pop      Mycurve 
 	 
     0 EndOf
 	
-  wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_LBUTTONUP [ CONTEXT ! ] = Of  
+     wmsg @  WM_LBUTTONUP  = Of  
   
           1 dragon ! 
 		  
     0 EndOf
 	
-  wmsg @ [ CONTEXT @  defines CONTEXT ! ] WM_MOUSEMOVE [ CONTEXT ! ] = Of  
+    wmsg @  WM_MOUSEMOVE  = Of  
   
- lparam @  lparam2points  mypts ndot @ CELLs + @   <> If 
- 
-         ."  dot " 
+      lparam @  lparam2points  mypts ndot @ CELLs + @   <> If 
+          ."  dot " 
  hdc @ mypen SelectObject Pop     
  hdc @  lparam @  lparam2points splitqd 0 MoveToEx Pop 
  hdc @  lparam @  lparam2points splitqd LineTo Pop 
@@ -116,16 +113,16 @@ WORD: gbd
 		 
 0 EndOf
 
- ((  msg @ [ CONTEXT @  defines CONTEXT ! ] WM_PAINT [ CONTEXT ! ] =   Of  )
+  msg @  WM_PAINT =   Of  
  
-  (( hdc @ green_pen SelectObject Pop 
-   
+  
    Myline 
 		
    hdc @ blue_pen SelectObject Pop 
    
 
-   0 EndOf )
+   0 EndOf 
+   msg @ WM_CLOSE = Of    EndOf 
 
    1 EndCase 	
     
