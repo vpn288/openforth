@@ -8,6 +8,7 @@ FORTH32 CONTEXT ! FORTH32 CURRENT !
   
 z-str" _class opf_class" 
 z-str" title wintitle" 
+z-str" menu menuname"
 
 INCLUDE: reverse.f 
 INCLUDE: graphics.f 
@@ -127,8 +128,6 @@ WORD: gbd
    1 EndCase 	
     
  ;WORD 
-
-
 
 
 
