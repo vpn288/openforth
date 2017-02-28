@@ -3,7 +3,7 @@ ASSEMBLER FORTH32 LINK   ASSEMBLER CONTEXT ! FORTH32 CURRENT !
  Word: (jsr)   ', nop ', nop ', nop ', nop  
                ', mov_rdx,#    ' dodoes @ LIT,  ', ,  ', call_rdx    ;Word 
  
- Word: (does>)  ', R> ', R> ', CELL+ ', LATEST ', N>LINK  ', CELL+  ', ! ;Word
+ Word: (does>)  ', R> ', Pop ', R> ', CELL+ ', LATEST ', N>LINK  ', CELL+  ', ! ;Word
 
  
  FORTH32 CONTEXT !  FORTH32 CURRENT !
