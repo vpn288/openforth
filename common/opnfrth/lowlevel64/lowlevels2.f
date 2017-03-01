@@ -174,4 +174,13 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
  call_rdx 
  ret
  ALIGN 
-   EXIT
+ 
+ HEADER LowDword    HERE CELL+ ,
+ mov_rdx,# ' Pop @ , call_rdx 
+ mov_rcx,# 0x ffffffff , 
+ and_rax,rcx
+ mov_rdx,# ' Push @ , call_rdx 
+ ret
+ ALIGN 
+ 
+   EXIT 
