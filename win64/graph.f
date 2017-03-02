@@ -14,22 +14,22 @@ INCLUDE: reverse.f
 INCLUDE: graphics.f 
 INCLUDE: winwindow.f    
 
-.( creating colors ) 
+( creating colors ) 
   0x ff        Color: color_a 
   0x ff00      Color: color_green
   0x 00ff0000  Color: color_blue
 
- .( Creating pens ) 
+ ( Creating pens ) 
    0 0x 6  color_a      Pen: mypen  
    1 0d 2  color_green  Pen: green_pen 
 0x 2 0d 3  color_blue   Pen: blue_pen
 
- .( making brush )
+ ( making brush )
            color_blue   SolidBrush: mybrush  
 		 
 
-  *{ 0x 3 0x 3  0x 5 0x 18  0x 34 0x 88 }*  reversed 2/ .( reversed ) Points: mypoints 
-  .( mypoints )
+  *{ 0x 3 0x 3  0x 5 0x 18  0x 34 0x 88 }*  reversed 2/  Points: mypoints 
+ 
   *{  0d 10  0d 20    0d 140 0d 40    0d 45  0d 95
       0d 100 0d 120   0d 110 0d 130   0d 140 0d 160  
 	  0d 160 0d 165  }* reversed 2/ Points: mypts   
@@ -45,14 +45,14 @@ INCLUDE: winwindow.f
  
  VARIABLE dragon  1 dragon !    VARIABLE ndot
  
- WORD: delta_xy      a_arg !  b_arg !  SADD a_arg @  hex, ffffffff AND    hex, 3 < NOT  ;WORD 
+ WORD: delta_xy      a_arg !  b_arg !  SADD a_arg @  LowDword   hex, 3 <   ;WORD 
  
  ( hex, 4 isdot? ) 
  
  WORD: isdot?    DUP  CELLs mypts + @   lparam @   lparam2points  delta_xy  ;WORD 
  WORD: thedot    ndot !  0 dragon !  ;WORD 
  
- WORD: find_dot    
+ ( WORD: find_dot    
     Case
   hex, 1 isdot?  Of   thedot  EndOf Pop 
   hex, 2 isdot?  Of   thedot  EndOf Pop 
@@ -64,7 +64,9 @@ INCLUDE: winwindow.f
    
      EndCase
 	 
- ;WORD
+ ;WORD )
+ 
+ WORD: find_dot    1  hex, 7 Do R@ isdot?  If thedot Then  Loop ;WORD 
  
   
   
