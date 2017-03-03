@@ -52,28 +52,37 @@ INCLUDE: winwindow.f
  WORD: isdot?    DUP  CELLs mypts + @   lparam @   lparam2points  delta_xy  ;WORD 
  WORD: thedot    ndot !  0 dragon !  ;WORD 
  
- ( WORD: find_dot    
-    Case
-  hex, 1 isdot?  Of   thedot  EndOf Pop 
-  hex, 2 isdot?  Of   thedot  EndOf Pop 
-  hex, 3 isdot?  Of   thedot  EndOf Pop 
-  hex, 4 isdot?  Of   thedot  EndOf Pop 
-  hex, 5 isdot?  Of   thedot  EndOf Pop 
-  hex, 6 isdot?  Of   thedot  EndOf Pop
-  hex, 7 isdot?  Of   thedot  EndOf Pop
-   
-     EndCase
-	 
- ;WORD )
- 
+  
  WORD: find_dot    1  hex, 7 Do R@ isdot?  If thedot Then  Loop ;WORD 
  
-  
+ 
+ WORD: on_lbttndown 
+ 
+     find_dot  ." btndon " 
+
+	 hdc @ green_pen SelectObject Pop      Myline 
+		
+	 hdc @ blue_pen  SelectObject Pop      Mycurve  ;WORD 
+	 
+	 WORD: (wm_lbuttondown) wmsg @  WM_LBUTTONDOWN = ;WORD 
+	 
+	 
+	 IMMEDIATES CURRENT ! 
+ 
+WORD:   WM_LBUTTONDOWN{       COMPILE (wm_lbuttondown) COMPILE ?OF HERE    COMPILE 0 ;WORD 
+
+ WORD: }WM_LBUTTONDOWN     THEN  COMPILE 0 ;WORD 
+ 
+ FORTH32 CURRENT ! 
+ 
   
 WORD: gbd    
-				Case 
+			
+        WM_LBUTTONDOWN{ on_lbttndown }WM_LBUTTONDOWN 
+		
+			Case 
 				
-     wmsg @  WM_LBUTTONDOWN =  Of  
+    (( wmsg @  WM_LBUTTONDOWN =  Of  
 
 	 find_dot  
 
@@ -81,7 +90,7 @@ WORD: gbd
 		
 	 hdc @ blue_pen  SelectObject Pop      Mycurve 
 	 
-    0 EndOf
+    0 EndOf )
 	
      wmsg @  WM_LBUTTONUP  = Of  
   
