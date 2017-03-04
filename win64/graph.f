@@ -71,14 +71,14 @@ INCLUDE: winwindow.f
  
 WORD:   WM_LBUTTONDOWN{       COMPILE (wm_lbuttondown) COMPILE ?OF HERE    COMPILE 0 ;WORD 
 
- WORD: }WM_LBUTTONDOWN     THEN  COMPILE 0 ;WORD 
+ WORD: }}     THEN  COMPILE 0 ;WORD 
  
  FORTH32 CURRENT ! 
  
   
 WORD: gbd    
 			
-        WM_LBUTTONDOWN{ on_lbttndown }WM_LBUTTONDOWN 
+        WM_LBUTTONDOWN{ on_lbttndown }} 
 		
 			Case 
 				
