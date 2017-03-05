@@ -58,7 +58,7 @@ INCLUDE: winwindow.f
  
  WORD: on_lbttndown 
  
-     find_dot  ." btndon " 
+     find_dot  ." btndown " 
 
 	 hdc @ green_pen SelectObject Pop      Myline 
 		
