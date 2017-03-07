@@ -38,5 +38,36 @@ FORTH32 CONTEXT !
 
 1 вариант
 Имена сообщений определяются как константы. В inWinProc используется Case.
+WORD: gbd    
+			
+      		Case 
+				
+    wmsg @  WM_LBUTTONDOWN =  Of  
+
+	 do_something
+	 
+    0 EndOf 
+	
+     wmsg @  WM_LBUTTONUP  = Of  
+  
+         do_something_1
+		  
+    0 EndOf
+	
+    wmsg @  WM_MOUSEMOVE  = Of  
+  
+      do_something_2
+		 
+0 EndOf
+
+  msg @  WM_PAINT =   Of  
+ 
+  do_something_3
+   
+   0  Endof
+
+   1 EndCase 	
+    
+ ;WORD 
 
 
