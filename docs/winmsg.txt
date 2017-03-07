@@ -48,10 +48,40 @@ WORD: userinWinProc
 	
     wmsg @  WM_MOUSEMOVE   =  Of   do_something_2  0 EndOf
 
-    wmsg @  WM_PAINT       =  Of   do_something_3  0  Endof
+    wmsg @  WM_PAINT       =  Of   do_something_3  0 Endof
 
    1 EndCase 	
     
  ;WORD 
+ 
+ 2 вариант
+ Спрятать конструкцию Case ... EndCase и одинаковые слова.
+ 
+ Писать
+ WM_LBUTTONDOWN{ do_something   }WM_LBUTTONDOW
+ WM_LBUTTONUP{   do_something_1 }WM_LBUTTONUP
+ что и короче и нагляднее.
+ 
+ Для этого надо "разорвать" Of ... EndOf по разным определениям. В силу того, что эти квазиметки-теги используются
+ внутри определения, это сделать просто. Оба слова-тега должны быть немедленного исполнения и компилировать 
+ конструкцию управления.
+
+ WORD: (wm_lbuttondown) wmsg @  WM_LBUTTONDOWN = ;WORD 
+ 
+ IMMEDIATES CURRENT ! 
+ 
+ WORD:   WM_LBUTTONDOWN{       COMPILE (wm_lbuttondown) COMPILE ?OF HERE    COMPILE 0 ;WORD 
+
+ WORD:   }WM_LBUTTONDOWN       THEN  COMPILE 0 ;WORD 
+ 
+ FORTH32 CURRENT ! 
+
+То-есть аналогично словам Of Then слова WM_LBUTTONDOWN{  }WM_LBUTTONDOWN скомпилируют конструкцию управления и необходимые
+к ней добавки. Сразу видны недостатки такого написания. Придется писать по паре определений для каждого сообщения Windows.
+Закрывающий тэг, как видно, одинаков для всех сообщений. Назовем его универсально }} двойную скобку сложнее забыть и потерять
+в тексте.
+
+
+
 
 
