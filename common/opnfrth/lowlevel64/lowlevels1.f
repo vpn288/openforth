@@ -64,6 +64,15 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
   mov_rdx,#  ' Push @ ,  call_rdx
   ret
   ALIGN
+  
+  HEADER RDROP	    HERE CELL+ ,
+  pop_rbx
+  pop_rcx
+  pop_rax
+  push_rcx
+  push_rbx
+  ret
+  ALIGN
 
   HEADER R@	    HERE CELL+ ,
   pop_rbx
