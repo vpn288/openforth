@@ -16,6 +16,13 @@ FORTH32 CURRENT ! FORTH32 CONTEXT !
 
 WORD: Constants:   Begin  PARSE  constants SFIND  EXECUTE  Again  ;WORD
 
+WORD: (?wm)  wmsg @ = ;WORD 
+
+
+
+WORD: WM:     CREATE ,   
+               DOES>  @   LIT,   COMPILE (?wm)  COMPILE ?OF HERE    COMPILE 0   ;WORD 
+
 Constants:
 
 0x 800000    is WS_BORDER	
@@ -23,11 +30,8 @@ Constants:
 0x 80000     is WS_SYSMENU	
 0x c10000000 is WS_VISIBLE	
 
-0d 513       is WM_LBUTTONDOWN 
-0d 514       is WM_LBUTTONUP 
-0d 512       is WM_MOUSEMOVE 
-0d 15        is WM_PAINT 
-0d 16        is WM_CLOSE 
+
+
 
 0d 15        is COLOR_BTNFACE 
 
@@ -36,8 +40,23 @@ Constants:
 0d 32512     is IDC_ARROW
 
 ;Constants 
+
+			   
+IMMEDIATES CURRENT !
+			   
+WORD: }}       COMPILE Pop COMPILE 0 THEN ;WORD 
+
+ 0d 513 WM: WM_LBUTTONDOWN{{
+ 0d 514 WM: WM_LBUTTONUP{{ 
+ 0d 512 WM: WM_MOUSEMOVE{{ 
+ 0d 15  WM: WM_PAINT{{ 
+ 0d 16  WM: WM_CLOSE{{ 
+ 
+ FORTH32 CURRENT ! 
  
 EXIT
+
+0d 513       is WM_LBUTTONDOWN 
 
 #define WM_APP 32768
 #define WM_ACTIVATE 6
