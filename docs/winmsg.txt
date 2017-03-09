@@ -147,4 +147,13 @@ WORD: gbd
  
  Закрывающее слово возвращать единицу (не нуль) и закрывать Case.
  
- WORD:  }}MESSAGES   COMPILE 1   ;WORD
+ WORD:  }}MESSAGES   COMPILE 1    [ CONTEXT @  IMMEDIATES CONTEXT ! ' EndCase   ] , [ CONTEXT ! ]    ;WORD
+ 
+ Закрывающая }} должна работать аналогично EndOf
+ 
+ WORD: }}     COMPILE [ CONTEXT @  IMMEDIATES CONTEXT ! ' EndOf   ] , [ CONTEXT ! ] COMPILE 0 ;WORD 
+ 
+ А вот открывающее слово посложней. Кроме запуска компиляции оно должно компилировать начало Case.
+ 
+ WORD: MESSAGES{{    ;WORD 
+ 
