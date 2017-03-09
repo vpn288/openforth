@@ -14,7 +14,7 @@ INCLUDE: reverse.f
 INCLUDE: graphics.f 
 INCLUDE: winwindow.f    
 
-( creating colors ) 
+.( creating colors ) 
   0x ff        Color: color_a 
   0x ff00      Color: color_green
   0x 00ff0000  Color: color_blue
@@ -24,7 +24,7 @@ INCLUDE: winwindow.f
    1 0d 2  color_green  Pen: green_pen 
 0x 2 0d 3  color_blue   Pen: blue_pen
 
- ( making brush )
+ .( making brush )
            color_blue   SolidBrush: mybrush  
 		 
 
@@ -45,62 +45,33 @@ INCLUDE: winwindow.f
  
  VARIABLE dragon  1 dragon !    VARIABLE ndot
  
- WORD: delta_xy      a_arg !  b_arg !  SADD a_arg @  LowDword   hex, 3 <   ;WORD 
+ WORD: delta_xy      a_arg !  b_arg !  SADD a_arg @  LowDword   hex, 3 < NOT   ;WORD 
  
- ( hex, 4 isdot? ) 
+ 
  
  WORD: isdot?    DUP  CELLs mypts + @   lparam @   lparam2points  delta_xy  ;WORD 
  WORD: thedot    ndot !  0 dragon !  ;WORD 
  
   
- WORD: find_dot    1  hex, 7 Do R@ isdot?  If thedot Then  Loop ;WORD 
+ WORD: find_dot    1  hex, 7 Do R@ isdot?  If h. Else thedot Then  Loop ;WORD 
  
  
  WORD: on_lbttndown 
  
-     find_dot  ." btndown " 
+     find_dot  
 
 	 hdc @ green_pen SelectObject Pop      Myline 
 		
 	 hdc @ blue_pen  SelectObject Pop      Mycurve  ;WORD 
 	 
-	 WORD: (wm_lbuttondown) wmsg @  WM_LBUTTONDOWN = ;WORD 
+	 WORD: (wm_lbuttondown)   hex, 345 h.  (( wmsg @  WM_LBUTTONDOWN = ) ;WORD 
 	 
-	 
-	 IMMEDIATES CURRENT ! 
- 
-WORD:   WM_LBUTTONDOWN{       COMPILE (wm_lbuttondown) COMPILE ?OF HERE    COMPILE 0 ;WORD 
-
- WORD: }}     THEN  COMPILE 0 ;WORD 
- 
- FORTH32 CURRENT ! 
- 
-  
-WORD: gbd    
-			
-        WM_LBUTTONDOWN{ on_lbttndown }} 
-		
-			Case 
-				
-    (( wmsg @  WM_LBUTTONDOWN =  Of  
-
-	 find_dot  
-
-	 hdc @ green_pen SelectObject Pop      Myline 
-		
-	 hdc @ blue_pen  SelectObject Pop      Mycurve 
-	 
-    0 EndOf )
 	
-     wmsg @  WM_LBUTTONUP  = Of  
-  
-          1 dragon ! 
-		  
-    0 EndOf
-	
-    wmsg @  WM_MOUSEMOVE  = Of  
-  
-      lparam @  lparam2points  mypts ndot @ CELLs + @   <> If 
+ 
+WORD: gbd   
+			WM_LBUTTONDOWN{{ on_lbttndown   }}
+			WM_LBUTTONUP{{ 1 dragon !  }}
+			WM_MOUSEMOVE{{   lparam @  lparam2points  mypts ndot @ CELLs + @   <> If 
           ."  dot " 
  hdc @ mypen SelectObject Pop     
  hdc @  lparam @  lparam2points splitqd 0 MoveToEx Pop 
@@ -123,25 +94,10 @@ WORD: gbd
 
   Mycurve 
     
-	Then 
-		 
-0 EndOf
-
-  msg @  WM_PAINT =   Of  
- 
-  
-   Myline 
-		
-   hdc @ blue_pen SelectObject Pop 
-   
-
-   0 EndOf 
-   msg @ WM_CLOSE = Of    EndOf 
-
-   1 EndCase 	
-    
+	Then  }}
+			
+				1 
  ;WORD 
-
 
 
 ' gbd   ' inWinProc CELL+ ! 
@@ -153,3 +109,5 @@ anb
   
 
 EXIT   
+
+ 
