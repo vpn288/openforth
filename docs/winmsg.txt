@@ -116,7 +116,35 @@ WORD: userinWinProc
  WORD: ?wm  wmsg @ = ;WORD 
  WORD: WM:   CREATE , DOES> @   LIT, COMPILE ?wm COMPILE ?OF HERE    COMPILE 0  ;WORD 
  Подсказка: ?OF нельзя прятать внутрь ?wm 
+ Итак, работает. Открывающую скобку оказалось полезным тоже сделать двойной. Так заметнее, круглая она или фигурная.
+ Но осталось чувство неудовлетворенности. Нет нужды проверять все остальные сообщения, то-есть необходимо вернуться
+ к Case ... EndCase. 
+ 
+  
+WORD: gbd   
+			WM_LBUTTONDOWN{{ on_lbttndown   }}
+			WM_PAINT{{       drawlines      }} 
+			WM_LBUTTONUP{{   1 dragon !     }}
+			WM_MOUSEMOVE{{   nsdot  @   <> If  ."  dot "  drawpoint   Then  
+ 
+                             dragon @ If  nsdot !  clearwin drawlines Then  }}
+			
+			1 
+ ;WORD 
+ 
+ В принципе, тогда следует пойти и дальше. Достаточно сделать заглушку, которая будет наполняться обработчиками сообщений.
+ 
+ MESSAGES{{
+                        WM_LBUTTONDOWN{{ on_lbttndown   }}
+			WM_PAINT{{       drawlines      }} 
+			WM_LBUTTONUP{{   1 dragon !     }}
+			WM_MOUSEMOVE{{   nsdot  @   <> If  ."  dot "  drawpoint   Then  
+ 
+                             dragon @ If  nsdot !  clearwin drawlines Then  }}
+ 
+ }}MESSAGES
  
  
+ Закрывающее слово возвращать единицу (не нуль) и закрывать Case.
  
- 
+ WORD:  }}MESSAGES   COMPILE 1   ;WORD
