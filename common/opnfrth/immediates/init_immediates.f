@@ -2,9 +2,9 @@ FORTH32 CONTEXT !	   FORTH32 CURRENT !
 
 VOCABULARY IMMEDIATES	 IMMEDIATES CURRENT !  
  
- Word: ;WORD    ', COMPILE  ', EXIT    ', break    ;Word
- Word: ;XT	    ', COMPILE  ', EXIT    ', break    ;Word
- Word: ;NONAME  ', COMPILE  ', EXIT    ', break    ;Word
+ Word: ;WORD    ', COMPILE  ', EXIT    ', quit    ;Word
+ Word: ;XT	    ', COMPILE  ', EXIT    ', quit    ;Word
+ Word: ;NONAME  ', COMPILE  ', EXIT    ', quit    ;Word
  
  FORTH32 CURRENT !  
  IMMEDIATES FORTH32 LINK     
