@@ -53,50 +53,36 @@ INCLUDE: winwindow.f
  WORD: thedot    ndot !  0 dragon !  ;WORD 
  
   
- WORD: find_dot    1  hex, 7 Do R@ isdot?  If h. Else thedot Then  Loop ;WORD 
+ WORD: find_dot    1  hex, 7 Do R@ isdot?  If Pop Else thedot Then  Loop ;WORD 
  
  
- WORD: on_lbttndown 
+ WORD: drawlines      hdc @ green_pen SelectObject Pop   Myline 		
+                      hdc @ blue_pen  SelectObject Pop   Mycurve  ;WORD 
  
-     find_dot  
-
-	 hdc @ green_pen SelectObject Pop      Myline 
+     WORD: on_lbttndown      find_dot  drawlines   ;WORD 
 		
-	 hdc @ blue_pen  SelectObject Pop      Mycurve  ;WORD 
+     WORD: param2points    	lparam @  lparam2points ;WORD 
 	 
-	 WORD: (wm_lbuttondown)   hex, 345 h.  (( wmsg @  WM_LBUTTONDOWN = ) ;WORD 
-	 
+	 WORD: nsdot  param2points  mypts ndot @ CELLs + ;WORD 
+	
+	 WORD: drawpoint   	
+					hdc @  mypen SelectObject Pop     
+					hdc @  param2points splitqd 0 MoveToEx Pop 
+					hdc @  param2points splitqd   LineTo   Pop    ;WORD 
+	
+	WORD: clearwin    hwnd @  0  1 InvalidateRect Pop    hwnd @ UpdateWindow Pop  ;WORD 
+	
 	
  
 WORD: gbd   
 			WM_LBUTTONDOWN{{ on_lbttndown   }}
-			WM_LBUTTONUP{{ 1 dragon !  }}
-			WM_MOUSEMOVE{{   lparam @  lparam2points  mypts ndot @ CELLs + @   <> If 
-          ."  dot " 
- hdc @ mypen SelectObject Pop     
- hdc @  lparam @  lparam2points splitqd 0 MoveToEx Pop 
- hdc @  lparam @  lparam2points splitqd LineTo Pop 
+			WM_PAINT{{       drawlines      }} 
+			WM_LBUTTONUP{{   1 dragon !     }}
+			WM_MOUSEMOVE{{   nsdot  @   <> If  ."  dot "  drawpoint   Then  
  
-                                                     Then 
- 
- 
-    dragon @ If  
-	
-  lparam @ lparam2points  mypts ndot @ CELLs +  !    
-
-  hwnd @  0  1 InvalidateRect Pop    hwnd @ UpdateWindow Pop 
-    		   
-  hdc @ green_pen SelectObject Pop 
-  
-  Myline 
-		
-  hdc @ blue_pen SelectObject Pop 
-
-  Mycurve 
-    
-	Then  }}
+                             dragon @ If  nsdot !  clearwin drawlines Then  }}
 			
-				1 
+			1 
  ;WORD 
 
 
