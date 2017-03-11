@@ -73,17 +73,25 @@ INCLUDE: winwindow.f
 	WORD: clearwin    hwnd @  0  1 InvalidateRect Pop    hwnd @ UpdateWindow Pop  ;WORD 
 	
 	
+	
+	IMMEDIATES CURRENT !  (   IMMEDIATES FORTH32 LINK  IMMEDIATES CONTEXT ! )
+	
+	Word: }}MESSAGES      ', COMPILE ', 1 ', (EndCase)  ', COMPILE   ', EXIT  ', quit  ;Word
+	
+	FORTH32 CURRENT ! FORTH32 CONTEXT ! (  IMMEDIATES UNLINK )
+	
  
 WORD: gbd   
-			WM_LBUTTONDOWN{{ on_lbttndown   }}
-			WM_PAINT{{       drawlines      }} 
-			WM_LBUTTONUP{{   1 dragon !     }}
-			WM_MOUSEMOVE{{   nsdot  @   <> If  ."  dot "  drawpoint   Then  
+
+		Case 
+			wmsg @ hex, 201 = Of  on_lbttndown   0 EndOf
+			wmsg @ hex, f = Of       drawlines  0    EndOf 
+			wmsg @ hex, 202 = Of  1 dragon !     0 EndOf
+			wmsg @ hex, 200 = Of   nsdot  @   <> If  ."  dot "  drawpoint   Then  
  
-                             dragon @ If  nsdot !  clearwin drawlines Then  }}
-			
-			1 
- ;WORD 
+                             dragon @ If  nsdot !  clearwin drawlines Then 0 EndOf
+				  
+ }}MESSAGES  
 
 
 ' gbd   ' inWinProc CELL+ ! 
