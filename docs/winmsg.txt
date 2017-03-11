@@ -164,6 +164,15 @@ WORD: gbd
  
  
  А вот открывающее слово посложней. Кроме запуска компиляции оно должно компилировать начало Case.
+ MESSAGES{{  
+ 1) Отмечать HERE и присваивать его inWinProc.
+ 2) компилировать  interpret# 
+ 3) запускать immediator  
  
- WORD: MESSAGES{{    ;WORD 
+ То-есть HERE ' inWinProc CELL+ !  NONAME: 
+ Но, прежде чем запускать интерпретатор надо выполнить Case.  
+  HERE ' inWinProc CELL+ ! interpret#  ,  0  immediator 
+ 
+ 
+ WORD: MESSAGES{{   HERE ' inWinProc CELL+ ! interpret#  ,  0  immediator  ;WORD 
  
