@@ -149,9 +149,18 @@ WORD: gbd
  
  WORD:  }}MESSAGES   COMPILE 1    [ CONTEXT @  IMMEDIATES CONTEXT ! ' EndCase   ] , [ CONTEXT ! ]    ;WORD
  
+ Это не работает. 
+ Работает это: 
+ Word: }}MESSAGES      ', COMPILE ', 1 ', (EndCase)  ', COMPILE   ', EXIT  ', quit  ;Word
+ 
+ Приходится откатываться назад, есть какой-то неуловимый нюанс.
+ 
+ 
  Закрывающая }} должна работать аналогично EndOf
  
  WORD: }}     COMPILE [ CONTEXT @  IMMEDIATES CONTEXT ! ' EndOf   ] , [ CONTEXT ! ] COMPILE 0 ;WORD 
+ 
+ 
  
  А вот открывающее слово посложней. Кроме запуска компиляции оно должно компилировать начало Case.
  
