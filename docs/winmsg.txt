@@ -159,7 +159,8 @@ WORD: gbd
  Закрывающая }} должна работать аналогично EndOf
  
  WORD: }}     COMPILE [ CONTEXT @  IMMEDIATES CONTEXT ! ' EndOf   ] , [ CONTEXT ! ] COMPILE 0 ;WORD 
- 
+ Вернее
+ WORD: }}    COMPILE 0  COMPILE BRANCH HERE >R COMPILE 0 THEN R> ;WORD
  
  
  А вот открывающее слово посложней. Кроме запуска компиляции оно должно компилировать начало Case.
