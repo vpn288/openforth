@@ -176,4 +176,6 @@ WORD: gbd
  
  
  WORD: MESSAGES{{   HERE ' inWinProc CELL+ ! interpret#  ,  0  immediator  ;WORD 
+ Близко но пока не работает. Глотает одну ссылку и непонятно куда в итоге приходит управление.
+ 
  
