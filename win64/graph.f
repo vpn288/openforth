@@ -74,27 +74,26 @@ INCLUDE: winwindow.f
 	
 	
 	
-	IMMEDIATES CURRENT !  (   IMMEDIATES FORTH32 LINK  IMMEDIATES CONTEXT ! )
+WORD: MESSAGES{{  HERE DUP h.  ['] inWinProc CELL+  !  0  interpret# ,   immediator    ;WORD 
 	
-	Word: }}MESSAGES      ', COMPILE ', 1 ', (EndCase)  ', COMPILE   ', EXIT  ', quit  ;Word
 	
-	FORTH32 CURRENT ! FORTH32 CONTEXT ! (  IMMEDIATES UNLINK )
+	( WORD: gbd )
 	
  
-WORD: gbd   
+ MESSAGES{{ 
 
-		Case 
-			wmsg @ hex, 201 = Of  on_lbttndown   0 EndOf
-			wmsg @ hex, f = Of       drawlines  0    EndOf 
-			wmsg @ hex, 202 = Of  1 dragon !     0 EndOf
-			wmsg @ hex, 200 = Of   nsdot  @   <> If  ."  dot "  drawpoint   Then  
+   
+			WM_LBUTTONDOWN{{  on_lbttndown   }}
+	((		WM_PAINT{{        drawlines      }} )
+			WM_LBUTTONUP{{    1 dragon !     }}
+			WM_MOUSEMOVE{{    nsdot  @   <> If  ."  dot "  drawpoint   Then  
  
-                             dragon @ If  nsdot !  clearwin drawlines Then 0 EndOf
+                             dragon @ If  nsdot !  clearwin drawlines Then }}
 				  
  }}MESSAGES  
 
 
-' gbd   ' inWinProc CELL+ ! 
+ ( ' gbd  DUP h.  ' inWinProc CELL+ ! )
 
 
 anb 
@@ -104,4 +103,4 @@ anb
 
 EXIT   
 
- 
+ Word: }}MESSAGES      ', COMPILE ', 1 ', (EndCase)  ', COMPILE   ', EXIT  ', quit  ;Word
