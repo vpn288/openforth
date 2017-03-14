@@ -3,7 +3,7 @@ ASSEMBLER FORTH32 LINK   ASSEMBLER CONTEXT ! FORTH32 CURRENT !
  Word: (jsr)   ', nop ', nop ', nop ', nop  
                ', mov_rdx,#    ' dodoes @ LIT,  ', ,  ', call_rdx    ;Word 
  
- Word: (does>)  ', R> ', Pop ', R> ', CELL+ ', LATEST ', N>LINK  ', CELL+  ', ! ;Word
+ Word: (does>)  ', RDROP  ', R> ', CELL+ ', LATEST ', N>LINK  ', CELL+  ', ! ;Word
 
  
  FORTH32 CONTEXT !  FORTH32 CURRENT !
@@ -29,13 +29,19 @@ WORD: Then	  THEN	 ;WORD
 
 WORD: Else	  ELSE	 ;WORD 
 
+FORTH32 CURRENT !
+
+WORD: (EndCase)    Begin DUP 0 <> If	-1 Else THEN 0 Then Until Pop ;WORD 
+
+IMMEDIATES CURRENT !  FORTH32 CONTEXT ! 
+
 WORD: Case	 0  ;WORD 
 
 WORD: Of	 COMPILE ?OF	 HERE	 COMPILE 0    ;WORD   
 
  WORD: EndOf	 COMPILE BRANCH  HERE >R COMPILE 0 THEN  R>    ;WORD
 
- WORD: EndCase	 Begin DUP   0 <>   If	 -1  Else  THEN  0 Then   Until Pop	;WORD
+ WORD: EndCase	(EndCase) ;WORD
 
  WORD: Do	BEGIN	 COMPILE >R   COMPILE >R   ;WORD
 
@@ -53,7 +59,9 @@ WORD: Of	 COMPILE ?OF	 HERE	 COMPILE 0    ;WORD
  WORD: [   IMMEDIATES CONTEXT @ LINK   ;WORD 
 
  WORD: ]   IMMEDIATES UNLINK	 ;WORD   
-
+ 
+ WORD: [']  ' LIT,  ;WORD 
+ 
  WORD: hex,	  0x,	  ;WORD
  
  
@@ -63,5 +71,5 @@ WORD: Of	 COMPILE ?OF	 HERE	 COMPILE 0    ;WORD
  
  FORTH32 CURRENT !  FORTH32 CONTEXT !    IMMEDIATES UNLINK
 
-EXIT  
+EXIT  Begin DUP   0 <>   If	 -1  Else  THEN  0 Then   Until Pop	
 
