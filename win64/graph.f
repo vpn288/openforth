@@ -14,7 +14,7 @@ INCLUDE: reverse.f
 INCLUDE: graphics.f 
 INCLUDE: winwindow.f    
 
-.( creating colors ) 
+( creating colors ) 
   0x ff        Color: color_a 
   0x ff00      Color: color_green
   0x 00ff0000  Color: color_blue
@@ -24,7 +24,7 @@ INCLUDE: winwindow.f
    1 0d 2  color_green  Pen: green_pen 
 0x 2 0d 3  color_blue   Pen: blue_pen
 
- .( making brush )
+ ( making brush )
            color_blue   SolidBrush: mybrush  
 		 
 
