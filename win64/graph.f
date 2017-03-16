@@ -77,8 +77,7 @@ INCLUDE: winwindow.f
 WORD: MESSAGES{{  HERE DUP h.  ['] inWinProc CELL+  !  0  interpret# ,   immediator    ;WORD 
 	
 	
-	( WORD: gbd )
-	
+		
  
  MESSAGES{{ 
 
