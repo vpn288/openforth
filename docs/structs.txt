@@ -23,5 +23,25 @@ WORD: set_dword   D! ;WORD
 
 В свете необходимого хочется чтобы структура сама полностью отдавалась.
 
+Для начала посмотрим на CreateWindowExA
 
+На стек должно быть положено
+
+STRUC: winparam  
+           DWORD     dwExStyle
+           QWORD     lpClassName
+           QWORD     lpWindowName
+           DWORD     dwStyle 
+           int       x
+           int       y
+           int       nWidth
+           int       nHeight
+           QWORD     hWndParent
+           QWORD     hMenu
+           QWORD     hInstance
+           QWORD     lpParam
+;STRUC 
+
+
+WORD: StartWindow    winparam CreateWindow hwnd !   MessageLoop ;WORD 
 
