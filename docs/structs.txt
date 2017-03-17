@@ -45,3 +45,9 @@ STRUC: winparam
 
 WORD: StartWindow    winparam CreateWindow hwnd !   MessageLoop ;WORD 
 
+Предположение
+sctrucname кладет на стек содержимое структуры
+in strucname делает доступными элементы структуры
+in strucname -elem1 get -elem2 set
+нужен ли strucsize?
+
