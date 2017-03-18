@@ -50,4 +50,19 @@ sctrucname кладет на стек содержимое структуры
 in strucname делает доступными элементы структуры
 in strucname -elem1 get -elem2 set
 нужен ли strucsize?
+Нужен. Структуру придется выкладывать на стек поэлементно.
 
+ STRUC:  WNDCLASS 
+   DWORD      cbSize
+   DWORD      style
+   QWORD      WndProc
+   DWORD      cbClsExtra
+   DWORD      cbWndExtra
+   QWORD      hInstance
+   QWORD      hIcon
+   QWORD      hCursor
+   QWORD      Background
+   QWORD      MenuName
+   QWORD      ClassName
+   QWORD      hIconSm
+;STRUC
