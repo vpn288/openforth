@@ -50,7 +50,9 @@ sctrucname кладет на стек содержимое структуры
 in strucname делает доступными элементы структуры
 in strucname -elem1 get -elem2 set
 нужен ли strucsize?
-Нужен. Структуру придется выкладывать на стек поэлементно.
+Нужен. Структуру придется выкладывать на стек поэлементно. strucsize в элементах или в байтах?
+Если структуры выкладывать на стек поэлементно, то можно просто исполнять get пока не доберемся до конца.
+Элементы в структуре - список. Попробуем пока сделать слово STRUC:
 
  STRUC:  WNDCLASS 
    DWORD      cbSize
@@ -66,3 +68,6 @@ in strucname -elem1 get -elem2 set
    QWORD      ClassName
    QWORD      hIconSm
 ;STRUC
+
+
+WORD: STRUC:  CREATE ;WORD 
