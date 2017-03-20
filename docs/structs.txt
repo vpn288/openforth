@@ -89,5 +89,12 @@ WORD: (qword_rd)   ...
 Значит так.
 WORD: QWORD  VARIABLE 0 ,  ['] (qword_rd) @ ,  ['] (qword_wr) @ ,  ;WORD 
 
+И 
+WORD: (qword_rd)  @ ;WORD
+WORD: (qword_wr)  ! ;WORD
 
+Собственно, тогда можно сократить.
+
+WORD: get   (( elem_addr -- elem_value )   DUP CELL+ @ EXECUTE ;WORD 
+WORD: store (( new_value elem_addr --  )   DUP CELL+ CELL+ @ EXECUTE ;WORD 
 
