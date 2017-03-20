@@ -98,3 +98,26 @@ WORD: (qword_wr)  ! ;WORD
 WORD: get   (( elem_addr -- elem_value )   DUP CELL+ @ EXECUTE ;WORD 
 WORD: store (( new_value elem_addr --  )   DUP CELL+ CELL+ @ EXECUTE ;WORD 
 
+Тээкс...
+WORD: QWORD  VARIABLE    ['] @   ,  ['] !  ,  ;WORD 
+
+
+WORD: get   (( elem_addr -- elem_value )   DUP CELL+  @ EXECUTE ;WORD 
+WORD: store (( new_value elem_addr --  )   DUP CELL+ CELL+  @ EXECUTE ;WORD 
+
+
+QWORD abc   
+Работает. В свете отработанного пришла в голову мысль.
+
+structname get положит содержимое структуры на стек.
+
+Интересно... Как тогда должно работать
+strucname -elem1 get  -elem2 get 
+
+Была-то мысль, что strucname задает контекст, в котором лежат -elem1 -elem2 
+А и бох сним. Пусть так и работает. 
+Мысль другая. strucname должна создавать некий усеченный словарь. Без BADWORD и EXIT.
+
+
+
+
