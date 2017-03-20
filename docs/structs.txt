@@ -86,3 +86,8 @@ WORD: QWORD HEADER  ['] (qword_rd) @ ,  ['] (qword_wr) @ ,   0 , ;WORD
 
 WORD: (qword_rd)   ...  
 
+Значит так.
+WORD: QWORD  VARIABLE 0 ,  ['] (qword_rd) @ ,  ['] (qword_wr) @ ,  ;WORD 
+
+
+
