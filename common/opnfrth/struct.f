@@ -23,10 +23,6 @@ strucname h.  strucname @ DUP TYPE SPACE N>LINK @ DUP TYPE SPACE  N>LINK @ DUP T
 CRLF
 .(    sdlfk )
 strucname CONTEXT !  abc h.  abc get h.  0x 3456 abc store   abc get h. 
-.( wew )
-.( abc .( wkl;j ) .( h.   abc get h.   0x 1234 abc store     abc get h. )
-
-EXPECT  
 
 EXIT
 
