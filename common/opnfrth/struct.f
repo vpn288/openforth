@@ -4,25 +4,29 @@ WORD: QWORD  VARIABLE    ['] @   ,  ['] !  ,  ;WORD
 WORD: get   (( elem_addr -- elem_value )   DUP CELL+  @ EXECUTE ;WORD 
 WORD: store (( new_value elem_addr --  )   DUP CELL+ CELL+  @ EXECUTE ;WORD 
 
+WORD:  STRUC:  CURRENT @  VARIABLE   LATEST N>LINK CELL+ CELL+  DUP CURRENT !  DOES> DUP h.  ;WORD 
+WORD:  ;STRUC  LATEST SWAP!  CURRENT !   ;WORD 
 
-VARIABLE strucname 
-( here must be zero lfa )
-strucname CURRENT ! 
+STRUC: strucname 
+
 QWORD abc  
 QWORD bde
 QWORD tyu 
-HERE
+
 QWORD edf
-strucname !
+;STRUC 
 
-FORTH32 CURRENT !
 
-strucname FORTH32 LINK  
+ strucname FORTH32 LINK  
 strucname h.  strucname @ DUP TYPE SPACE N>LINK @ DUP TYPE SPACE  N>LINK @ DUP TYPE SPACE  N>LINK  @ DUP  TYPE SPACE  N>LINK @ h. 
 
 CRLF
 .(    sdlfk )
-strucname CONTEXT !  abc h.  abc get h.  0x 3456 abc store   abc get h. 
+strucname  CONTEXT !  abc h.  abc get h.  0x 3456 abc store   abc get h. 
+.( wew )
+.( abc .( wkl;j ) .( h.   abc get h.   0x 1234 abc store     abc get h. )
+
+  
 
 EXIT
 
