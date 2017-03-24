@@ -118,6 +118,38 @@ strucname -elem1 get  -elem2 get
 А и бох сним. Пусть так и работает. 
 Мысль другая. strucname должна создавать некий усеченный словарь. Без BADWORD и EXIT.
 
+Игого: 
+WORD: QWORD  VARIABLE    ['] @   ,  ['] !  ,  ;WORD 
+
+WORD: get   (( elem_addr -- elem_value )   DUP CELL+  @ EXECUTE ;WORD 
+WORD: store (( new_value elem_addr --  )   DUP CELL+ CELL+  @ EXECUTE ;WORD 
+
+WORD: next_elem     N>LINK @ DUP h. ;WORD 
+WORD: elem_name     DUP TYPE ;WORD 
+
+WORD: get_st  ." get_struct " @ 1 hex, 4 Do  elem_name DUP NAME> CELL+ get h. next_elem Loop elem_name  ;WORD 
+
+VARIABLE tmp 
+WORD: get_struct  ." get_str " tmp !  @ Begin  elem_name DUP NAME> CELL+ get h. next_elem tmp @ <> UNTIL ;WORD 
+
+WORD:  STRUC:  CURRENT @  VARIABLE ['] get_struct ,  ['] NOOP ,  LATEST N>LINK CELL+ CELL+    DOES>  DUP DUP  FORTH32 SWAP LINK   CONTEXT !  ;WORD 
+
+WORD:  ;STRUC  DUP h. LATEST SWAP!   CURRENT !   ;WORD 
+
+STRUC: strucname 
+
+QWORD abc  
+QWORD bde
+QWORD tyu 
+
+QWORD edf
+;STRUC 
+
+
+Работает. С get store гениально ваще.
+Не нравится get_struct. Надо избавиться от переменной tmp и не наворотить каши на стеке.
+get_struct принимает адрес структуры на стеке, проходит по элементам структуры и останавливается, когда доходит обратно до адреса структуры. Казалось бы, фигня, но ведь предполагается, что на выходе будет стопка элементов структуры. 
+Убрать на стке возвратов?
 
 
 
