@@ -153,3 +153,37 @@ get_struct принимает адрес структуры на стеке, п�
 
 
 WORD: get_struct  ." get_str " >R @ Begin  elem_name DUP NAME> CELL+ get h. next_elem DUP R@ < NOT Until RDROP ;WORD 
+
+
+
+А теперь разберемся как это работает
+
+WORD: QWORD  VARIABLE    ['] @   ,  ['] !  ,  ;WORD 
+
+WORD: get   (( elem_addr -- elem_value )   DUP CELL+  @ EXECUTE ;WORD 
+WORD: store (( new_value elem_addr --  )   DUP CELL+ CELL+  @ EXECUTE ;WORD 
+
+WORD: next_elem     N>LINK @ ;WORD Принимает на стеке адрес поля имени, переходит к полю связи, разыменовывает его - то-есть переходит к следующему полю имени в списке.
+
+WORD: elem_name     DUP TYPE ;WORD Печатает поле имени
+ 
+
+WORD: get_struct  ." get_str " CRLF 
+               >R убираем адрес поля параметров strucname
+               @ что разыменовываем? strucname должно класть на стек адрес своего поля параметров. Два раза кладет?
+               
+               Begin  elem_name DUP NAME> CELL+ get h. CRLF  next_elem DUP R@ < NOT Until RDROP ;WORD 
+
+WORD:  STRUC:  CURRENT @  VARIABLE ['] get_struct ,  ['] NOOP ,  LATEST N>LINK CELL+ CELL+    DOES>  DUP DUP  FORTH32 SWAP LINK   CONTEXT !  ;WORD 
+
+WORD:  ;STRUC  DUP h. LATEST SWAP!   CURRENT !   ;WORD 
+
+STRUC: strucname 
+
+QWORD abc  
+QWORD bde
+QWORD tyu 
+
+QWORD edf
+;STRUC 
+
