@@ -170,7 +170,7 @@ WORD: elem_name     DUP TYPE ;WORD Печатает поле имени
 
 WORD: get_struct  ." get_str " CRLF 
                >R убираем адрес поля параметров strucname
-               @ что разыменовываем? strucname должно класть на стек адрес своего поля параметров. Два раза кладет? Таки нет. Один.
+               @ что разыменовываем? strucname должно класть на стек адрес своего поля параметров. Два раза кладет? Таки нет. Один. Дебилушко... ясно откуда. 
                
                Begin  elem_name DUP NAME> CELL+ get h. CRLF  next_elem DUP R@ < NOT Until RDROP ;WORD 
 
