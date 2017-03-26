@@ -196,9 +196,14 @@ WORD:  STRUC:
           CURRENT @  
           VARIABLE 
           ['] get_struct ,  ['] NOOP ,  
-          LATEST N>LINK CELL+ CELL+  (( здесь мы переходим от имени структуры, к полю связи, потом кода, потом параметров..
-                                         а почему не BODY> ? Потому что оно не реализовано. )
-		  DOES>  DUP DUP  FORTH32 SWAP LINK   CONTEXT !  ;WORD 
+          (( LATEST N>LINK CELL+ CELL+  (( здесь мы переходим от имени структуры, к полю связи, потом кода, потом параметров..
+                                         а почему не BODY> ? Потому что оно не реализовано. И вообще, нужно NAME> )
+	   LATEST NAME> CELL+ (( то-есть после STRUC: на стеке остается CURRENT @, а кстати, что это? и адрес поля парамеров слова-структуры, в которое будет компилироваться структура )
+	   
+	   DOES>  DUP DUP  FORTH32 SWAP LINK   CONTEXT !  ;WORD 
 
-WORD:  ;STRUC   LATEST SWAP!   CURRENT !   ;WORD 
+WORD:  ;STRUC   
+           LATEST SWAP! (( записываем имя последнего элемента в структуре в поле параметров имени структуры ) 
+	   CURRENT !   (( по-идее должны восстановить список CURRENT ) 
+;WORD 
 
