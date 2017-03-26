@@ -1,2 +1,60 @@
 в свете копания структур возникла необходимость в осмыслении механизма link-unlink
 
+nfa_30:
+	db	4,"LINK",0
+	alignhe
+	dq	nfa_29
+	dq	_link
+_link:
+	call	_pop
+	mov	rcx,[rax]
+	push	rcx
+	call	_badword_xt
+	call	_pop
+	pop	rbx
+	mov	qword [rax-cell_size],rbx
+	ret
+;----------------------------
+	align cell_size
+
+nfa_31:
+	db	6,"UNLINK",0
+	alignhe
+	dq	nfa_30
+	dq	_unlink
+
+_unlink:
+	call	_badword_xt
+	call	_pop
+	xor	rbx,rbx
+	mov	 qword [rax-cell_size],rbx
+	ret
+
+LINK - снимает со стека два pfa списков. ТОчнее сперва снимает правый список, переходит в его конец и вызывает _badword_xt
+
+
+nfa_32:
+	db	10,"BADWORD-xt",0
+	alignhe
+	dq	nfa_31
+	dq	_badword_xt
+
+_badword_xt:
+	mov	rdx,[here_value]
+	mov	rax,44524f5744414207h
+	mov	qword [rdx],rax ; 44414207h
+	;mov	qword [rdx+8],;"WORD"
+	xor	rax,rax
+	mov	qword [rdx+cell_size],rax
+	call	_sfind
+	ret
+  
+  которое ищет BADWORD в левом списке с помощью sfind. 
+  sfind кладет xt, мы его снимаем и кладем nfa правого списка в поле связи правого списка. Поле связи = поле кода-селл.
+  
+  Поиск по имени BADWORD позволяет "перелинковывать" прилинкованный список.
+  
+  Отсоединение действует уже понятно как.
+  
+  Таким образом BADWORD в структурах таки обязательно.\
+  
