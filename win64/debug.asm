@@ -1241,7 +1241,7 @@ _hex_dot:
 	mov	[hexstr],r15
 	mov	[hexstr+8],rax
 	mov	byte [hexstr+17],0
-      ;  call	 _space
+     
       mov	 rax,hexstr-1
       call	 _push
  ;	 mov	 rsi,hexstr
