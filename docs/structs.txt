@@ -211,3 +211,34 @@ WORD:  ;STRUC
 HERE кладем, а потом CURRENT @ ! его прячем
 
 такс.. проблема в том, что список FORTH32 циклится. 
+
+ВВел BADWORD
+WORD:  STRUC:  
+          HERE
+		  VARIABLE 
+		  ['] get_struct ,  ['] NOOP ,  
+		  LATEST NAME> CELL+ DUP (( поле параметров дважды )
+		  HERE  SWAP! make_badword  (( здесь в поле параметров strucname сохраняется nfa BADWORD и еще ра он остается на стеке)
+		  DOES>  DUP DUP  FORTH32  LINK   CONTEXT !  ;WORD 
+
+WORD:  ;STRUC   
+             LATEST SWAP! (( тэкс... здесь типо должен в pf strucnzme записаться nfa последнего элемента структуры. А на деле это не нужно вообще.  ) 
+	     CURRENT @ !   ;WORD 
+Но слово STRUC: должно ставить CURRENT на strucname. 
+
+WORD:  STRUC:  
+          HERE
+		  VARIABLE 
+		  ['] get_struct ,  ['] NOOP ,  
+		  LATEST NAME> CELL+ DUP 
+		  HERE  SWAP! make_badword  CURRENT ! 
+		  DOES> ."  strucname_execute " DUP h.  (( DUP DUP  FORTH32  LINK   CONTEXT ! ) ;WORD 
+
+WORD:  ;STRUC      CURRENT @ !   ;WORD 
+
+Ай-яяяяй. Часть после DOES> не выполняется. Что логично, т.к. DOES> использует  LATEST , а оно уже укащывает на BADWORD.
+
+Все переделать!
+часть после DOES> выносится в отдельное определение и потом подсовывается к VARIABLE.
+
+
