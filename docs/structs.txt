@@ -279,5 +279,18 @@ WORD:  STRUC:
 WORD:  ;STRUC      CURRENT @ !   ;WORD 
 
 Все долой. Попробуем начисто. 
+		 
+WORD:  STRUC:  
+          CURRENT @ 
+          VARIABLE HERE CELL-  DUP  
+		  ['] get_struct ,  ['] NOOP ,  
+		  HERE SWAP! make_badword  
+		  DUP CURRENT ! DUP CONTEXT @ LINK   CONTEXT ! 
+		  
+		    ;WORD 
 
+WORD:  ;STRUC      CURRENT  !   ;WORD 
+
+Работает.
+Осталось втиснуть CONTEXT ! в код для VARIABLE 
 
