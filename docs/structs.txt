@@ -267,5 +267,17 @@ WORD:  ;STRUC      CURRENT @ !   ;WORD
 Какого-то рожна strucname указывает на общий список.
 
 До ;STRUCT все работает корректно. Посмотрим.
+		 
+WORD:  STRUC:  
+          HERE DUP h.
+		  VARIABLE HERE CELL- DUP h. 
+		  ['] get_struct ,  ['] NOOP ,  
+		  LATEST NAME> CELL+  DUP h. 
+		  HERE  SWAP! make_badword  
+		    ;WORD 
+
+WORD:  ;STRUC      CURRENT @ !   ;WORD 
+
+Все долой. Попробуем начисто. 
 
 
