@@ -253,6 +253,18 @@ WORD:  ;STRUC      CURRENT @ !   ;WORD
 4) сделать текущим список strucname
 
 
+		 
+WORD:  STRUC:  
+          HERE
+		  VARIABLE
+		  ['] get_struct ,  ['] NOOP ,  
+		  LATEST NAME> CELL+ DUP 
+		  HERE  SWAP! make_badword  CURRENT ! 
+		    ;WORD 
+
+WORD:  ;STRUC      CURRENT @ !   ;WORD 
+
+Какого-то рожна strucname указывает на общий список.
 
 
 
