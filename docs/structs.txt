@@ -293,4 +293,24 @@ WORD:  ;STRUC      CURRENT  !   ;WORD
 
 Работает.
 Осталось втиснуть CONTEXT ! в код для VARIABLE 
+ 
+WORD: get_struct  ."  getting_struct "
+         DUP  >R  @ Begin  DUP NAME> CELL+ get SWAP  next_elem elem_name DUP R@ < NOT Until RDROP ;WORD 
+		 
+WORD: (struct) CREATE HERE  0 , ['] get_struct ,  ['] NOOP , DOES>   DUP CONTEXT !  ;WORD 
+		 
+WORD:  STRUC:  
+          CURRENT @ 
+		  (struct)   DUP  
+		   
+		  HERE SWAP! make_badword  
+		  DUP CURRENT ! DUP CONTEXT @ LINK   CONTEXT ! 
+		  
+		    ;WORD 
+
+WORD:  ;STRUC      CURRENT  !   ;WORD 
+
+Сделано.
+А теперь забавная штука. Надо втиснуть в BADWORD код для get и store. 
+
 
