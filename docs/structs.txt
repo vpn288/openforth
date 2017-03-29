@@ -302,7 +302,7 @@ WORD: (struct) CREATE HERE  0 , ['] get_struct ,  ['] NOOP , DOES>   DUP CONTEXT
 WORD:  STRUC:  
           CURRENT @ 
 		  (struct)   DUP  
-		   
+		  
 		  HERE SWAP! make_badword  
 		  DUP CURRENT ! DUP CONTEXT @ LINK   CONTEXT ! 
 		  
@@ -312,5 +312,18 @@ WORD:  ;STRUC      CURRENT  !   ;WORD
 
 Сделано.
 А теперь забавная штука. Надо втиснуть в BADWORD код для get и store. 
+Сделано. 
 
+ теперь разберемся с get_struct
 
+WORD: get_struct  ."  getting_struct "
+           @ Begin  DUP NAME> CELL+ get SWAP  next_elem elem_name Again  ;WORD 
+
+structname оставляет на стеке свой адрес.
+А пройдемся ко по структуре ручками.
+
+strucname кладет на стек pfa.
+первое разыменование дает nfa последнего элемента
+для get нам нужен адрес поля параметров этого элемента
+для перехода к следующему нужен lfa.
+strucname @  N>LINK DUP CELL+ CELL+  get
