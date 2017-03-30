@@ -3,15 +3,17 @@ WORD: QWORD  VARIABLE    ['] @   ,  ['] !  ,  ;WORD
 WORD: get   (( elem_addr -- elem_value )   DUP CELL+  @ EXECUTE ;WORD 
 WORD: store (( new_value elem_addr --  )   DUP CELL+ CELL+  @ EXECUTE ;WORD 
 
-WORD: next_elem     N>LINK DUP h.  @ DUP h. CRLF ;WORD 
-WORD: elem_name		DUP TYPE SPACE ;WORD 
  
 WORD: get_struct  
             Begin @  N>LINK DUP CELL+ CELL+ get SWAP  Again   ;WORD 
 			
-WORD: on_bad   Pop Pop RDROP RDROP RDROP RDROP  RDROP   ;WORD 
+ 
+WORD: store_struct  ."  store_struct " 
+            Begin @  N>LINK DUP CELL+ CELL+ >R SWAP R> store    Again   ;WORD 			
+			
+WORD: on_bad   ."  on_bad " Pop Pop RDROP RDROP RDROP RDROP  RDROP   ;WORD 
 		 
-WORD: (struct) CREATE HERE  0 , ['] get_struct ,  ['] NOOP , DOES>   DUP CONTEXT !  ;WORD 
+WORD: (struct) CREATE HERE  0 , ['] get_struct ,  ['] store_struct , DOES>   DUP CONTEXT !  ;WORD 
 
 		 
 WORD:  STRUC:  
@@ -19,12 +21,30 @@ WORD:  STRUC:
 		  (struct)   DUP  
 		   
 		  HERE SWAP! make_badword  
-		  ['] on_bad ,  ['] NOOP , 
+		  ['] on_bad ,  ['] on_bad , 
 		  DUP CURRENT ! DUP CONTEXT @ LINK   CONTEXT ! 
 		  
-		    ;WORD 
+;WORD 
 
 WORD:  ;STRUC      CURRENT  !   ;WORD 
+
+
+
+EXIT
+
+STRUC: strucname    
+QWORD abc  
+QWORD bde   
+QWORD tyu 
+QWORD edf  
+;STRUC  
+.( test )
+
+0x abc 0x bde 0x 128 0x edf  strucname store ( 0x edf edf store 0x 129  tyu store 0x bde bde store 0x abc abc store )
+strucname get h. h. h. h.  abc get h. 
+
+WORD: next_elem     N>LINK DUP h.  @ DUP h. CRLF ;WORD 
+WORD: elem_name		DUP TYPE SPACE ;WORD 
 
 STRUC: strucname    
 QWORD abc  
@@ -36,10 +56,6 @@ QWORD edf
 strucname  0x edf edf store  0x 128 tyu store 0x bde bde store 0x abc abc store
 
 strucname get h. h. h. h. 
-
-
-EXIT
-
 
 WORD: nxt  CRLF @ DUP TYPE N>LINK DUP CELL+ CELL+ ;WORD 
  strucname @ elem_name next_elem  elem_name next_elem  elem_name next_elem  elem_name next_elem  elem_name  next_elem h. 
