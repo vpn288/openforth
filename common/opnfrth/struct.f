@@ -7,13 +7,12 @@ WORD: next_elem     N>LINK DUP h.  @ DUP h. CRLF ;WORD
 WORD: elem_name		DUP TYPE SPACE ;WORD 
  
 WORD: get_struct  
-            Begin @ DUP TYPE N>LINK DUP CELL+ CELL+ get SWAP  Again  ;WORD 
+            Begin @  N>LINK DUP CELL+ CELL+ get SWAP  Again   ;WORD 
 			
-WORD: on_bad   RDROP RDROP RDROP RDROP RDROP   ;WORD 
+WORD: on_bad   Pop Pop RDROP RDROP RDROP RDROP  RDROP   ;WORD 
 		 
 WORD: (struct) CREATE HERE  0 , ['] get_struct ,  ['] NOOP , DOES>   DUP CONTEXT !  ;WORD 
 
-WORD: nxt  CRLF @ DUP TYPE N>LINK DUP CELL+ CELL+ ;WORD 
 		 
 WORD:  STRUC:  
           CURRENT @ 
@@ -27,14 +26,22 @@ WORD:  STRUC:
 
 WORD:  ;STRUC      CURRENT  !   ;WORD 
 
-
 STRUC: strucname    
 QWORD abc  
 QWORD bde   
 QWORD tyu 
 QWORD edf  
-;STRUC  .(  closetrucname )  
+;STRUC  
 
+strucname  0x edf edf store  0x 128 tyu store 0x bde bde store 0x abc abc store
+
+strucname get h. h. h. h. 
+
+
+EXIT
+
+
+WORD: nxt  CRLF @ DUP TYPE N>LINK DUP CELL+ CELL+ ;WORD 
  strucname @ elem_name next_elem  elem_name next_elem  elem_name next_elem  elem_name next_elem  elem_name  next_elem h. 
  
 CRLF .(  manual_get_struct ) CRLF 
@@ -49,9 +56,11 @@ strucname   0x ead tyu store  tyu  get h.  0x 4 edf get + edf store   CRLF
 
  strucname get  h. h. h. h. h. .( jkhh )
 
- 
-EXIT
+FORTH32 CONTEXT !
 
+ WORD: sss h. ;WORD 
+ 
+ 0x aaa sss 
 Header записывает в поле связи значение, полученное по latest. a here записывает в CURRENT @ 
 HERE N>LINK LATEST SWAP!   HERE CURRENT @ ! 
 
