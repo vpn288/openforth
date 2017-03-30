@@ -331,3 +331,17 @@ strucname @  N>LINK DUP CELL+ CELL+  get
 
 УРа! Заработало! 
 Но все-таки store на всю структуру нужен.
+
+ WORD: store (( new_value elem_addr --  )   DUP CELL+ CELL+  @ EXECUTE ;WORD 
+ адрес_связи значение адрес_куда_записывать
+ 
+WORD: store_struct  ."  store_struct " 
+  значение значение значение адрес_связи  Begin
+  @  N>LINK DUP
+   значение значение значение адрес_связи  адрес_связи
+  CELL+ CELL+ 
+   значение значение значение адрес_связи адрес_куда_записывать
+  h. h. h.    Again   ;WORD 		
+
+Сделано. 
+
