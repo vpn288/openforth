@@ -330,3 +330,4 @@ strucname @  N>LINK DUP CELL+ CELL+  get
 
 
 УРа! Заработало! 
+Но все-таки store на всю структуру нужен.
