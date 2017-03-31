@@ -10,11 +10,12 @@ z-str" _class opf_class"
 z-str" title wintitle" 
 z-str" menu menuname"
 
+INCLUDE: struct.f 
 INCLUDE: reverse.f 
 INCLUDE: graphics.f 
 INCLUDE: winwindow.f    
 
-( creating colors ) 
+ ( creating colors ) 
   0x ff        Color: color_a 
   0x ff00      Color: color_green
   0x 00ff0000  Color: color_blue
@@ -24,7 +25,7 @@ INCLUDE: winwindow.f
    1 0d 2  color_green  Pen: green_pen 
 0x 2 0d 3  color_blue   Pen: blue_pen
 
- ( making brush )
+  ( making brush )
            color_blue   SolidBrush: mybrush  
 		 
 
@@ -73,17 +74,12 @@ INCLUDE: winwindow.f
 	WORD: clearwin    hwnd @  0  1 InvalidateRect Pop    hwnd @ UpdateWindow Pop  ;WORD 
 	
 	
-	
-WORD: MESSAGES{{  HERE DUP h.  ['] inWinProc CELL+  !  0  interpret# ,   immediator    ;WORD 
-	
-	
-		
+
  
  MESSAGES{{ 
-
    
 			WM_LBUTTONDOWN{{  on_lbttndown   }}
-	((		WM_PAINT{{        drawlines      }} )
+			WM_PAINT{{        drawlines      }} 
 			WM_LBUTTONUP{{    1 dragon !     }}
 			WM_MOUSEMOVE{{    nsdot  @   <> If  ."  dot "  drawpoint   Then  
  
@@ -91,15 +87,20 @@ WORD: MESSAGES{{  HERE DUP h.  ['] inWinProc CELL+  !  0  interpret# ,   immedia
 				  
  }}MESSAGES  
 
-
- ( ' gbd  DUP h.  ' inWinProc CELL+ ! )
-
-
-anb 
+ 
+  *{ winparam get  }*  FORTH32 CONTEXT ! anb 
 
 }TEMPORARY
   
 
-EXIT   
+EXIT  
+FORTH32 CONTEXT !
+ .( anb ) CRLF   h. h. h. h. h. h. h. h. h. h. h.  .( uuuu ) CRLF
+  
+    0 _class title WS_VISIBLE WS_DLGFRAME WS_SYSMENU + + 0 0 0x 150 0x 100 0 0 hInstance 0  h. h. h. h. h. h. h. h. h. h. h.   CRLF 
 
- Word: }}MESSAGES      ', COMPILE ', 1 ', (EndCase)  ', COMPILE   ', EXIT  ', quit  ;Word
+	
+*{ winparam get FORTH32 CONTEXT ! }*  h. h. h. h.  
+
+250317
+ 0 _class title WS_VISIBLE WS_DLGFRAME WS_SYSMENU + + 0 0 h, 150 h, 100 0 0 hInstance 0 
