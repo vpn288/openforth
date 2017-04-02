@@ -3,7 +3,7 @@ FORTH32 CONTEXT ! FORTH32 CURRENT !
 
  TEMPORARY{  
  
- WORD: set_constant_xt    [ ' HERE @ LIT, ] LATEST NAME> ! ;WORD 
+ WORD: set_constant_xt    (( [ ' HERE @ LIT, ] ) ['] HERE @  LATEST NAME> ! ;WORD 
  
   
 z-str" _class opf_class" 
@@ -56,20 +56,35 @@ INCLUDE: winwindow.f
   
  WORD: find_dot    1  hex, 7 Do R@ isdot?  If Pop Else thedot Then  Loop ;WORD 
  
+ 0d 80 0d 90 0d 20 0d 10 0d 90 0d 80 0d 20 0d 10 myArcParam store FORTH32 CONTEXT ! 
  
- WORD: drawlines      hdc @ green_pen SelectObject Pop   Myline 		
-                      hdc @ blue_pen  SelectObject Pop   Mycurve  ;WORD 
- 
-     WORD: on_lbttndown      find_dot  drawlines   ;WORD 
-		
-     WORD: param2points    	lparam @  lparam2points ;WORD 
-	 
-	 WORD: nsdot  param2points  mypts ndot @ CELLs + ;WORD 
+ WORD: param2points    	lparam @  lparam2points ;WORD 
 	
-	 WORD: drawpoint   	
+ WORD: drawpoint   	
 					hdc @  mypen SelectObject Pop     
 					hdc @  param2points splitqd 0 MoveToEx Pop 
 					hdc @  param2points splitqd   LineTo   Pop    ;WORD 
+					
+WORD: drawdot   >R  
+                hdc @  mypen SelectObject Pop 
+				hdc @  R@ splitqd  0 MoveToEx Pop 
+				hdc @  R@ splitqd  LineTo   Pop    RDROP  ;WORD 
+	
+ WORD: drawpoints   1 hex, 7 Do  mypts R@ CELLs + @  drawdot Loop  ;WORD 
+ 
+ WORD: drawlines      hdc @ green_pen SelectObject Pop   Myline 		
+                      hdc @ blue_pen  SelectObject Pop   Mycurve 
+				((	  hdc @   myArcParam get   Arc Pop 
+					  hdc @ myellipse Pop )
+					  drawpoints 
+ ;WORD 
+ 
+     WORD: on_lbttndown      find_dot  drawlines   ;WORD  
+		
+  
+	 
+	 WORD: nsdot  param2points  mypts ndot @ CELLs + ;WORD 
+	
 	
 	WORD: clearwin    hwnd @  0  1 InvalidateRect Pop    hwnd @ UpdateWindow Pop  ;WORD 
 	
@@ -88,19 +103,12 @@ INCLUDE: winwindow.f
  }}MESSAGES  
 
  
-  *{ winparam get  }*  FORTH32 CONTEXT ! anb 
+  winparam 0d 400 Width store   0d 400 Height store       FORTH32 CONTEXT !  anb 
 
 }TEMPORARY
   
 
 EXIT  
-FORTH32 CONTEXT !
- .( anb ) CRLF   h. h. h. h. h. h. h. h. h. h. h.  .( uuuu ) CRLF
-  
-    0 _class title WS_VISIBLE WS_DLGFRAME WS_SYSMENU + + 0 0 0x 150 0x 100 0 0 hInstance 0  h. h. h. h. h. h. h. h. h. h. h.   CRLF 
 
-	
-*{ winparam get FORTH32 CONTEXT ! }*  h. h. h. h.  
 
 250317
- 0 _class title WS_VISIBLE WS_DLGFRAME WS_SYSMENU + + 0 0 h, 150 h, 100 0 0 hInstance 0 
