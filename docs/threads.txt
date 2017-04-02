@@ -12,3 +12,30 @@ HANDLE WINAPI CreateThread(
 Параметр - 0 (указатель на переменную, передаваемую в тред )
 Флаги создания - 0 
 Тред айди - выход
+
+Элементарно!
+
+WINAPIS:
+   LIB: Kernel32.dll
+       5_ints CreateThread
+	   
+;WINAPIS 
+
+VARIABLE thr 
+
+ASSEMBLER FORTH32 LINK ASSEMBLER CONTEXT !
+
+HEADER  thread_test  HERE CELL+ , 
+backward<
+mov_rdx,# thr , 
+inc_[rdx]
+jmp <backward
+ALIGN
+
+FORTH32 CONTEXT !
+
+0 0 ' thread_test @ 0 0 CreateThread h. 
+
+EXIT 
+
+Для высокоуровневых слов такая же заглушка, как и в message. Вызов через EXECUTE.
