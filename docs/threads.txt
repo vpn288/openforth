@@ -1,0 +1,14 @@
+Похоже придется осваивать треды.
+HANDLE WINAPI CreateThread(
+  _In_opt_  LPSECURITY_ATTRIBUTES  lpThreadAttributes,
+  _In_      SIZE_T                 dwStackSize,
+  _In_      LPTHREAD_START_ROUTINE lpStartAddress,
+  _In_opt_  LPVOID                 lpParameter,
+  _In_      DWORD                  dwCreationFlags,
+  _Out_opt_ LPDWORD                lpThreadId
+);
+
+Атрибуты - 0 Размер стека - 0  Стартовый адрес - адрес функции
+Параметр - 0 (указатель на переменную, передаваемую в тред )
+Флаги создания - 0 
+Тред айди - выход
