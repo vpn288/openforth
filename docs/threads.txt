@@ -48,4 +48,27 @@ EXIT
 Прежде чем запустить тред надо инициировать его стек.
 Только сначала надо определиться с хранилищем stack_base. Может взять еще 8кбайт локальной памяти?
 
+Замкнутый круг какой-то.
+ db 4,"Push",0
+        alignhe
+        dq nfa_2
+        dq _push
+_push:
+        mov rbx,[stack_pointer]
+        add rbx , cell_size
+        mov r10,[stack_base]
+        and rbx , [data_stack_mask]
+        add r10,rbx
+        mov [r10] , rax
+        mov [stack_pointer],rbx
+        ret
+        align  cell_size
+data_stack_mask dq 0x00ffff
+stack_pointer dq 0
+stack_base    dq 0        должна быть у каждого треда своя. Если мы заполним stack_base значением из одного треда, то в другом
+треде значение будет тоже. Это что же, запихивать push - pop в локальную память треда? А линковать как?
+Должно быть красиво.
+
+
+
 
