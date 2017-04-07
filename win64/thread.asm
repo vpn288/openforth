@@ -46,10 +46,10 @@ idaqa:
   kernel_name db 'KERNEL32.DLL',0
 
   _ExitProcess dw 0
-    db 'ExitProcess',0
+   db 'ExitProcess',0
 
   _AllocConsole dw 0
-    db 'AllocConsole',0
+   db 'AllocConsole',0
   _WriteConsole dw 0
     db 'WriteConsoleA',0
   _SetConsoleTitle dw 0
