@@ -77,11 +77,11 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
 
   HEADER ?OF	      HERE   CELL+ ,
   mov_rcx,[rsp+b#] 0x 8 B,
-  mov_rbp,[rcx+b#] 0x 8 B,
+  mov_rsi,[rcx+b#] 0x 8 B,
   add_rcx,b# 0x 8 B, 
   mov_rdx,#  ' Pop @ ,            call_rdx
   test_rax,rax
-  cmove_rcx,rbp
+  cmove_rcx,rsi
   mov_rax,rcx
   mov_[rsp+b#],rcx 0x 8 B,
   ret
@@ -89,11 +89,11 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
 
   HEADER ?BRANCH	 HERE	CELL+ ,
   mov_rcx,[rsp+b#] 0x 8 B, 
-  mov_rbp,[rcx+b#] 0x 8 B,
+  mov_rsi,[rcx+b#] 0x 8 B,
   add_rcx,b# 0x 8 B,
   mov_rdx,#  ' Pop @ ,   call_rdx
   test_rax,rax
-  cmovne_rcx,rbp
+  cmovne_rcx,rsi
   mov_rax,rcx
   mov_[rsp+b#],rcx 0x 8 B, 
   ret
@@ -101,10 +101,10 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
   
   HEADER ?break HERE CELL+ ,
   mov_rcx,d# 0x 10 D,
-  xor_rbp,rbp
+  xor_rsi,rsi
   mov_rdx,#  ' Pop @ ,   call_rdx
   test_rax,rax
-  cmovne_rcx,rbp
+  cmovne_rcx,rsi 
   add_rsp,rcx
   ret
   
@@ -127,10 +127,10 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
   HEADER 2@	    HERE CELL+ ,
   mov_rdx,#  ' Pop @ ,            call_rdx
   mov_rcx,rax
-  mov_rbp,[rcx+b#] 0x 8 B,
+  mov_rsi,[rcx+b#] 0x 8 B,
   mov_rax,[rax]
   mov_rdx,#  ' Push @ ,           call_rdx
-  mov_rax,rbp
+  mov_rax,rsi
   call_rdx
   ret
   ALIGN
