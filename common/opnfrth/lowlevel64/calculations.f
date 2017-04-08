@@ -18,18 +18,18 @@
    
  HEADER +	 HERE CELL+ ,
  mov_rdx,# ' Pop @ ,   call_rdx
- mov_rbp,rax
+ mov_rcx,rax
  call_rdx
- add_rax,rbp
+ add_rax,rcx
  mov_rdx,#  ' Push @ ,   call_rdx
  ret
  ALIGN
  
  HEADER -      HERE CELL+ ,      
  mov_rdx,# ' Pop @ ,    call_rdx           
- mov_rbp,rax       
+ mov_rcx,rax       
  call_rdx          
- sub_rax,rbp       
+ sub_rax,rcx       
  mov_rdx,#  ' Push @ ,  call_rdx    
  ret         
  ALIGN  
@@ -57,9 +57,9 @@
 
  HEADER SWAP-      HERE CELL+ ,     
  mov_rdx,# ' Pop @ ,    call_rdx      
- mov_rbp,rax         
+ mov_rcx,rax         
  call_rdx            
- sub_rax,rbp  neg_rax     
+ sub_rax,rcx  neg_rax     
  mov_rdx,#  ' Push @ ,  call_rdx                                  
  ret           
  ALIGN    
@@ -72,6 +72,14 @@
  mov_rdx,#  ' Push @ ,  call_rdx
  ret
  ALIGN
+ 
+ HEADER  CELLs    HERE CELL+ ,
+ mov_rdx,#  ' Pop @ ,   call_rdx
+ shl_rax,# 0x 3 B, 
+ mov_rdx,#  ' Push @ ,  call_rdx
+ ret
+ ALIGN 
+ 
  
 HEADER =        HERE CELL+ ,                
 mov_rdx,# ' Pop @ ,   call_rdx              
@@ -145,6 +153,13 @@ shr_rax,cl
 mov_rdx,#  ' Push @ ,           call_rdx           
 ret        
 ALIGN    
+
+HEADER 2/         HERE CELL+ ,       
+mov_rdx,#  ' Pop @ ,            call_rdx       
+shr_rax,1            
+mov_rdx,#  ' Push @ ,           call_rdx           
+ret        
+ALIGN
 
 HEADER Lshift         HERE CELL+ ,       
  mov_rdx,#  ' Pop @ ,            call_rdx      
