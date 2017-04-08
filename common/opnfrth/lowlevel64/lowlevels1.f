@@ -39,9 +39,9 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
   
   HEADER SWAP!	       HERE CELL+ ,
   mov_rdx,#  ' Pop @ ,            call_rdx
-  mov_rbp,rax
+  mov_rcx,rax
   call_rdx
-  mov_[rax],rbp
+  mov_[rax],rcx
   ret
   ALIGN
 
@@ -113,11 +113,11 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
 
   HEADER SWAP HERE CELL+ , 
   mov_rdx,# ' Pop @ , call_rdx   
-  mov_rbp,rax 
+  mov_rcx,rax 
   call_rdx    
-  xchg_rax,rbp 
+  xchg_rax,rcx
   mov_rdx,# ' Push @ , call_rdx   
-  mov_rax,rbp 
+  mov_rax,rcx
   call_rdx 
   ret 
   ALIGN  
