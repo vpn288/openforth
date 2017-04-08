@@ -119,9 +119,9 @@ ALIGN
 
  HEADER AND        HERE CELL+ ,               
  mov_rdx,# ' Pop @ ,   call_rdx              
- mov_rbp,rax           
+ mov_rcx,rax           
  call_rdx                    
- and_rax,rbp          
+ and_rax,rcx          
  mov_rdx,#  ' Push @ ,   call_rdx            
  ret                                     
  ALIGN   
