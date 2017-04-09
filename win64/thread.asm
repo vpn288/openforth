@@ -97,39 +97,41 @@ idaqa:
 
 
 new_thread:
+	 mov	 rbp,rsp
+	 sub	 rsp,100h
 	 mov		rcx,0
 	 mov		rdx,65536 +8192
-	call	       [LocalAlloc]
-	mov	       [mem],rax
-	 mov		rdx,rax
-	call	       [TlsAlloc]
-	mov	       rcx,rax
-	 mov		[thr],rax
-	call	       [TlsSetValue]
+	 call		[LocalAlloc]
+	 mov		[stack_base],rax
 
 new_thread_loop:
+
 	mov	rcx,10000
 	call	[Sleep]
 	 xor	 r9,r9
 	 mov	 r8,13
 	 mov	 rdx,_text
-      ;   call	  _push
-       ;  call	  _typez
+	   mov	rax,[thr]
+	   mov	rax,_text
+	 call	 _push
+	 call	 _typez
+;	  call	  _pop
+   ;	  call	  _hex_dot
 	 mov	 rcx,[hStdout]
 	call	[WriteConsole]
 
-      ;  inc  [thr]
-	mov  rax,[thr]
-	  mov rcx,2
-	call	[TlsGetValue]
-	mov	[idx],rax
-	call	[GetLastError]
-	mov    [herr],rax ;
+       inc  [thr]
 
-	mov	r11,rax
-	 mov rbx,[r10+65536+32]
-	 add rbx , cell_size
-	and rbx , [data_stack_mask]
+	  mov rcx,2
+ ;	 call	 [TlsGetValue]
+ ;	 mov	 [idx],rax
+ ;	 call	 [GetLastError]
+ ;	 mov	[herr],rax ;
+
+  ;	 mov	 r11,rax
+  ;	  mov rbx,[r10+65536+32]
+  ;	  add rbx , cell_size
+  ;	 and rbx , [data_stack_mask]
       ;  add r10,rbx
        ; mov  [mem],r10
        ; mov [r10] , rax
@@ -1502,7 +1504,7 @@ entry start
 	mov	r8,new_thread
 	mov	r9,0
 	mov	qword [rsp+20h],0
-	call	[CreateThread]
+     ;	 call	 [CreateThread]
 	add	rsp,30h
 	call	_push
 	er:
