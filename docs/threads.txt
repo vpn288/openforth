@@ -82,3 +82,7 @@ stack_base    dq 0        должна быть у каждого треда с�
 
 Ура ура! Мультитредовость заработала.
 
+Thread: threadword  word word word  ;Thread
+
+threadword START SUSPEND RESUME STOP 
+
