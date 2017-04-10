@@ -86,3 +86,6 @@ Thread: threadword  word word word  ;Thread
 
 threadword START SUSPEND RESUME STOP 
 
+Thread: создает слово, выделяет память под новый тред, создает и запускает новый тред в засуспенженом состоянии.
+threadword кладет на стек свой xt. 
+
