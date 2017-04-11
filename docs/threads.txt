@@ -89,3 +89,20 @@ threadword START SUSPEND RESUME STOP
 Thread: создает слово, выделяет память под новый тред, создает и запускает новый тред в засуспенженом состоянии.
 threadword кладет на стек свой xt. 
 
+
+WORD: Thread:  CREATE  
+               0 0  ['] thread_test @ 
+               0 hex, 12000 hex, 3000 hex, 40  VirtualAlloc  
+			   hex, 4 CreateThread  , DOES> @ (( ага. и сюда надо воткнуть thread_start, а потом должна включиться компиляция до слова ;Thread ) 
+;WORD 
+
+
+HEADER  thread_start  HERE CELL+ , 
+    mov_rax,rcx
+    mov_rbp,rsp
+    sub_rsp,b# 0x 70 B, 
+    mov_[rbp+b#],rax 0 B,
+    xor_rax,rax
+    mov_[rbp+b#],rax 0x F8 B,
+    
+
