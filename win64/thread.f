@@ -32,11 +32,10 @@ ret
 ALIGN 
 
 HEADER  thread_test  HERE CELL+ , 
- 
-  mov_rbp,rsp
+    mov_rax,rcx
+    mov_rbp,rsp
    sub_rsp,b# 0x 70 B, 
-   mov_rax,# thr_stack ,
-   mov_[rbp+b#],rax 0 B,
+    mov_[rbp+b#],rax 0 B,
    xor_rax,rax
    mov_[rbp+b#],rax 0x F8 B,
    
@@ -51,13 +50,19 @@ HEADER  thread_test  HERE CELL+ ,
  
 ALIGN
 
+WORD: Thread:  CREATE  
+               0 0  (( здесь должен быть адрес начала треда )
+               0 hex, 12000 hex, 3000 hex, 40  VirtualAlloc  
+			   hex, 4 CreateThread 
+;WORD 
+
 FORTH32 CONTEXT !
 
-WORD: tred   thr @ DUP 1+ thr !  h.  ." thred 2 "  hex, 400 Sleep Pop ;WORD 
+WORD: tred   thr @ 1+ DUP thr !  h.  ." thred 2 "  hex, 40 Sleep Pop ;WORD 
 
 ' tred   ' ThreadProc CELL+ ! 
 
 
- 0 0 ' thread_test @ 0 0 CreateThread h. 
+ 0 0 ' thread_test @  thr_stack @  0 CreateThread h. 
 
 EXIT 
