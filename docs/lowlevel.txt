@@ -8,3 +8,5 @@ WORD: ;CODE ALIGN ;WORD
 А без WORD:?
 
 HEADER  CODE:  interpret# ,  ' HERE , ' CELL+ ,  ' EXIT ,
+HEADER ;CODE  а вот не буду его делать.
+
