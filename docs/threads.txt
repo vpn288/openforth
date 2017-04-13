@@ -109,4 +109,26 @@ HEADER  thread_start  HERE CELL+ ,
     Проблема стандартная - слишком много всего. надо разбивать.
     Попробуем сперва слепить thread_start.
     
+    Получилось
+    
+WORD:  thread_low
+    mov_rax,rcx
+    mov_rbp,rsp
+    sub_rsp,b# 0x 70 B, 
+    mov_[rbp+b#],rax 0 B,
+    xor_rax,rax
+    mov_[rbp+b#],rax 0x F8 B,
+	mov_rax,# HERE 0 , 
+    mov_r11,#  ' Push @   , call_r11 
+   mov_r11,# ' EXECUTE @ , call_r11
+   ( thread finish )
+ 
+    mov_r11,# ' ExitThread @ , call_r11
+ALIGN
+;WORD 
 
+
+    
+0 0  ['] thread_test @ вот здесь должно быть слово кладущее xt thread_low. Как у нас там XT:? 
+               0 hex, 12000 hex, 3000 hex, 40  VirtualAlloc  
+			   hex, 4 CreateThread
