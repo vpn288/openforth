@@ -1,7 +1,12 @@
-ASSEMBLER CONTEXT ! FORTH32 CURRENT !
+ 
+  ASSEMBLER CONTEXT ! ASSEMBLER CURRENT !
+
+    HEADER CODE:  interpret# ,  ' HEADER ,  ' HERE , ' CELL+ , ' , ,  ' EXIT ,
 
   
-  HEADER ALLOT	    HERE CELL+ ,
+  ASSEMBLER FORTH32 LINK ASSEMBLER CONTEXT ! FORTH32 CURRENT !
+  
+  CODE:  ALLOT	      
   mov_rdx,#  ' Pop @ ,            call_rdx
   mov_rdx,#  ' HERE CELL+ ,
   add_[rdx],rax 
@@ -10,13 +15,13 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
   ALIGN
 
   
-  HEADER bpoint HERE CELL+ ,
+  CODE: bpoint 
   int3
   ret
   ALIGN
   
   
-  HEADER DUP	    HERE CELL+ ,
+  CODE: DUP	   
   mov_rdx,#  ' Pop @ ,            call_rdx
   mov_rdx,#  ' Push @ ,  call_rdx  call_rdx
   ret
@@ -135,3 +140,4 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
  
  
    EXIT
+  
