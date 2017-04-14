@@ -1,6 +1,6 @@
  ASSEMBLER CONTEXT !	  FORTH32 CURRENT !   
 
- HEADER 1+	   HERE CELL+ ,
+ CODE: 1+	  
  mov_rdx,#  ' Pop @ ,            call_rdx
  inc_rax
  mov_rdx,#  ' Push @ ,           call_rdx
@@ -9,7 +9,7 @@
  ALIGN
   
  
- HEADER 2+         HERE CELL+ ,       
+ CODE: 2+         
  mov_rdx,#  ' Pop @ ,            call_rdx       
  inc_rax    inc_rax        
  mov_rdx,#  ' Push @ ,           call_rdx           
