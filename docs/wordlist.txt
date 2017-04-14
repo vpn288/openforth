@@ -59,3 +59,9 @@ CODE: ALLOT bpoint DUP C! 0! SWAP! >R R> RDROP R@ C@ SP@ b(swap_ab) SWAP clear
 compile1.f    
 -----------------------------------------------------
 B, W, D, 
+
+-----------------------------------------------------
+lowlevels2.f    
+-----------------------------------------------------
+lit# SLIT quit break dodoes here COMPILE BRANCH ?OF ?BRANCH ?break strcopy 2@ ASCIIZ>COUNT b_swap_split
+w_swap_split LowDword 
