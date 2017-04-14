@@ -27,7 +27,7 @@
   ret
   ALIGN
   
-  HEADER C!         HERE CELL+ ,   
+  CODE: C!         
   mov_rdx,#  ' Pop @ ,            call_rdx      
   mov_rsi,rax  
   call_rdx         
@@ -35,14 +35,14 @@
   ret        
   ALIGN  
   
-  HEADER 0!         HERE CELL+ ,   
+  CODE: 0!           
   mov_rdx,#  ' Pop @ ,            call_rdx      
   xor_rcx,rcx  
   mov_[rax],rcx      
   ret        
   ALIGN  
   
-  HEADER SWAP!	       HERE CELL+ ,
+  CODE: SWAP!	       
   mov_rdx,#  ' Pop @ ,            call_rdx
   mov_rcx,rax
   call_rdx
@@ -50,7 +50,7 @@
   ret
   ALIGN
 
-  HEADER >R	    HERE CELL+ ,
+  CODE: >R	    
   mov_rdx,#  ' Pop @ ,   call_rdx
   pop_rbx
   pop_rcx
@@ -60,7 +60,7 @@
   ret
   ALIGN
 
-  HEADER R>	    HERE CELL+ ,
+  CODE: R>	   
   pop_rbx
   pop_rcx
   pop_rax
@@ -70,7 +70,7 @@
   ret
   ALIGN
   
-  HEADER RDROP	    HERE CELL+ ,
+  CODE: RDROP	    
   pop_rbx
   pop_rcx
   pop_rax
@@ -79,7 +79,7 @@
   ret
   ALIGN
 
-  HEADER R@	    HERE CELL+ ,
+  CODE: R@	    
   pop_rbx
   pop_rcx
   pop_rax
@@ -91,7 +91,7 @@
   ALIGN
 
   
-  HEADER C@	    HERE CELL+ ,
+  CODE: C@	    
   mov_rdx,#  ' Pop @ ,            call_rdx
   movzx_rax,b[rax]
   mov_rdx,#  ' Push @ ,           call_rdx
@@ -99,7 +99,7 @@
   ALIGN
   
   
-  HEADER SP@ HERE CELL+ , 
+  CODE: SP@ 
   mov_rdx,# ' Pop @ , call_rdx   
   mov_rdx,# ' Push @ , call_rdx   
   mov_rax,r10 
@@ -107,7 +107,7 @@
   ret 
   ALIGN      
   
-  HEADER b(swap_ab) HERE CELL+ , 
+  CODE: b(swap_ab) 
   mov_rdx,# ' Pop @ , call_rdx 
   xchg_al,ah  
   mov_rdx,# ' Push @ , call_rdx 
@@ -116,7 +116,7 @@
   
  
 
-  HEADER SWAP HERE CELL+ , 
+  CODE: SWAP 
   mov_rdx,# ' Pop @ , call_rdx   
   mov_rcx,rax 
   call_rdx    
@@ -127,7 +127,7 @@
   ret 
   ALIGN  
  
-  HEADER clear            HERE CELL+ ,                      
+  CODE: clear           
   mov_rdx,#  ' Pop @ ,  call_rdx         
   mov_rdi,rax        
   mov_rdx,#  ' Pop @ ,    call_rdx       
