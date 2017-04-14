@@ -52,7 +52,7 @@ INCLUDE: ../common/opnfrth/lowlevel64/numbers.f
 lowlevels1.f    
 -----------------------------------------------------
 
-ALLOT bpoint DUP C! 0! SWAP! >R R> RDROP R@ C@ SP@ b(swap_ab) SWAP clear 
+CODE: ALLOT bpoint DUP C! 0! SWAP! >R R> RDROP R@ C@ SP@ b(swap_ab) SWAP clear 
 
 
 -----------------------------------------------------
