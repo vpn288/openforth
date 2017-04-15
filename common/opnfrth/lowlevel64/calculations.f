@@ -34,28 +34,28 @@
  ret         
  ALIGN  
  
- HEADER 1-	   HERE CELL+ ,
+ CODE: 1-	   
  mov_rdx,#  ' Pop @ ,            call_rdx
  dec_rax
  mov_rdx,#  ' Push @ ,           call_rdx
  ret
  ALIGN
  
- HEADER NOT         HERE CELL+ ,       
+ CODE: NOT         
  mov_rdx,#  ' Pop @ ,            call_rdx       
  not_rax            
  mov_rdx,#  ' Push @ ,           call_rdx           
  ret        
  ALIGN    
  
- HEADER NEGATE         HERE CELL+ ,       
+ CODE: NEGATE        
  mov_rdx,#  ' Pop @ ,            call_rdx       
  neg_rax            
  mov_rdx,#  ' Push @ ,           call_rdx           
  ret        
  ALIGN    
 
- HEADER SWAP-      HERE CELL+ ,     
+ CODE: SWAP-     
  mov_rdx,# ' Pop @ ,    call_rdx      
  mov_rcx,rax         
  call_rdx            
@@ -65,15 +65,14 @@
  ALIGN    
  
 
- 
- HEADER  CELL-	   HERE CELL+ ,
+ CODE:  CELL-	   
  mov_rdx,#  ' Pop @ ,   call_rdx
  sub_rax,b# 0x 8 B, 
  mov_rdx,#  ' Push @ ,  call_rdx
  ret
  ALIGN
  
- HEADER  CELLs    HERE CELL+ ,
+ CODE:  CELLs   
  mov_rdx,#  ' Pop @ ,   call_rdx
  shl_rax,# 0x 3 B, 
  mov_rdx,#  ' Push @ ,  call_rdx
@@ -81,7 +80,7 @@
  ALIGN 
  
  
-HEADER =        HERE CELL+ ,                
+CODE: =       
 mov_rdx,# ' Pop @ ,   call_rdx              
 mov_rbp,rax           
 call_rdx                 
@@ -93,7 +92,7 @@ mov_rdx,#  ' Push @ ,   call_rdx
 ret                                     
 ALIGN        
 
- HEADER <>	  HERE CELL+ ,
+ CODE: <>	 
  mov_rdx,# ' Pop @ ,   call_rdx
  mov_rbp,rax
  call_rdx
@@ -105,7 +104,7 @@ ALIGN
  ret
  ALIGN
 
- HEADER <	 HERE CELL+ ,
+ CODE: <	 
  mov_rdx,# ' Pop @ ,   call_rdx
  mov_rbp,rax
  call_rdx
@@ -117,7 +116,7 @@ ALIGN
  ret
  ALIGN
 
- HEADER AND        HERE CELL+ ,               
+ CODE: AND       
  mov_rdx,# ' Pop @ ,   call_rdx              
  mov_rcx,rax           
  call_rdx                    
@@ -126,7 +125,7 @@ ALIGN
  ret                                     
  ALIGN   
 
- HEADER OR        HERE CELL+ ,               
+ CODE: OR        
  mov_rdx,# ' Pop @ ,   call_rdx              
  mov_rbp,rax           
  call_rdx                    
@@ -135,7 +134,7 @@ ALIGN
  ret                                     
  ALIGN 
 
- HEADER MAX        HERE CELL+ ,               
+ CODE: MAX       
  mov_rdx,# ' Pop @ ,   call_rdx              
  mov_rbp,rax           
  call_rdx     
@@ -145,7 +144,7 @@ ALIGN
  ret                                     
  ALIGN  
 
-HEADER Rshift         HERE CELL+ ,       
+CODE: Rshift       
 mov_rdx,#  ' Pop @ ,            call_rdx       
 mov_rcx,rax  
 call_rdx 
@@ -154,14 +153,14 @@ mov_rdx,#  ' Push @ ,           call_rdx
 ret        
 ALIGN    
 
-HEADER 2/         HERE CELL+ ,       
+CODE: 2/         
 mov_rdx,#  ' Pop @ ,            call_rdx       
 shr_rax,1            
 mov_rdx,#  ' Push @ ,           call_rdx           
 ret        
 ALIGN
 
-HEADER Lshift         HERE CELL+ ,       
+CODE: Lshift       
  mov_rdx,#  ' Pop @ ,            call_rdx      
  mov_rcx,rax  
  call_rdx 
