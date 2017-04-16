@@ -2,14 +2,14 @@
 
 ASSEMBLER FORTH32 LINK    ASSEMBLER CONTEXT !	  FORTH32 CURRENT !
 
- HEADER w(swap_ab) HERE CELL+ , 
+ CODE: w(swap_ab) 
   mov_rdx,# ' Pop @ , call_rdx 
   rol_rax,# 0x 10 B,  
   mov_rdx,# ' Push @ , call_rdx 
   ret 
   ALIGN
   
-  HEADER ?MAX HERE CELL+ ,
+  CODE: ?MAX 
   mov_rdx,# ' Pop @ ,   call_rdx              
   xor_rcx,rcx
   mov_rcx,rax           
@@ -29,7 +29,7 @@ ASSEMBLER FORTH32 LINK    ASSEMBLER CONTEXT !	  FORTH32 CURRENT !
   
   ASSEMBLER FORTH32 LINK  
   
-  HEADER SADD  HERE CELL+ ,
+  CODE: SADD  
    mov_rax,# a_arg ,
    movdqu_xmm1,[rax]
    mov_rax,#   b_arg , 
