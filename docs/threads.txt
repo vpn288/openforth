@@ -132,3 +132,5 @@ ALIGN
 0 0  ['] thread_test @ вот здесь должно быть слово кладущее xt thread_low. Как у нас там XT:? 
                0 hex, 12000 hex, 3000 hex, 40  VirtualAlloc  
 			   hex, 4 CreateThread
+
+Слово Thread: по сути WORD: 
