@@ -134,3 +134,5 @@ ALIGN
 			   hex, 4 CreateThread
 
 Слово Thread: по сути WORD: 
+Cлово, определенное через Thread: просто кладет на стек thread_id. То-есть CONSTANT.
+
