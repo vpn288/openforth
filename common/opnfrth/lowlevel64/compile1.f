@@ -1,6 +1,6 @@
 ASSEMBLER CONTEXT !    FORTH32 CURRENT !
 
-HEADER B,     HERE CELL+ ,
+CODE: B,     
 mov_rdx,# ' Pop @ , call_rdx
 mov_rdx,#  ' HERE CELL+ , 
 mov_r11,[rdx]
@@ -9,8 +9,7 @@ inc_[rdx]
 ret
 ALIGN
 
-HEADER W,     HERE CELL+ ,
-
+CODE: W,     
 mov_rdx,# ' Pop @ , call_rdx
 mov_rdx,#  ' HERE CELL+ , 
 mov_r11,[rdx]
@@ -22,7 +21,7 @@ ALIGN
 
 ASSEMBLER FORTH32 LINK 
 
-HEADER D,     HERE CELL+ ,
+CODE: D,     
 mov_rdx,# ' Pop @ , call_rdx
 mov_rdx,#  ' HERE CELL+ , 
 mov_r11,[rdx]
