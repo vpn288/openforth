@@ -1,6 +1,6 @@
 ASSEMBLER CONTEXT ! FORTH32 CURRENT !
 
-  HEADER lit#	    HERE CELL+ ,
+  CODE: lit#	    
   mov_rax,[rsp+b#] 0x 8 B, 
   mov_rax,[rax+b#] 0x 8 B,
   mov_rdx,#  ' Push @ , call_rdx
@@ -9,7 +9,7 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
   ALIGN
 
   
-  HEADER SLIT	       HERE CELL+ ,
+  CODE: SLIT	       
   mov_rax,[rsp+b#] 0x 8 B, 
   add_rax,b# 0x 8 B,
   mov_rdx,#  ' Push @ ,           call_rdx
@@ -27,14 +27,14 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
   ALIGN
 
  
-  HEADER quit HERE CELL+ ,
+  CODE: quit 
   mov_rax,[rsp+b#] 0x 20 B,
   add_rax,b# 0x 10 B, 
   mov_[rsp+b#],rax 0x 20 B,
   ret
   ALIGN
   
-  HEADER break	    HERE CELL+ ,
+  CODE: break	    
   pop_rbx
   pop_rcx
   pop_rax
@@ -42,7 +42,7 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
   ret
   ALIGN
     
-  HEADER dodoes  HERE CELL+ ,
+  CODE: dodoes  
   add_rax,b# 0x 8 B, 
   mov_rdx,#  ' Push @ ,     call_rdx  
   pop_rax
@@ -52,14 +52,14 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
   ret
   ALIGN
   
-  HEADER here   HERE CELL+ , 
+  CODE: here   
   mov_rax,[rsp+b#]   0x 8 B,            
   mov_rdx,#  ' Push @ ,           call_rdx        
   ret 
   ALIGN
 
   
-  HEADER COMPILE	     HERE CELL+ ,
+  CODE: COMPILE	     
   mov_rax,[rsp+b#] 0x 8 B,
   mov_rax,[rax+b#] 0x 8 B, 
   mov_rdx,#  ' Push @ ,           call_rdx
@@ -68,14 +68,14 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
   ret
   ALIGN
 
-  HEADER BRANCH 	 HERE	CELL+ ,
+  CODE: BRANCH 	 	
   mov_rax,[rsp+b#] 0x 8 B,
   mov_rax,[rax+b#] 0x 8 B,
   mov_[rsp+b#],rax 0x 8 B,
   ret
   ALIGN
 
-  HEADER ?OF	      HERE   CELL+ ,
+  CODE: ?OF	      
   mov_rcx,[rsp+b#] 0x 8 B,
   mov_rsi,[rcx+b#] 0x 8 B,
   add_rcx,b# 0x 8 B, 
@@ -87,7 +87,7 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
   ret
   ALIGN
 
-  HEADER ?BRANCH	 HERE	CELL+ ,
+  CODE: ?BRANCH	 
   mov_rcx,[rsp+b#] 0x 8 B, 
   mov_rsi,[rcx+b#] 0x 8 B,
   add_rcx,b# 0x 8 B,
@@ -99,7 +99,7 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
   ret
   ALIGN
   
-  HEADER ?break HERE CELL+ ,
+  CODE: ?break 
   mov_rcx,d# 0x 10 D,
   xor_rsi,rsi
   mov_rdx,#  ' Pop @ ,   call_rdx
@@ -110,7 +110,7 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
   
   ALIGN
 
-  HEADER strcopy	    HERE CELL+ ,
+  CODE: strcopy	    
   mov_rdx,#  ' Pop @ ,            call_rdx
   mov_rdi,rax
   mov_rdx,#  ' Pop @ ,            call_rdx
@@ -124,7 +124,7 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
   ALIGN
 
    
-  HEADER 2@	    HERE CELL+ ,
+  CODE: 2@	    
   mov_rdx,#  ' Pop @ ,            call_rdx
   mov_rcx,rax
   mov_rsi,[rcx+b#] 0x 8 B,
@@ -135,7 +135,7 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
   ret
   ALIGN
   
-  HEADER ASCIIZ>COUNT  HERE CELL+ ,
+  CODE: ASCIIZ>COUNT  
   mov_rdx,#  ' Pop @ ,            call_rdx
   mov_rdi,rax
   mov_rsi,rax
@@ -153,7 +153,7 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
   ALIGN
   
   
- HEADER b_swap_split     HERE CELL+ ,
+ CODE: b_swap_split    
  mov_rdx,# ' Pop @ , call_rdx 
  mov_ch,ah 
  and_rax,d#  0x ff D,
@@ -163,7 +163,7 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
  ret
  ALIGN
  
- HEADER w_swap_split     HERE CELL+ ,
+ CODE: w_swap_split     
  mov_rdx,# ' Pop @ , call_rdx 
  mov_rcx,rax 
  and_rax,d#  0x ffff D,
@@ -175,7 +175,7 @@ ASSEMBLER CONTEXT ! FORTH32 CURRENT !
  ret
  ALIGN 
  
- HEADER LowDword    HERE CELL+ ,
+ CODE: LowDword    
  mov_rdx,# ' Pop @ , call_rdx 
  mov_rcx,# 0x ffffffff , 
  and_rax,rcx
