@@ -13,7 +13,7 @@ CREATE   hexstr         0x 33323235363941433332323536394143 DUP , , 0x 20 DUP , 
  
 ASSEMBLER FORTH32 LINK 
 
-HEADER    inverse_hexstr  HERE CELL+ ,    
+CODE:    inverse_hexstr  
 mov_rcx,#  hexstr ,       
 mov_rax,[rcx]                           
 mov_rbx,[rcx+b#]  0x  8 B, 
@@ -31,13 +31,13 @@ ALIGN
 
 
 
-HEADER (hex_pop) HERE CELL+ ,     
+CODE: (hex_pop) 
 mov_rdx,#  ' Pop @ , call_rdx                    
 mov_[],rax   hex_dot_value  ,                    
 ret 
 ALIGN   
 
-HEADER (hex_pop2) HERE CELL+ ,     
+CODE: (hex_pop2) 
 mov_rdx,#  ' Pop @ , call_rdx                    
 mov_[],rax   hex_dot_value  CELL+ ,              
 ret 
@@ -45,7 +45,7 @@ ALIGN
 
 
 
-HEADER (hex_convert) HERE CELL+ , 
+CODE: (hex_convert) 
 
 mov_rax,# hex_dot_value  ,
 movdqu_xmm0,[rax]                   
@@ -95,14 +95,14 @@ movdqu_[rax],xmm0
 ret                                              
 ALIGN   
         
-HEADER (clear_hex)   HERE CELL+ ,        
+CODE: (clear_hex)   
 mov_rax,# hex_dot_value  ,          
 pxor_xmm0,xmm0                             
 movdqu_[rax],xmm0  
 ret 
 ALIGN   
 
-HEADER (2d)  HERE CELL+ , 
+CODE: (2d)  
   
 fldz 
 mov_rdx,# 0x 13 , 
@@ -119,8 +119,10 @@ lodsb
 xor_rdx,rdx 
 and_al,# 0x f B, 
 mov_ah,al 
+
 sub_al,# 0x b B, 
-jb forward> 
+
+jb  forward> 
 shl_al,# 0x 6 B, 
 mov_[],al decimalv 0x 9 + , 
 
@@ -154,14 +156,14 @@ fistp_[r11]
 ret 
 ALIGN 
 
-HEADER (dec_pop) HERE CELL+ ,   
+CODE: (dec_pop) 
   
 mov_rdx,#  ' Pop @ , call_rdx                    
 mov_[],rax   decimalv  ,                    
 ret 
 ALIGN   
 
-HEADER (dec_pop2) HERE CELL+ ,     
+CODE: (dec_pop2) 
 mov_rdx,#  ' Pop @ , call_rdx                
 mov_[],rax   decimalv  CELL+ ,               
 ret 
@@ -169,7 +171,7 @@ ALIGN
 
 
 
-HEADER (d.) HERE CELL+ , 
+CODE: (d.) 
 mov_r11,# decimalv , 
 fild_[r11] 
 fbstp_[r11]   
