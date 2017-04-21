@@ -65,3 +65,8 @@ lowlevels2.f
 -----------------------------------------------------
 lit# SLIT quit break dodoes here COMPILE BRANCH ?OF ?BRANCH ?break strcopy 2@ ASCIIZ>COUNT b_swap_split
 w_swap_split LowDword 
+
+-----------------------------------------------------
+calculations.f    
+-----------------------------------------------------
+1+ 2+ + - 1- NOT NEGATE SWAP- CELL- CELLs = <> < AND OR MAX Rshift 2/ Lshift 
