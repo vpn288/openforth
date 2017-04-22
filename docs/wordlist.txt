@@ -70,3 +70,8 @@ w_swap_split LowDword
 calculations.f    
 -----------------------------------------------------
 1+ 2+ + - 1- NOT NEGATE SWAP- CELL- CELLs = <> < AND OR MAX Rshift 2/ Lshift 
+
+-----------------------------------------------------
+compile2.f    
+-----------------------------------------------------
+LIT, ;Word   Word: CONSTANT 0 1 -1 BL ) QUOTE ', CREATE  
