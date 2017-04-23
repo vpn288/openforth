@@ -82,9 +82,9 @@
  
 CODE: =       
 mov_rdx,# ' Pop @ ,   call_rdx              
-mov_rbp,rax           
+mov_rsi,rax           
 call_rdx                 
-cmp_rax,rbp          
+cmp_rax,rsi          
 sete_al            
 and_rax,d# 0x FF D, 
 neg_rax   
@@ -94,9 +94,9 @@ ALIGN
 
  CODE: <>	 
  mov_rdx,# ' Pop @ ,   call_rdx
- mov_rbp,rax
+ mov_rsi,rax
  call_rdx
- cmp_rax,rbp
+ cmp_rax,rsi
  setne_al
  and_rax,d# 0x FF D,
  neg_rax
@@ -106,9 +106,9 @@ ALIGN
 
  CODE: <	 
  mov_rdx,# ' Pop @ ,   call_rdx
- mov_rbp,rax
+ mov_rsi,rax
  call_rdx
- cmp_rax,rbp
+ cmp_rax,rsi
  seta_al
  and_rax,d# 0x FF D,
  neg_rax
@@ -127,19 +127,19 @@ ALIGN
 
  CODE: OR        
  mov_rdx,# ' Pop @ ,   call_rdx              
- mov_rbp,rax           
+ mov_rsi,rax           
  call_rdx                    
- or_rax,rbp          
+ or_rax,rsi         
  mov_rdx,#  ' Push @ ,   call_rdx            
  ret                                     
  ALIGN 
 
  CODE: MAX       
  mov_rdx,# ' Pop @ ,   call_rdx              
- mov_rbp,rax           
+ mov_rsi,rax           
  call_rdx     
- cmp_rax,rbp
- cmovc_rax,rbp 
+ cmp_rax,rsi
+ cmovc_rax,rsi 
  mov_rdx,#  ' Push @ ,   call_rdx            
  ret                                     
  ALIGN  
