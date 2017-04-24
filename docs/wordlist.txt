@@ -76,3 +76,8 @@ compile2.f
 -----------------------------------------------------
 LIT, ;Word   Word: CONSTANT 0 1 -1 BL ) QUOTE ', CREATE  VARIABLE 0x, PAD SPACE WORD S" ." ," make_badword make_exit 
 VOCABULARY compiler 
+
+
+-----------------------------------------------------
+init_immediates.f   
+-----------------------------------------------------
