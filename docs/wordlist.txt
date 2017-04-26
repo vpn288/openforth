@@ -82,3 +82,8 @@ VOCABULARY compiler
 init_immediates.f   
 -----------------------------------------------------
 ;WORD ;XT  ;NONAME 
+
+-----------------------------------------------------
+controls.f   
+-----------------------------------------------------
+BEGIN AGAIN UNTIL IF THEN ELSE ENDOF	OF	
