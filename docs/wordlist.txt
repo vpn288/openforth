@@ -87,3 +87,9 @@ init_immediates.f
 controls.f   
 -----------------------------------------------------
 BEGIN AGAIN UNTIL IF THEN ELSE ENDOF	OF	
+
+-----------------------------------------------------
+immediates.f   
+-----------------------------------------------------
+(jsr) (does>) immediator   WORD: Begin	Until	Again	If	Then	Else	(EndCase) Case	Of	EndOf	
+EndCase	Do	Loop	 does>  DOES> [  ] ['] hex, (( 
