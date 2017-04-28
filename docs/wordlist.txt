@@ -93,3 +93,8 @@ immediates.f
 -----------------------------------------------------
 (jsr) (does>) immediator   WORD: Begin	Until	Again	If	Then	Else	(EndCase) Case	Of	EndOf	
 EndCase	Do	Loop	 does>  DOES> [  ] ['] hex, (( 
+
+-----------------------------------------------------
+compile3.f   
+-----------------------------------------------------
+NOOP  ( NAME> NONAME: XT: VECT nopsing forward> >forward backward< <backward  
