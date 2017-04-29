@@ -98,3 +98,7 @@ EndCase	Do	Loop	 does>  DOES> [  ] ['] hex, ((
 compile3.f   
 -----------------------------------------------------
 NOOP  ( NAME> NONAME: XT: VECT nopsing forward> >forward backward< <backward  
+
+-----------------------------------------------------
+numbers.f   
+-----------------------------------------------------
