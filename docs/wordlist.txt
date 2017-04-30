@@ -102,3 +102,5 @@ NOOP  ( NAME> NONAME: XT: VECT nopsing forward> >forward backward< <backward
 -----------------------------------------------------
 numbers.f   
 -----------------------------------------------------
+decimalv  hex_dot_value sixes efes sevens zeroes hexstr  inverse_hexstr (hex_pop)  (hex_pop2) (hex_convert)  (clear_hex) 
+(2d) (dec_pop)  (dec_pop2) (d.) 
