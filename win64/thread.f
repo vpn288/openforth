@@ -62,7 +62,7 @@ WORD: tread+
 				  get_thread_handle n_th @ threads + !
                   n_th @ CELL+ n_th !  				  ;WORD 
 				  
- thread+ 
+ Pop SP@ tread+ 
 				  
 WORD: thread>mem 
                   GetCurrentThreadId 
@@ -70,14 +70,14 @@ WORD: thread>mem
 
 WORD: inthread1     
                   tread+
-				  Begin thr @ 1+ DUP thr !  h. ." thred 2 "   thread>mem  h.   hex, 1700 Sleep Pop Again    thread_low  ;WORD
+				  Begin thr @ 1+ DUP thr !  h. ." thred 2 "   thread>mem  h. SP@ h.   hex, 1700 Sleep Pop Again    thread_low  ;WORD
  
 starttr: CONSTANT mytr1
 
 
 WORD: inthread2  
                  tread+
-                 Begin thr @ 1+ DUP thr !  h. ." thred 3 " thread>mem   h. hex, 1937 Sleep Pop Again      thread_low   ;WORD
+                 Begin thr @ 1+ DUP thr !  h. ." thred 3 " thread>mem   h. SP@ h. hex, 1937 Sleep Pop Again      thread_low   ;WORD
  
 starttr: CONSTANT mytr2
 
