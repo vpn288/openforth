@@ -92,7 +92,32 @@ ALIGN  R>
 	   ret
 	   ALIGN
 
+  CODE: restore_rbp
  
+       mov_r11,#  Lib: Kernel32.dll    SetModule: GetCurrentThreadId ,
+       call_r11
+       mov_rcx,# n_th ,
+	   mov_rcx,[rcx]
+	   mov_rdx,# threads CELL- , 
+	   xor_rsi,rsi
+	   backward<
+	   nop nop
+	   test_rcx,rcx 
+	   nop nop
+	(   je forward> )
+	   sub_rcx,b# 0x 8 B, 
+	   add_rsi,d# 0x 8 D, 
+	   cmp_rax,[rsi+rdx] 
+	   jne  <backward
+	   mov_rdx,# mems CELL- , 
+	   mov_rax,[rsi+rdx]
+	   mov_rbp,rax
+	   ret
+	   
+	(   >forward)
+	   ret
+	   ALIGN
+	   
  FORTH32 CONTEXT ! 
 
  
