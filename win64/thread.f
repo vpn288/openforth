@@ -26,6 +26,9 @@ VARIABLE thr_stack
 VARIABLE thread_id
 
 				 
+
+WORD: SetModule:  HERE PARSE 1+ (SetModule) ;WORD 
+WORD: Lib:        HERE PARSE 1+ (LIB)       ;WORD 				 
  
 WORD: starttr:  >R 0 0 R>  DUP  ."  thread_low:"  h. 
                  0  hex, 10000   hex, 3000  hex, 40    VirtualAlloc 
@@ -42,7 +45,7 @@ WORD:  thread_low
     mov_[rbp+b#],rax 0 B,
     xor_rax,rax
     mov_[rbp+b#],rax hex, F8 B,
-	mov_rax,rcx
+	mov_rax,rbp
 	mov_r11,#  COMPILE [ ' Push @ , ]    call_r11 
 	mov_rax,#   , 
     mov_r11,#  COMPILE [ ' Push @ , ]    call_r11 
@@ -54,15 +57,58 @@ ALIGN  R>
  ;WORD 
 
 
-FORTH32 CONTEXT ! FORTH32 CURRENT ! 
+ FORTH32 CURRENT ! 
+ 
+ CODE: rbp@ 
+     mov_rax,rbp
+	 mov_r11,#   ' Push @ ,     call_r11 
+	 ret 
+ ALIGN
+ 
+ CODE: tr>mem
+ 
+       mov_r11,#  Lib: Kernel32.dll    SetModule: GetCurrentThreadId ,
+       call_r11
+       mov_rcx,# n_th ,
+	   mov_rcx,[rcx]
+	   mov_rdx,# threads CELL- , 
+	   xor_rsi,rsi
+	   backward<
+	   nop nop
+	   test_rcx,rcx 
+	   nop nop
+	(   je forward> )
+	   sub_rcx,b# 0x 8 B, 
+	   add_rsi,d# 0x 8 D, 
+	   cmp_rax,[rsi+rdx] 
+	   jne  <backward
+	   mov_rdx,# mems CELL- , 
+	   mov_rax,[rsi+rdx]
+	   mov_r11,# ' Push @ , 
+	   call_r11 
+	   ret
+	   
+	(   >forward)
+	   ret
+	   ALIGN
 
+ 
+ FORTH32 CONTEXT ! 
+
+ 
+
+Lib: Kernel32.dll SetModule:  GetCurrentThreadId h. 
+
+
+ 
 WORD: tread+ 
                   
 				  n_th @ mems + !  
 				  get_thread_handle n_th @ threads + !
                   n_th @ CELL+ n_th !  				  ;WORD 
 				  
- Pop SP@ tread+ 
+ rbp@ DUP h. tread+ 
+
 				  
 WORD: thread>mem 
                   GetCurrentThreadId 
@@ -70,7 +116,7 @@ WORD: thread>mem
 
 WORD: inthread1     
                   tread+
-				  Begin thr @ 1+ DUP thr !  h. ." thred 2 "   thread>mem  h. SP@ h.   hex, 1700 Sleep Pop Again    thread_low  ;WORD
+				  Begin thr @ 1+ DUP thr !  h. ." thred 2 "   tr>mem  h. SP@ h.   hex, 1700 Sleep Pop Again    thread_low  ;WORD
  
 starttr: CONSTANT mytr1
 
@@ -83,6 +129,10 @@ starttr: CONSTANT mytr2
 
  
 EXIT 
+
+ 
+ 
+ 
 
 starttr: CONSTANT mytr 
 
