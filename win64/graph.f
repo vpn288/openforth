@@ -1,7 +1,7 @@
 
 FORTH32 CONTEXT ! FORTH32 CURRENT ! 
 
- TEMPORARY{  
+(  TEMPORARY{  )
  
  WORD: set_constant_xt    (( [ ' HERE @ LIT, ] ) ['] HERE @  LATEST NAME> ! ;WORD 
  
@@ -10,12 +10,12 @@ z-str" _class opf_class"
 z-str" title wintitle" 
 z-str" menu menuname"
 
-INCLUDE: struct.f 
-INCLUDE: reverse.f 
-INCLUDE: graphics.f 
+INCLUDE: struct.f  .(  struct loaded )
+INCLUDE: reverse.f  
+INCLUDE: graphics.f .( graphics loded )
 INCLUDE: winwindow.f    
 
- ( creating colors ) 
+ .( creating colors ) 
   0x ff        Color: color_a 
   0x ff00      Color: color_green
   0x 00ff0000  Color: color_blue
@@ -29,7 +29,7 @@ INCLUDE: winwindow.f
            color_blue   SolidBrush: mybrush  
 		 
 
-  *{ 0x 3 0x 3  0x 5 0x 18  0x 34 0x 88 }*  reversed 2/  Points: mypoints 
+  *{ 0x 3 0x 3  0x 5 0x 18  0x 34 0x 88 }*  reversed   2/  Points: mypoints .(  hhhhhh )
  
   *{  0d 10  0d 20    0d 140 0d 40    0d 45  0d 95
       0d 100 0d 120   0d 110 0d 130   0d 140 0d 160  
@@ -52,6 +52,7 @@ INCLUDE: winwindow.f
  
  WORD: isdot?    DUP  CELLs mypts + @   lparam @   lparam2points  delta_xy  ;WORD 
  WORD: thedot    ndot !  0 dragon !  ;WORD 
+ 
  
   
  WORD: find_dot    1  hex, 7 Do R@ isdot?  If Pop Else thedot Then  Loop ;WORD 
@@ -94,18 +95,20 @@ WORD: drawdot   >R
  MESSAGES{{ 
    
 			WM_LBUTTONDOWN{{  on_lbttndown   }}
-			WM_PAINT{{        drawlines      }} 
+			WM_CREATE{{        drawlines      }} 
 			WM_LBUTTONUP{{    1 dragon !     }}
 			WM_MOUSEMOVE{{    nsdot  @   <> If  ."  dot "  drawpoint   Then  
  
-                             dragon @ If  nsdot !  clearwin drawlines Then }}
+                             dragon @ If  nsdot !  clearwin drawlines Then }} 
 				  
  }}MESSAGES  
 
  
-  winparam 0d 400 Width store   0d 400 Height store       FORTH32 CONTEXT !  anb 
+  winparam 0d 400 Width store   0d 400 Height store       FORTH32 CONTEXT !  
+  .( anb start ) 
+  anb 
 
-}TEMPORARY
+( }TEMPORARY )
   
 
 EXIT  
