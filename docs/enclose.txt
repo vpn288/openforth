@@ -94,3 +94,62 @@ _load:
 
 _block0:
 ret
+
+А теперь поглянем на number. Вообще бы надо чтобы он использовал ENCLOSE
+   int 3
+        mov     rsi,[buffer]
+        xor     rdx,rdx
+        add     rsi,[_in_value]
+        mov     rdi,[here_value]
+        mov     rbx,rdi
+        ; fill 32 bytes with zeroes
+        mov     rax,3030303030303030h
+        mov     rcx,cell_size
+        cld
+        rep     stosq
+
+
+        mov     rdi,rbx ; HERE
+        mov     rcx,[bytes_to_read] ; [nkey]
+        cmp     rcx,rdx ; edx=0
+        jl      number2
+
+        inc     rdi
+_skip_delimeters2:
+
+        sub     qword [bytes_to_read],1 ; [nkey],1
+        je      number2
+        lodsb
+        inc     qword [_in_value]
+        cmp     al,21h
+        jb     _skip_delimeters2
+
+        mov             rdi,[here_value]
+        add             rdi,32
+number3:
+        ; move to here +15
+        stosb
+        inc     rdx
+        sub     qword [bytes_to_read],1 ; [nkey],1
+        jb      number4
+        lodsb
+        inc     qword [_in_value]
+        cmp     al,20h
+        ja     number3
+
+number4:
+        ;normalize number
+        ; edx - count of digits
+        sub             rdi,32
+        mov             rax,rdi
+        call    _push
+        ret
+
+number2:
+
+        ; empty string
+        mov     qword [_in_value],0
+        ret                 
+	
+	
+	
