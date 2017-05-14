@@ -39,6 +39,8 @@ idaqa:
     LocalAlloc          dq RVA _LocalAlloc
     TlsAlloc            dq RVA _TlsAlloc
     TlsSetValue         dq RVA _TlsSetValue
+    TlsGetValue         dq RVA _TlsGetValue
+    CreateThread        dq RVA _CreateThread
     dq 0
 
   kernel_name db 'KERNEL32.DLL',0
@@ -80,13 +82,41 @@ idaqa:
     db 'TlsAlloc',0
     _TlsSetValue dw 0
     db 'TlsSetValue',0
+     _TlsGetValue dw 0
+    db 'TlsGetValue',0
+    _CreateThread dw 0
+    db 'CreateThread',0
 
 ;---------------------------
 ; vocabulary start
 ;---------------------------
  section '.text' code readable executable  writeable
-    align cell_size
 
+
+new_thread:
+         mov            rcx,0
+         mov            rdx,65536 +8192
+        call           [LocalAlloc]
+        mov            [mem],rax
+         mov            rdx,rax
+        call           [TlsAlloc]
+        mov            rcx,rax
+        call           [TlsSetValue]
+        mov            [idx],rax
+new_thread_loop:
+        inc  [thr]
+        mov  rax,[thr]
+      ;  call _push
+      ;  call _pop
+      ;  call _hex_dot
+        nop
+        nop
+
+        jmp new_thread_loop
+
+thr2    dq      0
+
+   align cell_size
      hStdin   dq 0
      chars    dq 0
    _cbuffer   db 512 dup ?
@@ -135,9 +165,15 @@ nfa_3:
         dq nfa_2
         dq _push
 _push:
+        push rax   rcx
+        mov rcx,1
+        call    [TlsGetValue]
+        mov     [stack_base],rax
+        pop   rcx rax
+        mov r10,[stack_base]
+
         mov rbx,[stack_pointer]
         add rbx , cell_size
-        mov r10,[stack_base]
         and rbx , [data_stack_mask]
         add r10,rbx
         mov [r10] , rax
@@ -155,6 +191,13 @@ nfa_4:
         dq nfa_3
         dq _pop
 _pop:
+        push rcx
+        mov rcx,1
+        call    [TlsGetValue]
+        mov     [stack_base],rax
+        pop rcx
+
+
         mov rbx,[stack_pointer]
         mov r10,[stack_base]
         mov rax , [rbx+r10]
@@ -193,6 +236,7 @@ nfa_6:
         dq _constant
 here_value:
         dq _here
+
 _constant:
         mov rax,[rax+cell_size]
         call _push
@@ -351,7 +395,9 @@ context_:
         dq _variable_code
 context_value:
         dq f32_list
-
+thr     dq 0
+mem     dq 0
+idx     dq 0
 _variable_code:
         add rax,cell_size
         call _push
@@ -764,7 +810,8 @@ nfa_29:
         dq nfa_28
         dq _number
 _number:
-     ;   int 3
+        mov     r10,[_in_value]
+   ;     int3
         mov     rsi,[buffer]
         xor     rdx,rdx
         add     rsi,[_in_value]
@@ -786,11 +833,11 @@ _number:
 _skip_delimeters2:
 
         sub     qword [bytes_to_read],1 ; [nkey],1
-        je      number2
+        jb      number2
         lodsb
         inc     qword [_in_value]
-        cmp     al,21h
-        jb     _skip_delimeters2
+        cmp     al,20h
+        jbe     _skip_delimeters2
 
         mov             rdi,[here_value]
         add             rdi,32
@@ -806,6 +853,7 @@ number3:
         ja     number3
 
 number4:
+;÷èñëî íà ãðàíèöå ñëîâà
         ;normalize number
         ; edx - count of digits
         sub             rdi,32
@@ -815,8 +863,19 @@ number4:
 
 number2:
 
-        ; empty string
+        ; empty string  pump up
+      ;  int3
+        mov  rax,[block]
+        test rax,rax
+        je   _word5
+        mov     rax,[handle]
+        call    _push
+        call    _rdfile
         mov     qword [_in_value],0
+         mov     rsi,[buffer]
+        jmp    _skip_delimeters2
+
+
         ret
 ;--------------------
         align cell_size
@@ -1364,7 +1423,7 @@ entry start
     ;    call           [VirtualAlloc]
         ;--------alloc data stack--
         mov            rcx,0
-         mov            rdx,65536
+         mov            rdx,65536 +8192
         call           [LocalAlloc]
     ;    mov            r9,0x40
     ;    mov            r8,0x3000
@@ -1372,10 +1431,13 @@ entry start
     ;    xor            rcx,rcx
     ;    call           [VirtualAlloc]
         mov            [stack_base],rax
-        mov            rdx,rax
+      ;  mov            rdx,rax
         call           [TlsAlloc]
         mov            rcx,rax
+        mov            rdx,[stack_base]
         call           [TlsSetValue]
+         mov rcx,1
+        call    [TlsGetValue]
     ;     mov            r14,rax
         call           _push
         call           _hex_dot
@@ -1407,37 +1469,32 @@ entry start
         mov          rdi,[buffer]
         mov          rsi,filename2
         rep          movsq
- ;       xor          rcx,rcx
- ;       mov          rdi,[push_ascii_stack]
- ;       mov          rsi,filename
- ;       mov          cl,[rdi]
-;        cld
- ;       rep          movsb
-   ;     mov          [push_ascii_stack],rdi
-
-   ;     mov          rax,filename
-   ;     call         _push
-   ;     call         _openfile2
-   ;      mov          rax,filename
-   ;     call         _push
-   ;     call         _openfile2
-   ;     call         _pop
-   ;     mov          rcx,rax
-   ;     xor          rax,rax
-   ;     push         rax
-   ;     mov          rdx,[buffer]
-   ;     mov          r8,8192
-   ;     mov          r9,bytes_to_read
-   ;     call         [ReadFile]
-
 
       ;  jmp $
         ;--------jmp to interpret-------------
         push   qword _quit_forth
+
+;---------------------
+;create new thread
+;---------------------
+        sub     rsp,30h
+        mov     rcx,0
+        mov     rdx,0
+        mov     r8,new_thread
+        mov     r9,0
+        mov     qword [rsp+20h],0
+        call    [CreateThread]
+        add     rsp,30h
+        call    _push
+        er:
+    ;    call    _hex_dot
+    ;    jmp $ ;er
         jmp       _interpret
 
+       ;-------------------------------------
+       ;test of thread
+       ;-------------------------------------
 
- ;
         ;----------open file-------
 _openfile2:
 
