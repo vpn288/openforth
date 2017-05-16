@@ -385,6 +385,7 @@ _word2:
 
 _word5:
 ; empty string
+	 pop	rbx
 	 mov	rax,5449584504h ;4,"EXIT"
 	 mov qword [rbx],rax
 	 ;mov dword [ebx+4],054h ;"T",0
