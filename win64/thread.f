@@ -1,4 +1,32 @@
+  
+z-str" _class opf_class" 
+z-str" title wintitle" 
+
+VARIABLE hwnd VARIABLE wmsg VARIABLE wparam VARIABLE lparam  
+  
+VECT  inWinProc  
+
+INCLUDE: winuser.f 
+INCLUDE: struct.f  
+INCLUDE: reverse.f  
+
 WINAPIS:
+ LIB: User32.dll
+		 c_ints CreateWindowExA
+		 1_int  RegisterClassExA
+		 1_int  TranslateMessage
+		 1_int  DispatchMessageA
+		 1_int  GetDC 
+		 1_int  UpdateWindow
+		 2_ints UnregisterClassA
+		 2_ints LoadIconA
+		 2_ints LoadCursorA
+		 3_ints InvalidateRect 
+		
+		 4_ints DefWindowProcA
+		 4_ints MessageBoxA 
+		 4_ints GetMessageA
+		 
    LIB: Kernel32.dll
        6_ints CreateThread
 	   4_ints VirtualAlloc 
@@ -6,6 +34,7 @@ WINAPIS:
 	   1_int  ExitThread
 	   1_int  ResumeThread
 	   1_int  SuspendThread
+	   1_int GetModuleHandleA
 	   void   GetCurrentThreadId
 ;WINAPIS 
  
@@ -34,7 +63,30 @@ WORD: starttr:  >R 0 0 R>  DUP  ."  thread_low:"  h.
                  0  hex, 10000   hex, 3000  hex, 40    VirtualAlloc 
  				 hex, 4  0   CreateThread    ;WORD 
  
-ASSEMBLER FORTH32 LINK ASSEMBLER CONTEXT ! IMMEDIATES CURRENT ! 
+ASSEMBLER FORTH32 LINK ASSEMBLER CONTEXT ! 
+ASSEMBLER CURRENT ! 
+
+            0x 57 0x 1 opcode push_rdi
+            0x 56 0x 1 opcode push_rsi
+      0x 51 0x 41 0x 2 opcode push_r9
+      0x 50 0x 41 0x 2 opcode push_r8 
+0x 10 0x 89 0x 48 0x 3 opcode mov_[rax],rdx 
+0x 00 0x 89 0x 4C 0x 3 opcode mov_[rax],r8 
+0x 08 0x 89 0x 4C 0x 3 opcode mov_[rax],r9 
+            0x 5F 0x 1 opcode pop_rdi 	 
+			0x 5E 0x 1 opcode pop_rsi
+	  0x 58 0x 41 0x 2 opcode pop_r9
+	  0x 58 0x 41 0x 2 opcode pop_r8
+	        0x 5A 0x 1 opcode pop_rdx
+0x EC 0x 83 0x 48 0x 3 opcode sub_rsp,b#
+0x C4 0x 83 0x 48 0x 3 opcode add_rsp,b# 
+0x E8 0x 89 0x 48 0x 3 opcode mov_rax,rbp
+0x 09 0x 8B 0x 48 0x 3 opcode mov_rcx,[rcx] 
+0x C9 0x 85 0x 48 0x 3 opcode test_rcx,rcx 
+
+ASSEMBLER FORTH32 LINK ASSEMBLER CONTEXT !
+
+IMMEDIATES CURRENT ! 
 
 WORD:  thread_low 
     LATEST NAME>  HERE >R
@@ -58,6 +110,42 @@ ALIGN  R>
 
 
  FORTH32 CURRENT ! 
+ 
+  CODE: winproc 
+  push_rcx push_rdx push_r8 push_r9 push_rbx push_rsi push_rdi push_rbp
+ 
+  mov_rax,# hwnd ,   mov_[rax],rcx   
+  mov_rax,# wmsg ,   mov_[rax],rdx   
+  mov_rax,# wparam , mov_[rax],r8	 
+  mov_rax,# lparam , mov_[rax],r9	 
+  
+  mov_r11,# ' restore_rbp @ ,
+  call_r11
+  ( mov_rbp,[rsp+d#] 0x 830 D, )
+  nop
+  
+  nop
+  mov_rax,# ' inWinProc  , 
+  mov_r11,# ' Push @ ,    call_r11 
+  mov_r11,# ' EXECUTE @ , call_r11 
+  mov_r11,# ' Pop @ ,     call_r11 
+  
+  test_rax,rax
+  jne	forward> 
+   pop_rbp pop_rdi pop_rsi pop_rbx pop_r9 pop_r8 pop_rdx pop_rcx
+  ret 
+ 
+  >forward  
+   pop_rbp pop_rdi pop_rsi pop_rbx pop_r9 pop_r8 pop_rdx pop_rcx 
+  push_rcx     push_rdx push_r8 push_r9 push_rbx push_rsi push_rdi push_rbp
+	 
+  mov_r11,# ' DefWindowProcA CELL+ @ ,
+  sub_rsp,b# 0x 20 B,
+  call_r11 
+  add_rsp,b# 0x 20 B, 
+  pop_rbp pop_rdi pop_rsi pop_rbx pop_r9 pop_r8 pop_rdx pop_rcx
+  ret
+ ALIGN
  
  CODE: rbp@ 
      mov_rax,rbp
@@ -152,65 +240,61 @@ WORD: inthread2
  
 starttr: CONSTANT mytr2
 
+CREATE msg  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
+
+0 GetModuleHandleA  CONSTANT hInstance 
+
+CREATE wc   0x 50 D, 0 D, ' winproc @ , 0 D, 0 D, hInstance , 
+ 0 IDI_APPLICATION LoadIconA  ,
+ 0 IDC_ARROW LoadCursorA   , 
+ COLOR_BTNFACE , 0 , _class , 0 ,
+ 
+  wc   RegisterClassExA  h.  
+
+ STRUC: winparam
+  QWORD ExStyle
+  QWORD ClassName
+  QWORD WindowName
+  QWORD Style 
+  QWORD x
+  QWORD y
+  QWORD Width
+  QWORD Height 
+  QWORD WndParent
+  QWORD Menu
+  QWORD Instance
+  QWORD Param
+  ;STRUC 
+  
+winparam    _class ClassName store   
+            title WindowName store
+WS_VISIBLE WS_DLGFRAME WS_SYSMENU   + + Style store 
+	        0d 250 Width store  
+			0d 200 Height store  
+			hInstance Instance store  
+			  
+FORTH32 CONTEXT !  
+
+
+WORD: innerloop    0 Begin Pop msg hwnd @ 0 0  bpoint GetMessageA DUP ." mesage " Until  ;WORD 
+
+
+WORD: MessageLoop  
+ tread+ hex, 1000 Sleep Pop 
+ *{ winparam  get  }* CRLF ." new thread " CRLF 
+  CreateWindowExA ." wincreated:" h. 
+  
+  thr @ 1+  thr ! 
+          Begin  innerloop 1+  ?break  
+		 
+		        msg TranslateMessage Pop  	msg DispatchMessageA Pop 
+ 
+          Again  thread_low  ;WORD
+		  
+		  starttr: CONSTANT mytr3
  
 EXIT 
 
  
  
  
-
-starttr: CONSTANT mytr 
-
- WORD: inthread     Begin thr @ 1+ DUP thr !  h. ." thred 2 " GetCurrentThreadId  h.    hex, 400 Sleep Pop Again ;WORD 
-
-   ' inthread TO ThreadProc   
- WORD: alloc_mem  0  hex, 10000   hex, 3000  hex, 40    VirtualAlloc ;WORD 
-
- DUP .( virt_alloc:) h. thr_stack ! 
- 
-  0 0   ' thread_low @                    thr_stack @ 
- 				 0x 4   thread_id CreateThread  
-
-
-hex, 10000   hex, 3000  hex, 40    VirtualAlloc DUP h.
-
-				  
-  
-				
-				  
- starttr
-
-
-
-VARIABLE RSP 
-WORD: stack_base_address   ['] Pop CELL- CELL- CELL- CELL- ;WORD 
-
-ASSEMBLER CURRENT !
-0x 22 0x 89 0x 48 0x 3 opcode mov_[rdx],rsp 
-
-FORTH32 CURRENT ! 
-
-HEADER rsp@  HERE CELL+ ,
- mov_rdx,# RSP , 
-  mov_[rdx],rsp
-ret
-ALIGN 
-
- HERE
-  mov_rax,# ' ThreadProc  , 
-  mov_r11,# ' Push @ ,    call_r11 
-  mov_r11,# ' EXECUTE @ , call_r11 
-
- mov_r11,#  , 
-  jmp_r11   
-  
-  
-( HEADER abcd  ' thread_start @ ,  HERE SWAP! interpret# ,  ' inthread , ' EXIT , )
-
-WORD: Thread:  CREATE  
-               0 0  ['] thread_test @ 
-               0 hex, 12000 hex, 3000 hex, 40  VirtualAlloc  
-			   hex, 4 CreateThread  , DOES> @ 
-;WORD 
-
-FORTH32 CONTEXT !
